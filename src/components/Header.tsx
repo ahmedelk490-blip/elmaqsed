@@ -24,7 +24,6 @@ export default function Header() {
   useGSAP(() => {
     gsap.to(bar.current, { scaleX: 1, ease: "none", scrollTrigger: { start: 0, end: "max", scrub: 0.3 } });
   });
-  useEffect(() => setOpen(false), [pathname]);
   useEffect(() => { if (open) lenis?.stop(); else lenis?.start(); }, [open, lenis]);
 
   const links = (cls: string) =>

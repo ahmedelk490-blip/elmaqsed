@@ -51,7 +51,6 @@ export default function Hero() {
         gsap.to(".sym-glow", { opacity: 0.6, scale: 1.15, duration: 2.6, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 3 });
         gsap.to(symRef.current, { y: -10, duration: 3, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 3 });
         gsap.to(".chip", { y: "random(-9, 9)", x: "random(-5, 5)", duration: "random(2.5, 4)", yoyo: true, repeat: -1, ease: "sine.inOut", stagger: 0.5, delay: 3 });
-        gsap.to(".orb", { x: "random(-70, 70)", y: "random(-50, 50)", duration: "random(7, 11)", repeat: -1, yoyo: true, ease: "sine.inOut", stagger: 1.2 });
 
         // cursor tilt on the symbol
         const rY = gsap.quickTo(".sym-tilt", "rotationY", { duration: 0.9, ease: "power3" });
@@ -80,9 +79,7 @@ export default function Hero() {
       <div className="orb absolute -bottom-[10%] left-[38%] h-80 w-80 rounded-full bg-white/10 blur-[100px]" />
       <div className="grid-bg absolute inset-0 opacity-70" />
       <div className="pointer-events-none absolute inset-x-0 bottom-[-10%] h-[58%]" aria-hidden="true">
-        <svg viewBox="0 0 1000 400" preserveAspectRatio="none" className="h-full w-full">
-          {[0, 1, 2, 3, 4].map((i) => <ellipse key={i} className="ripple" cx="500" cy="200" rx="490" ry="150" style={{ animationDelay: `${i * 1.7}s` }} />)}
-        </svg>
+        {[0, 1, 2].map((i) => <span key={i} className="ripple-ring" style={{ animationDelay: `${i * 2.8}s` }} />)}
       </div>
 
       <div className="hero-content container-x relative flex flex-col items-center py-14 text-center">
