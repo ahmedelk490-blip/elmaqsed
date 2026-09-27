@@ -100,9 +100,6 @@ export default function Hero() {
           <div className="sym-tilt relative" style={{ transformStyle: "preserve-3d" }}>
             <Symbol className="sym-svg w-full text-white drop-shadow-[0_0_40px_rgba(46,148,210,.5)]" id="hero" />
           </div>
-          <div className="reflect pointer-events-none absolute inset-x-0 top-full mt-3 h-[60%] opacity-25" aria-hidden="true">
-            <Symbol className="w-full text-white" id="hero-reflect" />
-          </div>
         </div>
 
         <h1 className="hero-title max-w-4xl text-4xl font-bold leading-[1.3] sm:text-6xl lg:text-7xl">
