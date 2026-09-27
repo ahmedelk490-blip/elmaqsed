@@ -45,8 +45,8 @@ export default function ServiceStack() {
               <a href={waLink(site.whatsapp, `السلام عليكم، أرغب في خدمة: ${s.title}`)} target="_blank" rel="noopener" className="btn btn-primary mt-8 w-fit">اطلب هذه الخدمة <Icon name="arrow" className="h-5 w-5" /></a>
             </div>
             <div className="stack-img relative min-h-[240px] overflow-hidden lg:min-h-0">
-              <Image src={s.img} alt="" fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-navy/85" />
+              <Image src={s.img} alt="" fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover brightness-[1.2] saturate-[1.1]" />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy/50 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-navy/70" />
             </div>
           </div>
         </article>
