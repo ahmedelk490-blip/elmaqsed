@@ -1,0 +1,11 @@
+import type { MetadataRoute } from "next";
+import { getContent } from "@/lib/content";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const { countries, site } = await getContent();
+  const pages = ["", "/services", "/destinations", "/process", "/about", "/faq", "/contact"];
+  return [
+    ...pages.map((p) => ({ url: `${site.url}${p}`, changeFrequency: "weekly" as const, priority: p ? 0.9 : 1 })),
+    ...countries.map((c) => ({ url: `${site.url}/visa/${c.slug}`, changeFrequency: "monthly" as const, priority: 0.8 })),
+  ];
+}

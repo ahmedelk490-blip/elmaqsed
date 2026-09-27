@@ -1,0 +1,14 @@
+Destination photos: Wikimedia Commons (CC licences) — placeholder imagery, replace with licensed photos before launch.
+
+schengen.jpg — Tour_Eiffel_Wikimedia_Commons_(cropped).jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/1920px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg
+usa.jpg — Front_view_of_Statue_of_Liberty_(cropped).jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Front_view_of_Statue_of_Liberty_%28cropped%29.jpg/1920px-Front_view_of_Statue_of_Liberty_%28cropped%29.jpg
+uk.jpg — Elizabeth_Tower_and_the_north_front_of_the_Palace_of_Westminster,_London.jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/Elizabeth_Tower_and_the_north_front_of_the_Palace_of_Westminster%2C_London.jpg/1920px-Elizabeth_Tower_and_the_north_front_of_the_Palace_of_Westminster%2C_London.jpg
+canada.jpg — Moraine_Lake_17092005.jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Moraine_Lake_17092005.jpg/1920px-Moraine_Lake_17092005.jpg
+australia.jpg — Sydney_Australia._(21339175489).jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Sydney_Australia._%2821339175489%29.jpg/1920px-Sydney_Australia._%2821339175489%29.jpg
+turkey.jpg — Hagia_Sophia_(228968325).jpeg — https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Hagia_Sophia_%28228968325%29.jpeg/1920px-Hagia_Sophia_%28228968325%29.jpeg
+japan.jpg — View_of_Mount_Fuji_from_Ōwakudani_20211202.jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/View_of_Mount_Fuji_from_%C5%8Cwakudani_20211202.jpg/1920px-View_of_Mount_Fuji_from_%C5%8Cwakudani_20211202.jpg
+china.jpg — The_Great_Wall_of_China_at_Jinshanling-edit.jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/The_Great_Wall_of_China_at_Jinshanling-edit.jpg/1920px-The_Great_Wall_of_China_at_Jinshanling-edit.jpg
+india.jpg — Taj_Mahal_(Edited).jpeg — https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/1920px-Taj_Mahal_%28Edited%29.jpeg
+uae.jpg — Burj_Khalifa_(worlds_tallest_building)_and_the_Dubai_skyline_(25781049892).jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Burj_Khalifa_%28worlds_tallest_building%29_and_the_Dubai_skyline_%2825781049892%29.jpg/1920px-Burj_Khalifa_%28worlds_tallest_building%29_and_the_Dubai_skyline_%2825781049892%29.jpg
+egypt.jpg — Great_Pyramid_of_Giza_-_Pyramid_of_Khufu.jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Great_Pyramid_of_Giza_-_Pyramid_of_Khufu.jpg/1920px-Great_Pyramid_of_Giza_-_Pyramid_of_Khufu.jpg
+bosnia.jpg — Mostar_Old_Town_Panorama_2007.jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Mostar_Old_Town_Panorama_2007.jpg/1920px-Mostar_Old_Town_Panorama_2007.jpg

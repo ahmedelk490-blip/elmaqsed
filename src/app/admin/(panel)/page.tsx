@@ -1,0 +1,41 @@
+import Link from "next/link";
+import { getContent } from "@/lib/content";
+import { collections } from "@/lib/admin";
+import type { Content } from "@/lib/types";
+
+export default async function Dashboard() {
+  const c = await getContent();
+  return (
+    <div>
+      <h1 className="text-2xl font-bold">لوحة التحكم</h1>
+      <p className="mt-1 text-sm text-slate-500">من هنا تدير كل محتوى الموقع. أي حفظ يُنشر على الموقع مباشرة.</p>
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {Object.entries(collections).map(([k, d]) => (
+          <Link key={k} href={`/admin/${k}`} className="a-card p-5 transition-shadow hover:shadow-md">
+            <p className="text-sm text-slate-500">{d.label}</p>
+            <p className="mt-2 font-serif text-4xl font-semibold">{(c[k as keyof Content] as unknown[]).length}</p>
+          </Link>
+        ))}
+      </div>
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <Link href="/admin/single/site" className="a-card p-6 transition-shadow hover:shadow-md">
+          <h2 className="font-bold">إعدادات الموقع</h2>
+          <p className="mt-1 text-sm text-slate-500">الاسم، أرقام التواصل، السجل التجاري، نص الفوتر وإخلاء المسؤولية.</p>
+        </Link>
+        <Link href="/admin/single/about" className="a-card p-6 transition-shadow hover:shadow-md">
+          <h2 className="font-bold">صفحة من نحن</h2>
+          <p className="mt-1 text-sm text-slate-500">القصة، المقدمة، والقيم.</p>
+        </Link>
+      </div>
+      <div className="a-card mt-6 p-6">
+        <h2 className="font-bold">قبل الإطلاق</h2>
+        <ul className="mt-3 list-disc space-y-1 pr-5 text-sm text-slate-600">
+          <li>حدّث رقم الواتساب والهاتف والبريد من إعدادات الموقع.</li>
+          <li>استبدل الإحصائيات وشهادات العملاء ببيانات حقيقية.</li>
+          <li>راجع الوجهات: أضف ما تخدمه فعلاً واحذف الباقي، وحدّث المدد والمستندات.</li>
+          <li>غيّر كلمة مرور اللوحة من ملف <code dir="ltr">.env.local</code> (المتغير ADMIN_PASSWORD).</li>
+        </ul>
+      </div>
+    </div>
+  );
+}
