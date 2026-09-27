@@ -9,6 +9,7 @@ import { useContent } from "./ContentProvider";
 import SectionHead from "./SectionHead";
 import Reveal from "./Reveal";
 import { Icon } from "./Icons";
+import ServiceDeck from "./ServiceDeck";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -55,7 +56,8 @@ export default function Services() {
         <Reveal>
           <SectionHead eyebrow="Services" title="خدماتنا الاستشارية" text="من أول سؤال حتى استلام الجواز، نتولى التفاصيل التي تصنع الفرق بين القبول والرفض." link={{ href: "/services", label: "كل الخدمات بالتفصيل" }} />
         </Reveal>
-        <div className="svc-stage grid items-start gap-10 lg:grid-cols-[1fr_.85fr] lg:gap-16">
+        <div className="lg:hidden"><ServiceDeck /></div>
+        <div className="svc-stage hidden items-start gap-10 lg:grid lg:grid-cols-[1fr_.85fr] lg:gap-16">
           <div className="svc-list flex flex-col">
             {services.map((s, i) => (
               <Link key={s.title} href={`/services#s${i + 1}`} className={`svc-row ${i === active ? "is-active" : ""}`} onMouseEnter={() => activate(i)} onFocus={() => activate(i)} data-cursor>

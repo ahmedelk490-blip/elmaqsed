@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import Symbol from "./Symbol";
+import ChipTicker from "./ChipTicker";
 import BgImage from "./BgImage";
 import Magnetic from "./Magnetic";
 import { Icon } from "./Icons";
@@ -99,6 +100,7 @@ export default function Hero() {
           </div>
         </div>
 
+        <div className="-mt-4 mb-6 md:hidden"><ChipTicker /></div>
         <h1 className="hero-title max-w-4xl text-4xl font-bold leading-[1.3] sm:text-6xl lg:text-7xl">
           مسار واضح
           <br />

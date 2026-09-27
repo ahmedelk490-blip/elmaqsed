@@ -94,7 +94,7 @@ export default async function CountryPage({ params }: PageProps<"/visa/[slug]">)
         <div className="container-x"><Reveal><SectionHead eyebrow="More destinations" title="وجهات أخرى" link={{ href: "/destinations", label: "كل الوجهات" }} /></Reveal></div>
         <div className="rail flex gap-5 overflow-x-auto px-[max(1rem,calc((100vw-76rem)/2))] pb-4">
           {others.map((o) => (
-            <Link key={o.slug} href={`/visa/${o.slug}`} className="group relative aspect-[3/4] w-[220px] shrink-0 overflow-hidden rounded-3xl md:w-[250px]">
+            <Link key={o.slug} href={`/visa/${o.slug}`} className="rail-card group relative aspect-[3/4] w-[220px] shrink-0 overflow-hidden rounded-3xl md:w-[250px]">
               <Image src={o.img} alt={o.name} fill sizes="250px" className="object-cover transition-transform duration-700 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-5">

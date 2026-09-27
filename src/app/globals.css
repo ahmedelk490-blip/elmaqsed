@@ -239,6 +239,28 @@ html.has-cursor, html.has-cursor a, html.has-cursor button { cursor: none; }
 @keyframes ringout { 0% { transform: translate(-50%, -50%) scale(.04); opacity: 0; } 12% { opacity: .9; } 100% { transform: translate(-50%, -50%) scale(1.02); opacity: 0; } }
 .retro-grid::before { will-change: transform; }
 @media (prefers-reduced-motion: reduce) { .checker-card, .ripple-ring { animation: none; } }
+
+/* ---------- mobile motion ---------- */
+.mcta { position: fixed; inset-inline: 12px; bottom: 12px; z-index: 60; display: flex; align-items: center; gap: .6rem; padding: .45rem; border-radius: 999px; background: rgba(8,24,48,.97); border: 1px solid rgba(99,182,234,.3); box-shadow: 0 20px 40px -10px rgba(0,0,0,.75); transform: translateY(150%); transition: transform .5s cubic-bezier(.2,.8,.2,1); }
+.mcta.is-on { transform: none; }
+.ticker { animation: tickin .5s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes tickin { from { opacity: 0; transform: translateY(10px); } }
+.page-enter { animation: pagein .6s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes pagein { from { opacity: 0; transform: translateY(14px); } }
+@media (max-width: 1023px) {
+  .rail { scroll-snap-type: x mandatory; }
+  .rail > * { scroll-snap-align: center; }
+}
+@media (hover: none) {
+  .card:active, .btn:active, .badge:active, .dest-card:active, .rail-card:active { transform: scale(.97); transition: transform .15s; }
+}
+@supports (animation-timeline: view()) {
+  @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+    .dest-card, .rail-card { animation: railfocus linear both; animation-timeline: view(inline); }
+  }
+}
+@keyframes railfocus { 0% { transform: scale(.86); opacity: .5; } 50% { transform: scale(1); opacity: 1; } 100% { transform: scale(.86); opacity: .5; } }
+@media (prefers-reduced-motion: reduce) { .ticker, .page-enter { animation: none; } .mcta { transition: none; } }
 }
 
 @property --beam { syntax: "<angle>"; inherits: false; initial-value: 0deg; }

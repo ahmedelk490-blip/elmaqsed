@@ -10,7 +10,7 @@ export default async function WhatsAppFloat() {
       target="_blank"
       rel="noopener"
       aria-label="تواصل عبر واتساب"
-      className="group fixed bottom-5 left-5 z-50 flex items-center gap-2 rounded-full border border-sky/40 bg-navy/95 p-1.5 shadow-[0_10px_40px_rgba(46,148,210,.35)] transition-shadow hover:shadow-[0_14px_50px_rgba(46,148,210,.55)]"
+      className="group fixed bottom-5 left-5 z-50 hidden lg:flex items-center gap-2 rounded-full border border-sky/40 bg-navy/95 p-1.5 shadow-[0_10px_40px_rgba(46,148,210,.35)] transition-shadow hover:shadow-[0_14px_50px_rgba(46,148,210,.55)]"
     >
       <span className="relative grid h-12 w-12 shrink-0 place-items-center rounded-full bg-gradient-to-br from-sky-2 to-sky text-white">
         <span className="wa-ring" />

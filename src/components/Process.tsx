@@ -43,7 +43,7 @@ export default function Process() {
   );
 
   return (
-    <section id="process" ref={ref} className="relative overflow-hidden bg-ink py-24 md:py-32">
+    <section id="process" ref={ref} className="relative overflow-clip bg-ink py-24 md:py-32">
       <BgImage src="/img/p06.jpg" overlay="bg-gradient-to-b from-ink via-ink/85 to-ink" />
       <span className="ghost right-[-2%] top-6">JOURNEY</span>
       <div className="container-x relative">
@@ -51,7 +51,7 @@ export default function Process() {
           <SectionHead eyebrow="How it works" title="رحلتك معنا… خطوة بخطوة" text="خمس خطوات واضحة، ومستشار واحد يعرف ملفك من البداية حتى الوصول." link={{ href: "/process", label: "تفاصيل الرحلة كاملة" }} />
         </Reveal>
         <div className="relative">
-          <ol className="p-track relative flex flex-col gap-10 lg:w-max lg:flex-row lg:gap-6">
+          <ol className="p-track relative hidden lg:flex lg:w-max lg:flex-row lg:gap-6">
             <span className="absolute bottom-2 right-[7px] top-2 w-px bg-white/10 lg:inset-x-0 lg:bottom-auto lg:right-auto lg:top-[7px] lg:h-px lg:w-auto" />
             <span className="p-line absolute bottom-2 right-[7px] top-2 w-px origin-top bg-gradient-to-b from-sky-2 to-sky lg:inset-x-0 lg:bottom-auto lg:right-auto lg:top-[7px] lg:h-px lg:w-auto lg:origin-right lg:bg-gradient-to-l" />
             {steps.map((s) => (
@@ -73,6 +73,23 @@ export default function Process() {
               <a href={waLink(site.whatsapp)} target="_blank" rel="noopener" className="btn btn-primary mt-6">ابدأ رحلتك الآن</a>
             </li>
           </ol>
+          {/* mobile: step cards that stack as you scroll */}
+          <div className="lg:hidden">
+            {steps.map((s, k) => (
+              <div key={s.n} className="sticky pb-4" style={{ top: `${96 + k * 14}px` }}>
+                <div className="card p-6 shadow-[0_-24px_40px_-24px_rgba(0,0,0,.85)]">
+                  <div className="flex items-center justify-between"><span className="num-outline font-serif text-5xl">{s.n}</span><span className="badge text-xs">الخطوة {k + 1} من {steps.length}</span></div>
+                  <h3 className="mt-4 text-xl font-bold">{s.title}</h3>
+                  <p className="mt-2 leading-8 text-mist/75">{s.text}</p>
+                </div>
+              </div>
+            ))}
+            <div className="card glow mt-2 p-6 text-center">
+              <Symbol className="mx-auto h-12 w-12 text-white" id="dest-m" />
+              <h3 className="mt-3 text-2xl font-bold">وصلت إلى مقصدك</h3>
+              <a href={waLink(site.whatsapp)} target="_blank" rel="noopener" className="btn btn-primary mt-5">ابدأ رحلتك الآن</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
