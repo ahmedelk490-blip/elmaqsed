@@ -47,7 +47,7 @@ export default function Destinations() {
           </div>
         </Reveal>
       </div>
-      <div ref={rail} className="rail relative flex snap-x snap-mandatory gap-5 overflow-x-auto px-[max(1rem,calc((100vw-76rem)/2))] pb-6" data-lenis-prevent>
+      <div ref={rail} className="rail relative flex snap-x snap-mandatory gap-5 overflow-x-auto px-[max(1rem,calc((100vw-76rem)/2))] pb-6">
         {countries.map((c, i) => (
           <Link key={c.slug} href={`/visa/${c.slug}`} className="dest-card group relative aspect-[3/4] w-[250px] shrink-0 snap-start overflow-hidden rounded-3xl bg-navy-2 shadow-[0_30px_60px_-30px_rgba(0,0,0,.8)] md:w-[300px]" data-cursor>
             <Image src={c.img} alt={c.name} fill sizes="300px" className="object-cover transition-transform duration-700 ease-out group-hover:scale-110" />

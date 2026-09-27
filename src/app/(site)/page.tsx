@@ -1,7 +1,6 @@
 import Hero from "@/components/Hero";
 import Stats from "@/components/Stats";
-import KineticBand from "@/components/KineticBand";
-import CompareSlider from "@/components/CompareSlider";
+import Marquee from "@/components/Marquee";
 import VisaChecker from "@/components/VisaChecker";
 import Testimonials from "@/components/Testimonials";
 import Services from "@/components/Services";
@@ -24,10 +23,9 @@ export default async function Home() {
   return (
     <>
       <Hero />
-      <KineticBand />
+      <Marquee />
       <Stats />
       <Services />
-      <CompareSlider />
       <Destinations />
       <VisaChecker />
       <Process />
