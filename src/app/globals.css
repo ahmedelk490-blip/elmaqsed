@@ -215,7 +215,7 @@ html.has-cursor, html.has-cursor a, html.has-cursor button { cursor: none; }
 .ss-step.is-on .ss-dot { background: #2e94d2; border-color: #2e94d2; color: #fff; box-shadow: 0 0 24px rgba(46,148,210,.8); }
 .num-outline { color: transparent; -webkit-text-stroke: 1.5px rgba(99,182,234,.75); line-height: 1; }
 /* ---------- footer typography ---------- */
-.foot-h { font-family: var(--font-display); display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1.3rem; font-size: 1.2rem; font-weight: 600; color: #fff; }
+.foot-h { font-family: var(--font-alex), var(--font-display); display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1.3rem; font-size: 1.2rem; font-weight: 600; color: #fff; }
 .foot-h span { font-family: var(--font-serif); font-size: .68rem; font-weight: 600; letter-spacing: .32em; color: var(--color-sky-2); }
 .foot-list { display: grid; row-gap: .85rem; }
 .foot-list a { position: relative; display: inline-flex; align-items: center; gap: .55rem; color: rgba(206,210,215,.78); transition: color .25s; }
@@ -259,11 +259,14 @@ html.has-cursor, html.has-cursor a, html.has-cursor button { cursor: none; }
     .dest-card, .rail-card { animation: railfocus linear both; animation-timeline: view(inline); }
   }
 }
-@keyframes railfocus { 0% { transform: scale(.86); opacity: .5; } 50% { transform: scale(1); opacity: 1; } 100% { transform: scale(.86); opacity: .5; } }
+@keyframes railfocus { 0% { transform: scale(.93); opacity: .85; } 50% { transform: scale(1); opacity: 1; } 100% { transform: scale(.93); opacity: .85; } }
 @media (prefers-reduced-motion: reduce) { .ticker, .page-enter { animation: none; } .mcta { transition: none; } }
 
 .dot-fill { transform-origin: right; animation: dotfill 3.2s linear both; }
 @keyframes dotfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.font-alex, .font-alex h2, .font-alex h3, .font-alex h4 { font-family: var(--font-alex), var(--font-sans); }
+.font-alex .foot-list a { font-weight: 400; letter-spacing: 0; }
 }
 
 @property --beam { syntax: "<angle>"; inherits: false; initial-value: 0deg; }

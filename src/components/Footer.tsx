@@ -15,7 +15,7 @@ export default async function Footer() {
   const social = Object.entries(site.social).filter(([, v]) => v && v !== "#");
   const row = "flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[.03] px-4 py-3 transition-colors hover:border-sky/50 hover:bg-sky/10";
   return (
-    <footer className="relative overflow-hidden bg-[linear-gradient(180deg,#0b1f39_0%,#06132a_45%,#050f22_100%)]">
+    <footer className="font-alex relative overflow-hidden bg-[linear-gradient(180deg,#0b1f39_0%,#06132a_45%,#050f22_100%)]">
       <div className="dots-bg absolute inset-0 opacity-60" />
       <Reveal className="container-x relative grid items-center gap-12 pb-12 pt-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16 lg:pt-28">
         {/* globe */}
