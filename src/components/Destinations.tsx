@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,6 +9,7 @@ import { useContent } from "./ContentProvider";
 import SectionHead from "./SectionHead";
 import Reveal from "./Reveal";
 import { Icon } from "./Icons";
+import { useRailAutoplay } from "@/lib/useRailAutoplay";
 import Globe from "./Globe";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
@@ -32,32 +33,7 @@ export default function Destinations() {
   // RTL rail: scrolling "forward" moves toward the left edge.
   const go = (dir: 1 | -1) => { lastTouch.current = Date.now(); rail.current?.scrollBy({ left: -dir * rail.current.clientWidth * 0.75, behavior: "smooth" }); };
 
-  // autoplay: glide to the next card every 3s while visible; pauses on touch/hover
-  useEffect(() => {
-    const r = rail.current;
-    if (!r || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let inView = false, hover = false;
-    const io = new IntersectionObserver(([e]) => { inView = e.isIntersecting; }, { threshold: 0.35 });
-    io.observe(r);
-    const touch = () => { lastTouch.current = Date.now(); };
-    const enter = () => { hover = true; };
-    const leave = () => { hover = false; touch(); };
-    r.addEventListener("pointerdown", touch, { passive: true });
-    r.addEventListener("wheel", touch, { passive: true });
-    r.addEventListener("mouseenter", enter);
-    r.addEventListener("mouseleave", leave);
-    const t = setInterval(() => {
-      if (!inView || hover || document.hidden || Date.now() - lastTouch.current < 5000) return;
-      const cards = Array.from(r.querySelectorAll<HTMLElement>(".dest-card"));
-      if (!cards.length) return;
-      const rr = r.getBoundingClientRect(), mid = rr.left + rr.width / 2;
-      let cur = 0, best = Infinity;
-      cards.forEach((c, i) => { const b = c.getBoundingClientRect(); const d = Math.abs(b.left + b.width / 2 - mid); if (d < best) { best = d; cur = i; } });
-      const b = (cards[cur + 1] ?? cards[0]).getBoundingClientRect();
-      r.scrollBy({ left: b.left + b.width / 2 - mid, behavior: "smooth" });
-    }, 3000);
-    return () => { clearInterval(t); io.disconnect(); r.removeEventListener("pointerdown", touch); r.removeEventListener("wheel", touch); r.removeEventListener("mouseenter", enter); r.removeEventListener("mouseleave", leave); };
-  }, []);
+  useRailAutoplay(rail, ".dest-card", 3000, lastTouch);
 
   return (
     <section id="destinations" ref={ref} className="relative overflow-hidden bg-ink/70 py-24 md:py-32">

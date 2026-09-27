@@ -46,7 +46,7 @@ h1, h2, h3, .display { font-family: var(--font-display); }
 .grid-bg { background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse at center, #000 20%, transparent 72%); }
 .dots-bg { background-image: radial-gradient(rgba(255,255,255,.09) 1px, transparent 1px); background-size: 22px 22px; mask-image: radial-gradient(ellipse at center, #000 10%, transparent 70%); }
 .ghost { position: absolute; z-index: 0; font-family: var(--font-serif); font-size: clamp(5rem, 18vw, 16rem); letter-spacing: .08em; line-height: 1; color: rgba(255,255,255,.03); pointer-events: none; white-space: nowrap; user-select: none; }
-.marquee { animation: marquee 50s linear infinite; will-change: transform; backface-visibility: hidden; } .marquee:hover { animation-play-state: paused; }
+.marquee { animation: marquee 50s linear infinite; } .marquee:hover { animation-play-state: paused; }
 @keyframes marquee { to { transform: translate3d(-50%, 0, 0); } }
 .scroll-cue { animation: cue 2.2s ease-in-out infinite; }
 @keyframes cue { 0% { transform: scaleY(0); transform-origin: top; } 45% { transform: scaleY(1); transform-origin: top; } 55% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }

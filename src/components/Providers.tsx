@@ -15,16 +15,10 @@ function GsapSync() {
     lenis.on("scroll", onScroll);
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
-    // layout can grow after mount (images, fonts, canvases): keep ScrollTrigger positions fresh
-    let t = 0;
-    const ro = new ResizeObserver(() => { clearTimeout(t); t = window.setTimeout(() => ScrollTrigger.refresh(), 200); });
-    ro.observe(document.body);
     document.fonts?.ready.then(() => ScrollTrigger.refresh());
     return () => {
       lenis.off("scroll", onScroll);
       gsap.ticker.remove(tick);
-      ro.disconnect();
-      clearTimeout(t);
     };
   }, [lenis]);
   return null;
