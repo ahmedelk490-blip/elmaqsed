@@ -10,6 +10,7 @@ import type { Content } from "./types";
 type Lists = Record<string, Record<string, unknown>[]>;
 
 export async function login(_prev: { error?: string } | null, fd: FormData) {
+  if (!PASSWORD) return { error: "لوحة التحكم غير مفعّلة: أضف ADMIN_PASSWORD في متغيرات البيئة بالاستضافة" };
   if (String(fd.get("password")) !== PASSWORD) return { error: "كلمة المرور غير صحيحة" };
   (await cookies()).set(COOKIE, token(), { httpOnly: true, sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 30 });
   redirect("/admin");
