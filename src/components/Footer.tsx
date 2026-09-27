@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getContent } from "@/lib/content";
 import { waLink } from "@/lib/types";
 import Reveal from "./Reveal";
+import Symbol from "./Symbol";
 import Globe from "./Globe";
 import { Icon } from "./Icons";
 
@@ -14,7 +15,7 @@ export default async function Footer() {
   const social = Object.entries(site.social).filter(([, v]) => v && v !== "#");
   const row = "flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[.03] px-4 py-3 transition-colors hover:border-sky/50 hover:bg-sky/10";
   return (
-    <footer className="relative overflow-hidden bg-[linear-gradient(180deg,#0b1f39_0%,#06132a_45%,#050f22_100%)]">
+    <footer className="font-lux relative overflow-hidden bg-[linear-gradient(180deg,#0b1f39_0%,#06132a_45%,#050f22_100%)]">
       <div className="dots-bg absolute inset-0 opacity-60" />
       <Reveal className="container-x relative grid items-center gap-12 pb-12 pt-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16 lg:pt-28">
         {/* globe */}
@@ -41,30 +42,32 @@ export default async function Footer() {
         </div>
       </Reveal>
 
-      {/* links */}
-      <div className="container-x relative border-t border-white/10 py-7">
-        <div className="flex flex-col items-center gap-4 text-center lg:flex-row lg:items-center lg:justify-between lg:text-start">
-          <nav className="flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-sm text-mist/85">
-            {nav.map((n) => <Link key={n.href} href={n.href} className="transition-colors hover:text-white">{n.label}</Link>)}
-          </nav>
-          <p className="flex flex-wrap items-center justify-center gap-y-2 text-sm text-mist/60">
-            <span className="ml-3 text-mist/40">التأشيرات:</span>
-            {countries.slice(0, 6).map((c, i) => (
-              <Link key={c.slug} href={`/visa/${c.slug}`} className="transition-colors hover:text-white">{c.name}{i < 5 && <span className="mx-2 text-mist/30">·</span>}</Link>
-            ))}
-          </p>
+      {/* link columns */}
+      <div className="container-x relative border-t border-white/10 py-14">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4">
+          <div>
+            <h4 className="foot-h"><span>PAGES</span>الصفحات</h4>
+            <ul className="foot-list">{nav.map((n) => <li key={n.href}><Link href={n.href}>{n.label}</Link></li>)}</ul>
+          </div>
+          <div className="md:order-last">
+            <h4 className="foot-h"><span>VISIT US</span>المقر وساعات العمل</h4>
+            <p className="leading-8 text-mist/80">{site.city}</p>
+            <p className="mt-1 text-sm leading-7 text-mist/55">{site.hours}</p>
+            <a href={waLink(site.whatsapp)} target="_blank" rel="noopener" className="btn btn-ghost btn-sm mt-5">احجز استشارة</a>
+          </div>
+          <div className="col-span-2">
+            <h4 className="foot-h"><span>VISAS</span>التأشيرات</h4>
+            <ul className="foot-list grid-cols-2 gap-x-8">{countries.map((c) => <li key={c.slug}><Link href={`/visa/${c.slug}`}><span className={`fi fi-${c.code} rounded-sm`} />تأشيرة {c.name}</Link></li>)}</ul>
+          </div>
         </div>
       </div>
 
-      {/* bottom */}
+      {/* bottom bar */}
       <div className="relative border-t border-white/10">
-        <div className="container-x flex flex-col items-center justify-between gap-3 py-6 text-center text-sm text-mist/60 md:flex-row">
-          <p><span className="whitespace-nowrap">© {new Date().getFullYear()} · جميع الحقوق محفوظة</span> · <a href="https://qmarketingeg.com/" target="_blank" rel="noopener" className="whitespace-nowrap font-semibold text-white transition-colors hover:text-sky-2">تصميم وبرمجة شركة Q Marketing</a></p>
-          {social.length > 0 && (
-            <div className="flex gap-5 font-serif text-[11px] tracking-[.25em] text-mist/50">
-              {social.map(([k, v]) => <a key={k} href={v} target="_blank" rel="noopener" className="transition-colors hover:text-white">{(socialLabels[k] ?? k).toUpperCase()}</a>)}
-            </div>
-          )}
+        <div className="container-x flex flex-col items-center gap-4 py-7 text-center text-sm md:flex-row md:justify-between md:text-start">
+          <p className="text-mist/55">© {new Date().getFullYear()} · جميع الحقوق محفوظة</p>
+          <Symbol className="hidden h-6 w-6 text-white/35 md:block" id="foot-mini" />
+          <a href="https://qmarketingeg.com/" target="_blank" rel="noopener" className="font-semibold text-white transition-colors hover:text-sky-2">تصميم وبرمجة شركة Q Marketing</a>
         </div>
       </div>
     </footer>
