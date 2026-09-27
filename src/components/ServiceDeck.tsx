@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 import { useGSAP } from "@gsap/react";
@@ -10,12 +10,22 @@ import { Icon } from "./Icons";
 
 gsap.registerPlugin(useGSAP, Draggable);
 
-/** Mobile: services as a swipeable card deck. Drag the top card sideways and it flies to the back of the pile. */
+const AUTO_MS = 3200;
+
+function flyOut(el: HTMLElement, dir: number, done: () => void) {
+  gsap.to(el, { x: dir * 460, rotation: dir * 22, opacity: 0, duration: 0.4, ease: "power2.in", onComplete: () => { gsap.set(el, { clearProps: "transform,opacity" }); done(); } });
+}
+
+/** Mobile: services as a card deck that deals itself automatically; the top card can also be swiped away. */
 export default function ServiceDeck() {
   const { services, site } = useContent();
   const [order, setOrder] = useState(() => services.map((_, i) => i));
   const ref = useRef<HTMLDivElement>(null);
+  const busy = useRef(false);
+  const held = useRef(false);
+  const lastTouch = useRef(0);
 
+  // swipe
   useGSAP(
     () => {
       const top = ref.current?.querySelector<HTMLElement>('[data-top="1"]');
@@ -23,12 +33,14 @@ export default function ServiceDeck() {
       const [d] = Draggable.create(top, {
         type: "x",
         allowNativeTouchScrolling: true,
+        onPress: () => { held.current = true; lastTouch.current = Date.now(); },
+        onRelease: () => { held.current = false; lastTouch.current = Date.now(); },
         onDrag: function (this: Draggable) { gsap.set(this.target, { rotation: this.x / 16 }); },
         onDragEnd: function (this: Draggable) {
           const el = this.target as HTMLElement;
-          if (Math.abs(this.x) > 80) {
-            const dir = Math.sign(this.x);
-            gsap.to(el, { x: dir * 460, rotation: dir * 22, opacity: 0, duration: 0.32, ease: "power2.in", onComplete: () => { gsap.set(el, { clearProps: "transform,opacity" }); setOrder((o) => [...o.slice(1), o[0]]); } });
+          if (Math.abs(this.x) > 80 && !busy.current) {
+            busy.current = true;
+            flyOut(el, Math.sign(this.x), () => { busy.current = false; setOrder((o) => [...o.slice(1), o[0]]); });
           } else {
             gsap.to(el, { x: 0, rotation: 0, duration: 0.5, ease: "back.out(2)" });
           }
@@ -38,6 +50,22 @@ export default function ServiceDeck() {
     },
     { scope: ref, dependencies: [order], revertOnUpdate: true },
   );
+
+  // autoplay while visible, paused during/just after a touch
+  useEffect(() => {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let inView = false;
+    const io = new IntersectionObserver(([e]) => { inView = e.isIntersecting; }, { threshold: 0.4 });
+    if (ref.current) io.observe(ref.current);
+    const t = setInterval(() => {
+      if (!inView || held.current || busy.current || document.hidden || Date.now() - lastTouch.current < 5000) return;
+      const el = ref.current?.querySelector<HTMLElement>('[data-top="1"]');
+      if (!el) return;
+      busy.current = true;
+      flyOut(el, -1, () => { busy.current = false; setOrder((o) => [...o.slice(1), o[0]]); });
+    }, AUTO_MS);
+    return () => { clearInterval(t); io.disconnect(); };
+  }, []);
 
   return (
     <div>
@@ -60,9 +88,13 @@ export default function ServiceDeck() {
           );
         })}
       </div>
-      <p className="mt-10 flex items-center justify-center gap-3 text-sm text-mist/60"><Icon name="arrow" className="h-4 w-4 rotate-180" />اسحب البطاقة لاكتشاف الخدمة التالية<Icon name="arrow" className="h-4 w-4" /></p>
+      <p className="mt-10 flex items-center justify-center gap-3 text-sm text-mist/60"><Icon name="arrow" className="h-4 w-4 rotate-180" />تتبدّل تلقائياً، أو اسحبها بنفسك<Icon name="arrow" className="h-4 w-4" /></p>
       <div className="mt-4 flex justify-center gap-2">
-        {services.map((_, i) => <span key={i} className={`h-1.5 rounded-full transition-all duration-500 ${order[0] === i ? "w-6 bg-sky" : "w-1.5 bg-white/25"}`} />)}
+        {services.map((_, i) => (
+          <span key={i} className={`relative h-1.5 overflow-hidden rounded-full transition-all duration-500 ${order[0] === i ? "w-8 bg-white/20" : "w-1.5 bg-white/25"}`}>
+            {order[0] === i && <span key={order[0]} className="dot-fill absolute inset-0 bg-sky" />}
+          </span>
+        ))}
       </div>
     </div>
   );

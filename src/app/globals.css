@@ -261,6 +261,9 @@ html.has-cursor, html.has-cursor a, html.has-cursor button { cursor: none; }
 }
 @keyframes railfocus { 0% { transform: scale(.86); opacity: .5; } 50% { transform: scale(1); opacity: 1; } 100% { transform: scale(.86); opacity: .5; } }
 @media (prefers-reduced-motion: reduce) { .ticker, .page-enter { animation: none; } .mcta { transition: none; } }
+
+.dot-fill { transform-origin: right; animation: dotfill 3.2s linear both; }
+@keyframes dotfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 }
 
 @property --beam { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
