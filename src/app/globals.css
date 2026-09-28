@@ -267,6 +267,8 @@ html.has-cursor, html.has-cursor a, html.has-cursor button { cursor: none; }
 
 .font-alex, .font-alex h2, .font-alex h3, .font-alex h4 { font-family: var(--font-alex), var(--font-sans); }
 .font-alex .foot-list a { font-weight: 400; letter-spacing: 0; }
+
+.giant-en { position: absolute; inset-inline: 0; top: 40%; transform: translateY(-50%); text-align: center; white-space: nowrap; font-family: var(--font-serif); font-weight: 600; font-size: clamp(2.2rem, 8vw, 5rem); letter-spacing: .14em; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.8); pointer-events: none; }
 }
 
 @property --beam { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
