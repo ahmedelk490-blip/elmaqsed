@@ -15,7 +15,7 @@ export default function PageHero({ eyebrow, title, text, image, children }: { ey
           {children}
         </Reveal>
         {image && (
-          <div className="ph-frame relative aspect-[16/11] overflow-hidden rounded-[2rem] border border-white/10">
+          <div className="ph-frame relative aspect-[16/11] overflow-hidden md:aspect-[21/9] lg:aspect-[16/11] rounded-[2rem] border border-white/10">
             <Image src={image} alt="" fill priority sizes="(min-width: 1024px) 42vw, 100vw" className="kenburns object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-navy/75 via-transparent to-transparent" />
             <span className="ph-tag" dir="ltr">ELMAQSED · {eyebrow}</span>
