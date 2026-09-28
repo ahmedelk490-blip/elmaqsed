@@ -43,7 +43,7 @@ export default function Process() {
 
   return (
     <section id="process" ref={ref} className="relative overflow-clip bg-ink py-24 md:py-32 lg:flex lg:h-screen lg:flex-col lg:justify-center lg:py-0">
-      <span className="ghost right-[-2%] top-6">JOURNEY</span>
+      <span className="ghost right-[-2%] top-6" data-t="JOURNEY" aria-hidden="true" />
       <div className="container-x relative">
         <Reveal>
           <SectionHead eyebrow="How it works" title="رحلتك معنا… خطوة بخطوة" text="خمس خطوات واضحة، ومستشار واحد يعرف ملفك من البداية حتى الوصول." link={{ href: "/process", label: "تفاصيل الرحلة كاملة" }} />

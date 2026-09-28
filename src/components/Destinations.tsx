@@ -56,7 +56,7 @@ export default function Destinations() {
   return (
     <section id="destinations" ref={ref} className="relative overflow-hidden bg-ink/70 py-24 md:py-32">
       <div className="dots-bg absolute inset-0" />
-      <span className="ghost right-[-3%] top-10">DESTINATIONS</span>
+      <span className="ghost right-[-3%] top-10" data-t="DESTINATIONS" aria-hidden="true" />
       <div className="container-x relative">
         <Reveal className="flex flex-wrap items-start justify-between gap-6">
           <SectionHead eyebrow="Destinations" title="الوجهات التي نخدمها" text="اختر وجهتك لتعرف المتطلبات، المدة التقريبية، وخطوات التقديم معنا." link={{ href: "/destinations", label: "كل الوجهات والبحث" }} />

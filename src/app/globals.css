@@ -334,6 +334,8 @@ html.has-cursor, html.has-cursor a, html.has-cursor button { cursor: none; }
 .ticket-top { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 1.3rem; border-bottom: 2px dashed rgba(255,255,255,.14); }
 .ticket-body { padding: 1.1rem 1.3rem 1.4rem; }
 @media (prefers-reduced-motion: reduce) { .bp, .bp-fly, .stamp-ring, .stamp-slam, .postcard, .route-draw, .phone-screen { animation: none; } .route-draw { stroke-dashoffset: 0; } .phone-screen.is-first { opacity: 1; } .postcard { transform: rotate(-2.5deg); } }
+
+.ghost::before { content: attr(data-t); }
 }
 
 @property --beam { syntax: "<angle>"; inherits: false; initial-value: 0deg; }

@@ -47,7 +47,7 @@ export default function Wizard() {
           <input className="field" placeholder="الاسم الكامل" value={f.name} onChange={on("name")} />
           <input className="field" placeholder="رقم الجوال" type="tel" dir="ltr" value={f.phone} onChange={on("phone")} />
           <input className="field" placeholder="الجنسية" value={f.nationality} onChange={on("nationality")} />
-          <select className="field" value={f.purpose} onChange={on("purpose")}>{purposes.map((p) => <option key={p}>{p}</option>)}</select>
+          <select className="field" value={f.purpose} onChange={on("purpose")} aria-label="غرض السفر">{purposes.map((p) => <option key={p}>{p}</option>)}</select>
           <input className="field" type="month" value={f.date} onChange={on("date")} aria-label="تاريخ السفر المتوقع" />
           <select className="field" value={f.refused} onChange={on("refused")} aria-label="رفض سابق">
             <option value="لا">لم يسبق رفض تأشيرتي</option>

@@ -8,7 +8,7 @@ export default async function Testimonials() {
   const items = [...testimonials, ...testimonials];
   return (
     <section id="testimonials" className="relative overflow-hidden bg-[radial-gradient(ellipse_at_50%_0%,rgba(46,148,210,.14),transparent_60%)] py-24 md:py-32">
-      <span className="ghost bottom-6 left-[-3%]">STORIES</span>
+      <span className="ghost bottom-6 left-[-3%]" data-t="STORIES" aria-hidden="true" />
       <Reveal className="container-x relative">
         <SectionHead eyebrow="Stories" title="وصلوا إلى مقصدهم" text="قصص عملاء بدأت برسالة واتساب وانتهت بختم على الجواز." center />
       </Reveal>

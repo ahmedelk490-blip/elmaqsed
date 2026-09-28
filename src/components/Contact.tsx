@@ -29,12 +29,12 @@ export default function Contact() {
             <input data-r className="field" placeholder="الاسم الكامل" required value={f.name} onChange={on("name")} />
             <input data-r className="field" placeholder="رقم الجوال" type="tel" required value={f.phone} onChange={on("phone")} dir="ltr" />
             <input data-r className="field" placeholder="الجنسية" required value={f.nationality} onChange={on("nationality")} />
-            <select data-r className="field" required value={f.dest} onChange={on("dest")}>
+            <select data-r className="field" required value={f.dest} onChange={on("dest")} aria-label="الوجهة المطلوبة">
               <option value="">الوجهة المطلوبة</option>
               {countries.map((c) => <option key={c.slug} value={c.name}>{c.name}</option>)}
               <option value="أخرى">وجهة أخرى</option>
             </select>
-            <select data-r className="field" value={f.purpose} onChange={on("purpose")}>
+            <select data-r className="field" value={f.purpose} onChange={on("purpose")} aria-label="غرض السفر">
               {["سياحة", "أعمال", "دراسة", "علاج", "زيارة عائلية"].map((p) => <option key={p}>{p}</option>)}
             </select>
             <input data-r className="field" type="month" value={f.date} onChange={on("date")} aria-label="تاريخ السفر المتوقع" />

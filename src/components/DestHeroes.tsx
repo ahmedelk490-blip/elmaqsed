@@ -157,7 +157,7 @@ export function HeroClassic({ c, wa }: { c: Country; wa: string }) {
   return (
     <section className="relative flex min-h-[100svh] items-end overflow-hidden pt-[84px]">
       <BgImage src={c.img} priority kenburns overlay="bg-gradient-to-b from-navy/35 via-navy/65 to-navy" />
-      <span className="ghost bottom-[32%] right-[-2%]">{c.en.toUpperCase()}</span>
+      <span className="ghost bottom-[32%] right-[-2%]" data-t={c.en.toUpperCase()} aria-hidden="true" />
       <div className="container-x relative grid items-end gap-12 pb-16 lg:grid-cols-[1.15fr_.85fr] lg:pb-24">
         <Reveal><Intro c={c} wa={wa} tag={`${c.en} · Visa`} /></Reveal>
         <div className="visa-card relative">

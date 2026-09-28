@@ -21,6 +21,18 @@ export default function Services() {
   const [active, setActive] = useState(0);
   const activeRef = useRef(0);
 
+  const activate = (i: number) => {
+    if (i === activeRef.current) return;
+    const dir = i > activeRef.current ? 1 : -1;
+    activeRef.current = i;
+    setActive(i);
+    gsap.utils.toArray<HTMLElement>(".svc-img", root.current).forEach((img, k) => {
+      if (k === i) gsap.fromTo(img, { autoAlpha: 0, scale: 1.12 }, { autoAlpha: 1, scale: 1, duration: 0.8, ease: "power3.out", overwrite: true });
+      else gsap.to(img, { autoAlpha: 0, duration: 0.45, overwrite: true });
+    });
+    if (noRef.current) gsap.fromTo(noRef.current, { yPercent: 60 * dir, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.55, ease: "power3.out", overwrite: true });
+  };
+
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
@@ -37,21 +49,9 @@ export default function Services() {
     { scope: root },
   );
 
-  const activate = (i: number) => {
-    if (i === activeRef.current) return;
-    const dir = i > activeRef.current ? 1 : -1;
-    activeRef.current = i;
-    setActive(i);
-    gsap.utils.toArray<HTMLElement>(".svc-img", root.current).forEach((img, k) => {
-      if (k === i) gsap.fromTo(img, { autoAlpha: 0, scale: 1.12 }, { autoAlpha: 1, scale: 1, duration: 0.8, ease: "power3.out", overwrite: true });
-      else gsap.to(img, { autoAlpha: 0, duration: 0.45, overwrite: true });
-    });
-    if (noRef.current) gsap.fromTo(noRef.current, { yPercent: 60 * dir, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.55, ease: "power3.out", overwrite: true });
-  };
-
   return (
     <section id="services" ref={root} className="relative overflow-hidden py-24 md:py-32">
-      <span className="ghost left-[-3%] top-8">SERVICES</span>
+      <span className="ghost left-[-3%] top-8" data-t="SERVICES" aria-hidden="true" />
       <div className="container-x relative">
         <Reveal>
           <SectionHead eyebrow="Services" title="خدماتنا الاستشارية" text="من أول سؤال حتى استلام الجواز، نتولى التفاصيل التي تصنع الفرق بين القبول والرفض." link={{ href: "/services", label: "كل الخدمات بالتفصيل" }} />
