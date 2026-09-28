@@ -13,7 +13,8 @@ import { Icon } from "./Icons";
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export default function Header() {
-  const { nav, site } = useContent();
+  const { nav: items, site } = useContent();
+  const nav = items.some((n) => n.href === "/") ? items : [{ href: "/", label: "الرئيسية" }, ...items];
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const bar = useRef<HTMLSpanElement>(null);

@@ -12,9 +12,15 @@ import Symbol from "./Symbol";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, DrawSVGPlugin);
 
-/** Why us: the symbol draws itself with destinations orbiting it; each reason card lights up as it crosses the middle of the screen. */
+const RINGS = [
+  { size: 150, dur: 28, n: 2, rev: false, from: 0 },
+  { size: 200, dur: 40, n: 3, rev: true, from: 2 },
+  { size: 250, dur: 54, n: 3, rev: false, from: 5 },
+];
+
+/** The symbol lies flat in its orbit like a turning disc; destinations circle around it and always face the reader. */
 export default function Why() {
-  const { why } = useContent();
+  const { why, countries } = useContent();
   const ref = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -26,7 +32,7 @@ export default function Why() {
         gsap.timeline({ scrollTrigger: { trigger: ".why-sym", start: "top 85%", once: true } })
           .to(paths, { drawSVG: "100%", stagger: 0.12, duration: 1.4, ease: "power2.inOut" })
           .to(paths, { fillOpacity: 1, strokeOpacity: 0, duration: 0.8, ease: "power2.out" }, "-=0.3")
-          .from(".orbit", { scale: 0.6, autoAlpha: 0, stagger: 0.15, duration: 0.9, ease: "power3.out" }, "-=0.8");
+          .from(".orb3d", { scale: 0.6, autoAlpha: 0, stagger: 0.15, duration: 0.9, ease: "power3.out" }, "-=0.8");
         gsap.utils.toArray<HTMLElement>(".why-card", ref.current).forEach((card) => {
           ScrollTrigger.create({ trigger: card, start: "top 60%", end: "bottom 40%", toggleClass: "is-lit" });
         });
@@ -41,14 +47,25 @@ export default function Why() {
       <span className="ghost right-[-3%] top-8">WHY ELMAQSED</span>
       <div className="pointer-events-none absolute left-[10%] top-1/2 h-[34rem] w-[34rem] -translate-y-1/2 rounded-full bg-sky/10 blur-[120px]" />
       <Reveal className="container-x relative grid items-center gap-16 lg:grid-cols-2">
-        <div className="relative mx-auto w-[min(60vw,300px)]" style={{ perspective: 900 }}>
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="orbit absolute left-1/2 top-1/2" style={{ width: `${150 + i * 45}%`, height: `${150 + i * 45}%`, animationDuration: `${14 + i * 8}s`, animationDirection: i === 1 ? "reverse" : "normal" }}>
-              <span className="orbit-dot" />
+        <div className="orbit-stage relative mx-auto my-16 w-[min(56vw,270px)]" style={{ perspective: 1000 }}>
+          {RINGS.map((r, i) => (
+            <div key={i} className="orb3d absolute left-1/2 top-1/2" style={{ width: `${r.size}%`, height: `${r.size}%`, animationDuration: `${r.dur}s`, animationDirection: r.rev ? "reverse" : "normal" }}>
+              {countries.slice(r.from, r.from + r.n).map((c, j, arr) => {
+                const a = (j / arr.length) * Math.PI * 2 + i * 0.7;
+                return (
+                  <span key={c.slug} className={`orb3d-anchor ${i === 2 ? "hidden sm:block" : ""}`} style={{ left: `${50 + 50 * Math.cos(a)}%`, top: `${50 + 50 * Math.sin(a)}%`, animationDuration: `${r.dur}s`, animationDirection: r.rev ? "reverse" : "normal" }}>
+                    <span className="orb3d-chip"><span className={`fi fi-${c.code} rounded-sm`} />{c.name}</span>
+                  </span>
+                );
+              })}
             </div>
           ))}
           <span className="absolute inset-[-10%] rounded-full bg-sky/15 blur-3xl" />
-          <div className="why-sym relative"><Symbol className="w-full text-white drop-shadow-[0_0_30px_rgba(46,148,210,.45)]" id="why" /></div>
+          <div className="why-disc-wrap relative">
+            <div className="why-disc">
+              <div className="why-sym"><Symbol className="w-full text-white drop-shadow-[0_0_30px_rgba(46,148,210,.45)]" id="why" /></div>
+            </div>
+          </div>
         </div>
         <div>
           <SectionHead

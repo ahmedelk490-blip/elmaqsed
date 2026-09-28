@@ -8,7 +8,6 @@ import { useContent } from "./ContentProvider";
 import Symbol from "./Symbol";
 import SectionHead from "./SectionHead";
 import Reveal from "./Reveal";
-import BgImage from "./BgImage";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -24,7 +23,7 @@ export default function Process() {
         const track = ref.current!.querySelector<HTMLElement>(".p-track")!;
         const wrap = track.parentElement!;
         const dist = () => Math.max(0, track.scrollWidth - wrap.clientWidth);
-        const tl = gsap.timeline({ scrollTrigger: { trigger: wrap, start: "top 65%", end: "bottom 10%", scrub: 0.8, invalidateOnRefresh: true } });
+        const tl = gsap.timeline({ scrollTrigger: { trigger: ref.current, start: "top top", end: () => "+=" + (dist() + window.innerHeight * 0.4), pin: true, scrub: 0.8, anticipatePin: 1, invalidateOnRefresh: true } });
         tl.to(track, { x: () => dist(), ease: "none", duration: 1 }, 0)
           .fromTo(".p-line", { scaleX: 0 }, { scaleX: 1, ease: "none", duration: 1 }, 0)
           .to(".p-dot", { backgroundColor: "#2e94d2", borderColor: "#2e94d2", boxShadow: "0 0 18px rgba(46,148,210,.9)", stagger: 0.18, duration: 0.05 }, 0.02)
@@ -43,8 +42,7 @@ export default function Process() {
   );
 
   return (
-    <section id="process" ref={ref} className="relative overflow-clip bg-ink py-24 md:py-32">
-      <BgImage src="/img/p06.jpg" overlay="bg-gradient-to-b from-ink via-ink/85 to-ink" />
+    <section id="process" ref={ref} className="relative overflow-clip bg-ink py-24 md:py-32 lg:flex lg:h-screen lg:flex-col lg:justify-center lg:py-0">
       <span className="ghost right-[-2%] top-6">JOURNEY</span>
       <div className="container-x relative">
         <Reveal>

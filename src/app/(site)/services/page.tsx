@@ -12,8 +12,8 @@ export default async function ServicesPage() {
   return (
     <>
       <PageHero image="/img/p03.jpg" eyebrow="Services" title="ست خدمات… ملف واحد مكتمل" text="كل خدمة تغلق ثغرة من الثغرات التي تسبب الرفض. اطلبها منفردة أو كحزمة كاملة من الاستشارة حتى الجواز.">
-        <div data-r className="mt-8 flex flex-wrap gap-2">
-          {services.map((s, i) => <a key={s.title} href={`#s${i + 1}`} className="badge hover:border-sky"><span className="font-serif text-sky-2">0{i + 1}</span>{s.title}</a>)}
+        <div data-r className="mt-8 grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {services.map((s, i) => <a key={s.title} href={`#s${i + 1}`} className="svc-jump"><span className="font-serif text-sky-2">0{i + 1}</span>{s.title}</a>)}
         </div>
       </PageHero>
       <section className="relative py-16 md:py-24"><div className="container-x"><ServiceStack /></div></section>

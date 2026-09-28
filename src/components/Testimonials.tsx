@@ -2,14 +2,12 @@ import { getContent } from "@/lib/content";
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
 import TestiRail from "./TestiRail";
-import BgImage from "./BgImage";
 
 export default async function Testimonials() {
   const { testimonials } = await getContent();
   const items = [...testimonials, ...testimonials];
   return (
-    <section id="testimonials" className="relative overflow-hidden bg-ink/70 py-24 md:py-32">
-      <BgImage src="/img/p14.jpg" overlay="bg-gradient-to-b from-ink via-ink/85 to-ink" />
+    <section id="testimonials" className="relative overflow-hidden bg-[radial-gradient(ellipse_at_50%_0%,rgba(46,148,210,.14),transparent_60%)] py-24 md:py-32">
       <span className="ghost bottom-6 left-[-3%]">STORIES</span>
       <Reveal className="container-x relative">
         <SectionHead eyebrow="Stories" title="وصلوا إلى مقصدهم" text="قصص عملاء بدأت برسالة واتساب وانتهت بختم على الجواز." center />
