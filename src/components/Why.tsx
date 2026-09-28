@@ -77,9 +77,15 @@ export default function Why() {
   return (
     <section id="why" ref={ref} className="relative overflow-hidden py-24 md:py-32">
       <span className="ghost right-[-3%] top-8">WHY ELMAQSED</span>
-      <div className="pointer-events-none absolute left-[10%] top-1/2 h-[34rem] w-[34rem] -translate-y-1/2 rounded-full bg-sky/10 blur-[120px]" />
-      <Reveal className="container-x relative grid items-center gap-16 lg:grid-cols-2">
-        <div ref={stage} className="orbit-stage relative mx-auto my-16 w-[min(40vw,270px)]" style={{ perspective: 1000 }}>
+      <div className="pointer-events-none absolute left-1/2 top-[42%] h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky/10 blur-[120px]" />
+      <Reveal className="container-x relative">
+        <SectionHead
+          center
+          eyebrow="Why Elmaqsed"
+          title="كل عميل له مسار مختلف… ووجهة واحدة"
+          text="بُنيت علامة المقصد على فكرة بسيطة: أسهم قادمة من اتجاهات مختلفة تتوحد نحو نقطة واحدة. دورنا أن نأخذ ظروفك كما هي، ونرسم لك المسار الأوضح نحو الوصول."
+        />
+        <div ref={stage} className="orbit-stage relative mx-auto mb-20 mt-6 w-[min(40vw,270px)] md:mb-24" style={{ perspective: 1000 }}>
           <div className="orb-rings absolute inset-0" style={{ perspective: 1000 }}>
             {RINGS.map((s) => <div key={s} className="orb3d absolute left-1/2 top-1/2" style={{ width: `${s}%`, height: `${s}%` }} />)}
           </div>
@@ -97,24 +103,15 @@ export default function Why() {
             ))}
           </div>
         </div>
-        <div>
-          <SectionHead
-            eyebrow="Why Elmaqsed"
-            title="كل عميل له مسار مختلف… ووجهة واحدة"
-            text="بُنيت علامة المقصد على فكرة بسيطة: أسهم قادمة من اتجاهات مختلفة تتوحد نحو نقطة واحدة. دورنا أن نأخذ ظروفك كما هي، ونرسم لك المسار الأوضح نحو الوصول."
-          />
-          <SpotlightGrid className="space-y-4">
-            {why.map((w, i) => (
-              <div key={w.title} data-r className="why-card card spot tilt flex gap-5 p-6">
-                <span className="num-grad font-serif text-5xl leading-none">0{i + 1}</span>
-                <div>
-                  <h3 className="text-lg font-bold">{w.title}</h3>
-                  <p className="mt-2 leading-8 text-mist/75">{w.text}</p>
-                </div>
-              </div>
-            ))}
-          </SpotlightGrid>
-        </div>
+        <SpotlightGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+          {why.map((w, i) => (
+            <div key={w.title} data-r className="why-card card spot tilt flex flex-col items-center p-6 text-center">
+              <span className="num-grad font-serif text-5xl leading-none">0{i + 1}</span>
+              <h3 className="mt-4 text-lg font-bold">{w.title}</h3>
+              <p className="mt-2 leading-7 text-mist/75">{w.text}</p>
+            </div>
+          ))}
+        </SpotlightGrid>
       </Reveal>
     </section>
   );
