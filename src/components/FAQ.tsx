@@ -6,7 +6,7 @@ import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
 import { Icon } from "./Icons";
 
-/** FAQ: sticky intro + WhatsApp card on one side, numbered accordion on the other; the open question glows. */
+/** FAQ: centred heading, one centred column of numbered questions (the open one glows), WhatsApp strip underneath. */
 export default function FAQ({ compact = false }: { compact?: boolean }) {
   const { faq, site } = useContent();
   const [open, setOpen] = useState<number | null>(0);
@@ -14,16 +14,11 @@ export default function FAQ({ compact = false }: { compact?: boolean }) {
   return (
     <section id="faq" className="relative overflow-clip py-24 md:py-32">
       <div className="retro-grid" aria-hidden="true" />
-      <div className="container-x relative grid gap-12 lg:grid-cols-[.85fr_1.15fr] lg:gap-16">
-        <Reveal className="lg:sticky lg:top-28 lg:self-start">
-          <SectionHead eyebrow="FAQ" title={compact ? "أسئلة شائعة" : "أسئلة تتكرر… وإجابات صريحة"} text={compact ? undefined : "قبل أن تبدأ، هذه أكثر الأسئلة التي يطرحها عملاؤنا، بإجابات بلا مجاملات."} link={compact ? undefined : { href: "/faq", label: "كل الأسئلة والبحث" }} />
-          <div data-r className="card glow -mt-6 p-6">
-            <p className="font-bold">لم تجد سؤالك؟</p>
-            <p className="mt-1 text-sm leading-7 text-mist/65">اكتب لنا على واتساب ونرد خلال ساعات العمل.</p>
-            <a href={waLink(site.whatsapp, "السلام عليكم، لدي سؤال: ")} target="_blank" rel="noopener" className="btn btn-primary mt-4 w-full justify-center">اسأل على واتساب <Icon name="arrow" className="h-4 w-4" /></a>
-          </div>
+      <div className="container-x relative">
+        <Reveal>
+          <SectionHead center eyebrow="FAQ" title={compact ? "أسئلة شائعة" : "أسئلة تتكرر… وإجابات صريحة"} text={compact ? undefined : "قبل أن تبدأ، هذه أكثر الأسئلة التي يطرحها عملاؤنا، بإجابات بلا مجاملات."} link={compact ? undefined : { href: "/faq", label: "كل الأسئلة والبحث" }} />
         </Reveal>
-        <Reveal className="space-y-3">
+        <Reveal className="mx-auto max-w-3xl space-y-3">
           {items.map((f, i) => {
             const on = open === i;
             return (
@@ -39,6 +34,15 @@ export default function FAQ({ compact = false }: { compact?: boolean }) {
               </div>
             );
           })}
+        </Reveal>
+        <Reveal className="mx-auto mt-8 max-w-3xl">
+          <div data-r className="card glow flex flex-col items-center gap-4 p-6 text-center sm:flex-row sm:justify-between sm:text-start">
+            <div>
+              <p className="font-bold">لم تجد سؤالك؟</p>
+              <p className="mt-1 text-sm leading-7 text-mist/65">اكتب لنا على واتساب ونرد خلال ساعات العمل.</p>
+            </div>
+            <a href={waLink(site.whatsapp, "السلام عليكم، لدي سؤال: ")} target="_blank" rel="noopener" className="btn btn-primary shrink-0">اسأل على واتساب <Icon name="arrow" className="h-4 w-4" /></a>
+          </div>
         </Reveal>
       </div>
     </section>

@@ -292,6 +292,48 @@ html.has-cursor, html.has-cursor a, html.has-cursor button { cursor: none; }
 .mrows.is-off .mtrack { animation-play-state: paused; }
 @keyframes mdrift { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .mtrack { animation: none; } .mrows { overflow-x: auto; } }
+
+/* ---------- destination pages: boarding pass ---------- */
+.bp { position: relative; display: grid; grid-template-columns: 1fr 84px; border-radius: 24px; background: linear-gradient(160deg, rgba(16,40,74,.96), rgba(8,24,48,.98)); border: 1px solid rgba(255,255,255,.12); box-shadow: 0 50px 90px -40px rgba(0,0,0,.9); overflow: hidden; animation: phin 1s cubic-bezier(.2,.7,.2,1) .2s both; }
+.bp-main { padding: 1.6rem 1.6rem 1.4rem; }
+.bp-stub { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.4rem .6rem; border-inline-start: 2px dashed rgba(255,255,255,.2); background: rgba(255,255,255,.03); }
+.bp-code { width: 34px; flex: 1; min-height: 70px; opacity: .7; background: repeating-linear-gradient(180deg, rgba(255,255,255,.85) 0 2px, transparent 2px 4px, rgba(255,255,255,.85) 4px 5px, transparent 5px 9px); }
+.bp-line { height: 2px; background: repeating-linear-gradient(90deg, rgba(255,255,255,.35) 0 7px, transparent 7px 13px); }
+.bp-fly { position: absolute; inset: 0; color: var(--accent); animation: bpfly 5s cubic-bezier(.45,0,.55,1) infinite; }
+.bp-fly > svg { position: absolute; left: 0; top: 50%; transform: translate(-50%, -50%) rotate(90deg); }
+@keyframes bpfly { 0% { transform: translateX(0); opacity: 0; } 12%, 88% { opacity: 1; } 100% { transform: translateX(100%); opacity: 0; } }
+/* ---------- destination pages: passport stamp ---------- */
+.guilloche { background: repeating-radial-gradient(circle at 72% 45%, rgba(99,182,234,.07) 0 1px, transparent 1px 16px), repeating-radial-gradient(circle at 18% 85%, rgba(99,182,234,.05) 0 1px, transparent 1px 22px); }
+.stamp-ring { color: rgba(206,210,215,.55); animation: ringspin 50s linear infinite; }
+@keyframes ringspin { to { transform: rotate(360deg); } }
+.stamp-slam { position: absolute; bottom: 4%; left: 0; display: grid; justify-items: center; gap: .1rem; padding: .7rem 1.1rem; border: 3px double var(--accent); border-radius: 16px; color: var(--accent); background: rgba(8,24,48,.6); transform: rotate(-11deg); animation: slam .7s cubic-bezier(.2,.9,.3,1.35) .6s both; }
+@keyframes slam { from { opacity: 0; transform: rotate(-11deg) scale(1.9); } to { opacity: 1; transform: rotate(-11deg) scale(1); } }
+/* ---------- destination pages: postcard ---------- */
+.postcard { position: relative; display: grid; grid-template-columns: 1fr; border-radius: 10px; background: #f3eee4; color: #0b1f39; box-shadow: 0 50px 90px -40px rgba(0,0,0,.95); transform: rotate(-2.5deg); animation: pcin 1s cubic-bezier(.2,.7,.2,1) .2s both; overflow: hidden; }
+@media (min-width: 640px) { .postcard { grid-template-columns: 1.05fr 1fr; aspect-ratio: 3 / 2; } }
+@keyframes pcin { from { opacity: 0; transform: rotate(-9deg) translateY(40px); } }
+.pc-photo { position: relative; min-height: 220px; margin: 12px; border-radius: 4px; overflow: hidden; }
+.pc-back { position: relative; padding: 1.4rem 1.4rem 3.2rem; }
+.pc-stamp { position: absolute; top: 14px; left: 14px; width: 54px; height: 40px; padding: 3px; background: #fff; outline: 2px dashed rgba(11,31,57,.25); outline-offset: -1px; transform: rotate(4deg); }
+.pc-lines { margin-top: 1.3rem; display: grid; gap: .5rem; font-size: .88rem; font-weight: 600; }
+.pc-lines li { display: flex; gap: .6rem; padding-bottom: .45rem; border-bottom: 1px solid rgba(11,31,57,.18); }
+.pc-lines span { min-width: 4.5rem; color: rgba(11,31,57,.5); font-size: .78rem; font-weight: 500; }
+.pc-postmark { position: absolute; bottom: 14px; left: 14px; font-family: var(--font-serif); font-size: .7rem; letter-spacing: .2em; color: rgba(11,31,57,.45); border: 1.5px solid rgba(11,31,57,.3); border-radius: 999px; padding: .3rem .7rem; transform: rotate(-8deg); }
+/* ---------- destination pages: route ---------- */
+.route-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: routedraw 3.2s cubic-bezier(.45,0,.2,1) .2s forwards; }
+@keyframes routedraw { to { stroke-dashoffset: 0; } }
+/* ---------- destination pages: signature sections ---------- */
+.phone { position: relative; width: 250px; height: 500px; border-radius: 40px; background: #0a1a31; border: 1px solid rgba(255,255,255,.14); box-shadow: 0 50px 90px -40px rgba(0,0,0,.95), inset 0 0 0 6px rgba(255,255,255,.03); }
+.phone-notch { position: absolute; top: 14px; left: 50%; z-index: 2; width: 90px; height: 22px; transform: translateX(-50%); border-radius: 0 0 14px 14px; background: #06142a; }
+.phone-screen { position: absolute; inset: 14px; border-radius: 28px; padding: 44px 18px 18px; background: linear-gradient(170deg, #12325a, #0b1f39); opacity: 0; animation: phs 12s infinite; }
+@keyframes phs { 0%, 22% { opacity: 1; transform: none; } 25%, 97% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: none; } }
+.emb::before { content: ""; position: absolute; top: 18px; inset-inline: 10%; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+@media (max-width: 767px) { .emb::before { display: none; } }
+.emb-dot { position: relative; z-index: 1; display: grid; place-items: center; width: 38px; height: 38px; margin-inline: auto; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 700; box-shadow: 0 0 0 6px #0b1f39; }
+.ticket { overflow: hidden; border-radius: 18px; border: 1px solid rgba(255,255,255,.1); background: linear-gradient(170deg, rgba(16,40,74,.95), rgba(10,28,52,.95)); }
+.ticket-top { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 1.3rem; border-bottom: 2px dashed rgba(255,255,255,.14); }
+.ticket-body { padding: 1.1rem 1.3rem 1.4rem; }
+@media (prefers-reduced-motion: reduce) { .bp, .bp-fly, .stamp-ring, .stamp-slam, .postcard, .route-draw, .phone-screen { animation: none; } .route-draw { stroke-dashoffset: 0; } .phone-screen.is-first { opacity: 1; } .postcard { transform: rotate(-2.5deg); } }
 }
 
 @property --beam { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
