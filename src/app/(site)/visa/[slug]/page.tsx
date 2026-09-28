@@ -70,7 +70,7 @@ export default async function CountryPage({ params }: PageProps<"/visa/[slug]">)
             </dl>
             <p className="mrz relative mt-6 border-t border-white/10 pt-4">{mrz1}<br />{mrz2}</p>
             <span className="stamp" aria-hidden="true">
-              <span className="text-center"><Symbol className="mx-auto h-8 w-8 text-sky-2" id="stamp" /><span className="mt-1 block font-serif text-[9px] tracking-[.25em]">ELMAQSED</span></span>
+              <span className="text-center"><Symbol className="mx-auto h-8 w-8 text-sky-2" id="stamp" /><span className="mt-1 block font-serif text-[10px] tracking-[.25em]">ELMAQSED</span></span>
             </span>
           </div>
         </div>

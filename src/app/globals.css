@@ -241,8 +241,6 @@ html.has-cursor, html.has-cursor a, html.has-cursor button { cursor: none; }
 @media (prefers-reduced-motion: reduce) { .checker-card, .ripple-ring { animation: none; } }
 
 /* ---------- mobile motion ---------- */
-.mcta { position: fixed; inset-inline: 12px; bottom: 12px; z-index: 60; display: flex; align-items: center; gap: .6rem; padding: .45rem; border-radius: 999px; background: rgba(8,24,48,.97); border: 1px solid rgba(99,182,234,.3); box-shadow: 0 20px 40px -10px rgba(0,0,0,.75); transform: translateY(150%); transition: transform .5s cubic-bezier(.2,.8,.2,1); }
-.mcta.is-on { transform: none; }
 .ticker { animation: tickin .5s cubic-bezier(.2,.8,.2,1) both; }
 @keyframes tickin { from { opacity: 0; transform: translateY(10px); } }
 .page-enter { animation: pagein .6s cubic-bezier(.2,.8,.2,1) backwards; }
@@ -260,7 +258,7 @@ html.has-cursor, html.has-cursor a, html.has-cursor button { cursor: none; }
   }
 }
 @keyframes railfocus { 0% { transform: scale(.93); opacity: .85; } 50% { transform: scale(1); opacity: 1; } 100% { transform: scale(.93); opacity: .85; } }
-@media (prefers-reduced-motion: reduce) { .ticker, .page-enter { animation: none; } .mcta { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .ticker, .page-enter { animation: none; } }
 
 .dot-fill { transform-origin: right; animation: dotfill 3.2s linear both; }
 @keyframes dotfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
@@ -287,6 +285,13 @@ html.has-cursor, html.has-cursor a, html.has-cursor button { cursor: none; }
 .svc-jump:hover { border-color: rgba(99,182,234,.6); background: rgba(46,148,210,.1); transform: translateY(-2px); }
 @media (max-width: 1279px) { .hdr-link { padding: .55rem .7rem; font-size: .9rem; } }
 @media (prefers-reduced-motion: reduce) { .ph-frame { animation: none; } }
+
+/* ---------- mobile destination rows: endless drift ---------- */
+.mtrack { animation: mdrift 38s linear infinite; }
+.mtrack-rev { animation-direction: reverse; animation-duration: 44s; }
+.mrows.is-off .mtrack { animation-play-state: paused; }
+@keyframes mdrift { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .mtrack { animation: none; } .mrows { overflow-x: auto; } }
 }
 
 @property --beam { syntax: "<angle>"; inherits: false; initial-value: 0deg; }

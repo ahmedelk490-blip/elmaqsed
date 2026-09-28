@@ -26,11 +26,11 @@ export default async function AboutPage() {
       <section className="bg-ink/60 py-16 md:py-24">
         <Reveal className="container-x">
           <SectionHead eyebrow="Values" title="ما نؤمن به" center />
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
             {about.values.map((v, i) => (
-              <div key={v.title} data-r className="card p-7 text-center">
+              <div key={v.title} data-r className="card p-5 text-center sm:p-7">
                 <span className="font-serif text-3xl text-sky-2">0{i + 1}</span>
-                <h3 className="mt-3 text-2xl font-bold">{v.title}</h3>
+                <h3 className="mt-3 text-xl font-bold sm:text-2xl">{v.title}</h3>
                 <p className="mt-3 leading-8 text-mist/75">{v.text}</p>
               </div>
             ))}

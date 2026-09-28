@@ -53,7 +53,7 @@ export default function DestinationsExplorer() {
             <div className="relative flex w-28 shrink-0 flex-col items-center justify-center gap-2 border-r border-dashed border-white/25 bg-white/[.03] p-4 text-center md:w-32">
               <span className="absolute -top-3 right-[-11px] h-5 w-5 rounded-full bg-navy" />
               <span className="absolute -bottom-3 right-[-11px] h-5 w-5 rounded-full bg-navy" />
-              <span className="font-serif text-[9px] tracking-[.25em] text-mist/50">PROCESSING</span>
+              <span className="font-serif text-[10px] tracking-[.25em] text-mist/50">PROCESSING</span>
               <span className="text-sm font-bold tabular-nums">{c.time}</span>
               <span className="text-xs text-mist/60">{c.kind}</span>
               <span className="mt-2 text-sky-2 transition-transform group-hover:-translate-x-1"><Icon name="arrow" className="h-5 w-5" /></span>

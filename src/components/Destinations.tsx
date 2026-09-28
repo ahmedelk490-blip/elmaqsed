@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -25,12 +25,12 @@ export default function Destinations() {
       gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
         gsap.from(".dest-card", { autoAlpha: 0, y: 40, stagger: 0.07, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: rail.current, start: "top 82%", once: true } });
       });
-      // mobile: two rows of destinations that glide in opposite directions as you scroll
+      // mobile: the two rows drift on their own (CSS), scrolling adds an extra push in the same direction
       gsap.matchMedia().add("(max-width: 1023px) and (prefers-reduced-motion: no-preference)", () => {
         const rows = gsap.utils.toArray<HTMLElement>(".mrow", ref.current);
-        const travel = (el: HTMLElement) => -Math.max(0, el.scrollWidth - window.innerWidth);
+        const shift = () => -window.innerWidth * 0.35;
         rows.forEach((row, i) => {
-          gsap.fromTo(row, { x: i % 2 ? () => travel(row) : 0 }, { x: i % 2 ? 0 : () => travel(row), ease: "none", scrollTrigger: { trigger: ".mrows", start: "top bottom", end: "bottom top", scrub: 0.8, invalidateOnRefresh: true } });
+          gsap.fromTo(row, { x: i % 2 ? shift : 0 }, { x: i % 2 ? 0 : shift, ease: "none", scrollTrigger: { trigger: ".mrows", start: "top bottom", end: "bottom top", scrub: 0.8, invalidateOnRefresh: true } });
           gsap.fromTo(row.querySelectorAll(".mcard img"), { xPercent: i % 2 ? 8 : -8 }, { xPercent: i % 2 ? -8 : 8, ease: "none", scrollTrigger: { trigger: ".mrows", start: "top bottom", end: "bottom top", scrub: 0.8 } });
         });
       });
@@ -43,6 +43,15 @@ export default function Destinations() {
   const go = (dir: 1 | -1) => { lastTouch.current = Date.now(); rail.current?.scrollBy({ left: -dir * rail.current.clientWidth * 0.75, behavior: "smooth" }); };
 
   useRailAutoplay(rail, ".dest-card", 3000, lastTouch);
+
+  // pause the mobile drift while the rows are off screen
+  useEffect(() => {
+    const el = ref.current?.querySelector<HTMLElement>(".mrows");
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => el.classList.toggle("is-off", !e.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
     <section id="destinations" ref={ref} className="relative overflow-hidden bg-ink/70 py-24 md:py-32">
@@ -79,21 +88,29 @@ export default function Destinations() {
         ))}
       </div>
       <div className="mrows space-y-3 lg:hidden" dir="ltr">
-        {[0, 1].map((r) => (
-          <div key={r} className="mrow flex w-max gap-3 px-4 will-change-transform">
-            {countries.filter((_, k) => k % 2 === r).map((c) => (
-              <Link key={c.slug} href={`/visa/${c.slug}`} dir="rtl" className="mcard relative block h-[230px] w-[170px] shrink-0 overflow-hidden rounded-2xl border border-white/10 shadow-[0_20px_40px_-20px_rgba(0,0,0,.8)] active:scale-[.97]">
-                <Image src={c.img} alt={c.name} fill sizes="200px" className="scale-[1.2] object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/20 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-3">
-                  <p className="font-serif text-[9px] tracking-[.22em] text-sky-2">{c.en.toUpperCase()}</p>
-                  <h3 className="mt-0.5 text-lg font-bold">{c.name}</h3>
-                  <p className="text-[11px] text-mist/75">{c.time}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        ))}
+        {[0, 1].map((r) => {
+          const row = countries.filter((_, k) => k % 2 === r);
+          return (
+            <div key={r} className="mrow">
+              <div className={`mtrack flex w-max ${r ? "mtrack-rev" : ""}`}>
+                {[...row, ...row].map((c, k) => {
+                  const dup = k >= row.length;
+                  return (
+                    <Link key={`${c.slug}-${k}`} href={`/visa/${c.slug}`} dir="rtl" aria-hidden={dup || undefined} tabIndex={dup ? -1 : undefined} className="mcard relative mr-3 block h-[230px] w-[170px] shrink-0 overflow-hidden rounded-2xl border border-white/10 shadow-[0_20px_40px_-20px_rgba(0,0,0,.8)] active:scale-[.97]">
+                      <Image src={c.img} alt={dup ? "" : c.name} fill sizes="200px" className="scale-[1.2] object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/20 to-transparent" />
+                      <div className="absolute inset-x-0 bottom-0 p-3">
+                        <p className="font-serif text-[10px] tracking-[.22em] text-sky-2">{c.en.toUpperCase()}</p>
+                        <h3 className="mt-0.5 text-lg font-bold">{c.name}</h3>
+                        <p className="text-[11px] text-mist/75">{c.time}</p>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
