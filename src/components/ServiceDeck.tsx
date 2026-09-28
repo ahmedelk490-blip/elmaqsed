@@ -3,29 +3,75 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { useContent } from "./ContentProvider";
 import { waLink } from "@/lib/types";
 import { Icon } from "./Icons";
 
-gsap.registerPlugin(useGSAP, Draggable);
+gsap.registerPlugin(useGSAP, Draggable, ScrollTrigger);
 
-const AUTO_MS = 3200;
+const rot = (n: number, i: number) => Array.from({ length: n }, (_, k) => (i + k) % n);
 
 function flyOut(el: HTMLElement, dir: number, done: () => void) {
-  gsap.to(el, { x: dir * 460, rotation: dir * 22, opacity: 0, duration: 0.4, ease: "power2.in", onComplete: () => { gsap.set(el, { clearProps: "transform,opacity" }); done(); } });
+  gsap.to(el, { x: dir * 460, rotation: dir * 22, opacity: 0, duration: 0.35, ease: "power2.in", onComplete: () => { gsap.set(el, { clearProps: "transform,opacity" }); done(); } });
 }
 
-/** Mobile: services as a card deck that deals itself automatically; the top card can also be swiped away. */
+/** Phones & tablets: services as a card deck. The deck pins while you scroll and each scroll step deals the next card; the page moves on after the last one. Cards can also be swiped. */
 export default function ServiceDeck() {
   const { services, site } = useContent();
-  const [order, setOrder] = useState(() => services.map((_, i) => i));
+  const n = services.length;
+  const [order, setOrder] = useState(() => rot(n, 0));
+  const root = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLDivElement>(null);
   const busy = useRef(false);
-  const held = useRef(false);
-  const lastTouch = useRef(0);
+  const cur = useRef(0); // card on top
+  const want = useRef(0); // card the scroll position asks for
+  const st = useRef<ScrollTrigger | null>(null);
+  const sync = useRef<() => void>(() => {});
 
-  // swipe
+  // step the deck one card at a time toward `want` (fly-out for a single forward step, reshuffle otherwise)
+  useEffect(() => {
+    sync.current = () => {
+      if (busy.current || want.current === cur.current) return;
+      const el = ref.current?.querySelector<HTMLElement>('[data-top="1"]');
+      if ((want.current - cur.current + n) % n === 1 && el) {
+        busy.current = true;
+        const next = want.current;
+        flyOut(el, -1, () => { busy.current = false; cur.current = next; setOrder(rot(n, next)); });
+      } else {
+        cur.current = want.current;
+        setOrder(rot(n, want.current));
+      }
+    };
+  }, [n]);
+
+  // keep stepping until the deck matches the scroll position
+  useEffect(() => {
+    const id = requestAnimationFrame(() => sync.current());
+    return () => cancelAnimationFrame(id);
+  }, [order]);
+
+  // pin the deck; scroll progress picks the card
+  useGSAP(
+    () => {
+      gsap.matchMedia().add("(max-width: 1023px) and (prefers-reduced-motion: no-preference)", () => {
+        st.current = ScrollTrigger.create({
+          trigger: root.current,
+          start: "center center",
+          end: () => "+=" + Math.round(window.innerHeight * 0.4 * n),
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => { want.current = Math.min(n - 1, Math.floor(self.progress * n)); sync.current(); },
+        });
+        return () => { st.current = null; };
+      });
+    },
+    { scope: root, dependencies: [n] },
+  );
+
+  // swipe the top card; while pinned, the page scroll follows so both stay in step
   useGSAP(
     () => {
       const top = ref.current?.querySelector<HTMLElement>('[data-top="1"]');
@@ -33,14 +79,19 @@ export default function ServiceDeck() {
       const [d] = Draggable.create(top, {
         type: "x",
         allowNativeTouchScrolling: true,
-        onPress: () => { held.current = true; lastTouch.current = Date.now(); },
-        onRelease: () => { held.current = false; lastTouch.current = Date.now(); },
         onDrag: function (this: Draggable) { gsap.set(this.target, { rotation: this.x / 16 }); },
         onDragEnd: function (this: Draggable) {
           const el = this.target as HTMLElement;
-          if (Math.abs(this.x) > 80 && !busy.current) {
+          const t = st.current;
+          if (Math.abs(this.x) > 80 && !busy.current && !(t && cur.current === n - 1)) {
             busy.current = true;
-            flyOut(el, Math.sign(this.x), () => { busy.current = false; setOrder((o) => [...o.slice(1), o[0]]); });
+            const next = (cur.current + 1) % n;
+            flyOut(el, Math.sign(this.x), () => {
+              busy.current = false;
+              cur.current = want.current = next;
+              setOrder(rot(n, next));
+              if (t) t.scroll(t.start + ((t.end - t.start) * (next + 0.5)) / n);
+            });
           } else {
             gsap.to(el, { x: 0, rotation: 0, duration: 0.5, ease: "back.out(2)" });
           }
@@ -51,24 +102,8 @@ export default function ServiceDeck() {
     { scope: ref, dependencies: [order], revertOnUpdate: true },
   );
 
-  // autoplay while visible, paused during/just after a touch
-  useEffect(() => {
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let inView = false;
-    const io = new IntersectionObserver(([e]) => { inView = e.isIntersecting; }, { threshold: 0.4 });
-    if (ref.current) io.observe(ref.current);
-    const t = setInterval(() => {
-      if (!inView || held.current || busy.current || document.hidden || Date.now() - lastTouch.current < 5000) return;
-      const el = ref.current?.querySelector<HTMLElement>('[data-top="1"]');
-      if (!el) return;
-      busy.current = true;
-      flyOut(el, -1, () => { busy.current = false; setOrder((o) => [...o.slice(1), o[0]]); });
-    }, AUTO_MS);
-    return () => { clearInterval(t); io.disconnect(); };
-  }, []);
-
   return (
-    <div>
+    <div ref={root}>
       <div ref={ref} className="relative mx-auto h-[470px] w-full max-w-sm md:h-[560px] md:max-w-lg">
         {order.slice(0, 3).map((idx, depth) => {
           const s = services[idx];
@@ -88,12 +123,10 @@ export default function ServiceDeck() {
           );
         })}
       </div>
-      <p className="mt-10 flex items-center justify-center gap-3 text-sm text-mist/60"><Icon name="arrow" className="h-4 w-4 rotate-180" />تتبدّل تلقائياً، أو اسحبها بنفسك<Icon name="arrow" className="h-4 w-4" /></p>
+      <p className="mt-10 flex items-center justify-center gap-3 text-sm text-mist/60"><Icon name="arrow" className="h-4 w-4 -rotate-90" />مرّر لتقليب البطاقات، أو اسحبها بنفسك</p>
       <div className="mt-4 flex justify-center gap-2">
         {services.map((_, i) => (
-          <span key={i} className={`relative h-1.5 overflow-hidden rounded-full transition-all duration-500 ${order[0] === i ? "w-8 bg-white/20" : "w-1.5 bg-white/25"}`}>
-            {order[0] === i && <span key={order[0]} className="dot-fill absolute inset-0 bg-sky" />}
-          </span>
+          <span key={i} className={`h-1.5 rounded-full transition-all duration-500 ${order[0] === i ? "w-8 bg-sky" : "w-1.5 bg-white/25"}`} />
         ))}
       </div>
     </div>
