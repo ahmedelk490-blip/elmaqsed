@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans_Arabic, Cormorant_Garamond, Noto_Kufi_Arabic, Alexandria } from "next/font/google";
+import { Cormorant_Garamond, Alexandria } from "next/font/google";
 import "flag-icons/css/flag-icons.min.css";
 import "./globals.css";
 import { getContent } from "@/lib/content";
 
-const arabic = IBM_Plex_Sans_Arabic({ variable: "--font-arabic", subsets: ["arabic", "latin"], weight: ["400", "500", "600", "700"] });
-const kufi = Noto_Kufi_Arabic({ variable: "--font-kufi", subsets: ["arabic"] });
-const alex = Alexandria({ variable: "--font-alex", subsets: ["arabic", "latin"], weight: ["300", "400", "500", "600", "700"] });
+// Alexandria: one geometric Arabic family for the whole site (closest free match to the brand's Co Headline)
+const alex = Alexandria({ variable: "--font-alex", subsets: ["arabic", "latin"], weight: ["300", "400", "500", "600", "700", "800"] });
 const serif = Cormorant_Garamond({ variable: "--font-serif", subsets: ["latin"], weight: ["500", "600"] });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -23,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ar" dir="rtl" className={`${arabic.variable} ${serif.variable} ${kufi.variable} ${alex.variable} h-full antialiased`}>
+    <html lang="ar" dir="rtl" className={`${serif.variable} ${alex.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <noscript><style>{`[data-r],[data-h],.hero-title,.split-h{opacity:1}`}</style></noscript>
         {children}
