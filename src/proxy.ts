@@ -1,12 +1,20 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-/** Diagnostic: reports the host the app receives behind Hostinger's CDN, so the temporary-domain redirect can be added without a loop. */
+const CANONICAL = "elmaqsed.com";
+
+/**
+ * One address for the site: the temporary Hostinger domain and www.elmaqsed.com redirect
+ * permanently to https://elmaqsed.com (same path and query). Behind Hostinger's CDN the app
+ * receives the visitor's host in both Host and X-Forwarded-Host, so elmaqsed.com itself never matches.
+ */
 export function proxy(request: NextRequest) {
-  const res = NextResponse.next();
-  res.headers.set("x-seen-host", request.headers.get("host") ?? "-");
-  res.headers.set("x-seen-fwd-host", request.headers.get("x-forwarded-host") ?? "-");
-  res.headers.set("x-seen-url-host", request.nextUrl.host);
-  return res;
+  const host = (request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? "").split(",")[0].trim().split(":")[0].toLowerCase();
+  if (host.endsWith(".hostingersite.com") || host === `www.${CANONICAL}`) {
+    const { pathname, search } = request.nextUrl;
+    return NextResponse.redirect(`https://${CANONICAL}${pathname}${search}`, 301);
+  }
+  return NextResponse.next();
 }
 
-export const config = { matcher: ["/robots.txt"] };
+// pages and routes only; static files (anything with an extension) and Next assets skip the proxy
+export const config = { matcher: ["/((?!_next/static|_next/image|.*\\..*).*)"] };
