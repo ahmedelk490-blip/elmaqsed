@@ -49,8 +49,8 @@ export function HeroBoarding({ c, t, wa }: P) {
               <div className="bp-line relative flex-1"><span className="bp-fly"><svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor" aria-hidden="true"><path d={PLANE} /></svg></span></div>
               <div className="text-right"><p className="font-serif text-4xl font-semibold text-[var(--accent)]">{t.iata}</p><p className="text-xs text-mist/60">{t.city}</p></div>
             </div>
-            <dl className="mt-7 grid grid-cols-3 gap-4 border-t border-white/10 pt-5">
-              {rows.map(([k, v]) => <div key={k}><dt className="text-[11px] text-mist/55">{k}</dt><dd className="mt-1 text-sm font-semibold leading-6">{v}</dd></div>)}
+            <dl className="mt-7 grid gap-2.5 border-t border-white/10 pt-5 sm:grid-cols-3 sm:gap-4">
+              {rows.map(([k, v]) => <div key={k} className="flex items-baseline justify-between gap-3 sm:block"><dt className="text-[11px] text-mist/55">{k}</dt><dd className="text-sm font-semibold leading-6 sm:mt-1">{v}</dd></div>)}
             </dl>
           </div>
           <div className="bp-stub" aria-hidden="true">
@@ -139,7 +139,7 @@ export function HeroRoute({ c, t, wa }: P) {
           <div className="absolute bottom-[2%] right-[8%] translate-x-1/2 translate-y-full pt-3 text-center"><p className="font-serif text-2xl font-semibold" dir="ltr">RUH</p><p className="text-xs text-mist/60">الرياض</p></div>
           <div className="absolute bottom-[2%] left-[8%] -translate-x-1/2 translate-y-full pt-3 text-center"><p className="font-serif text-2xl font-semibold text-[var(--accent)]" dir="ltr">{t.iata}</p><p className="text-xs text-mist/60">{t.city}</p></div>
           <div className="absolute left-1/2 top-[6%] -translate-x-1/2 rounded-full border border-white/15 bg-navy-2/90 px-4 py-1.5 text-sm">{t.flight}</div>
-          <div className="absolute bottom-[26%] left-[8%] h-20 w-20 -translate-x-1/2 overflow-hidden rounded-full border-2 border-[var(--accent)] shadow-lg md:h-28 md:w-28">
+          <div className="absolute bottom-[26%] left-[8%] h-12 w-12 -translate-x-1/2 overflow-hidden rounded-full border-2 border-[var(--accent)] shadow-lg sm:h-20 sm:w-20 md:h-28 md:w-28">
             <Image src={c.img} alt={c.name} fill priority sizes="112px" className="object-cover" />
           </div>
         </div>
