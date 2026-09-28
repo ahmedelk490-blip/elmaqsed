@@ -18,7 +18,7 @@ export default function Process() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      // Desktop: the row of steps glides sideways while the section passes, and the path lights up station by station. No pinning.
+      // Desktop: the section pins while the row of steps glides sideways, and the path lights up station by station.
       mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
         const track = ref.current!.querySelector<HTMLElement>(".p-track")!;
         const wrap = track.parentElement!;
@@ -72,7 +72,7 @@ export default function Process() {
             </li>
           </ol>
           {/* mobile: step cards that stack as you scroll */}
-          <div className="lg:hidden">
+          <div className="lg:hidden md:mx-auto md:max-w-2xl">
             {steps.map((s, k) => (
               <div key={s.n} className="sticky pb-4" style={{ top: `${96 + k * 14}px` }}>
                 <div className="card p-6 shadow-[0_-24px_40px_-24px_rgba(0,0,0,.85)]">

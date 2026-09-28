@@ -60,7 +60,7 @@ export default function Destinations() {
       <div className="container-x relative">
         <Reveal className="flex flex-wrap items-start justify-between gap-6">
           <SectionHead eyebrow="Destinations" title="الوجهات التي نخدمها" text="اختر وجهتك لتعرف المتطلبات، المدة التقريبية، وخطوات التقديم معنا." link={{ href: "/destinations", label: "كل الوجهات والبحث" }} />
-          <div data-r className="hidden items-end gap-8 md:flex">
+          <div data-r className="hidden items-end gap-8 lg:flex">
             <div className="hidden w-56 lg:block"><Globe /></div>
             <div className="flex gap-3 pb-8">
               <button onClick={() => go(-1)} className="rail-btn" aria-label="السابق"><Icon name="arrow" className="h-5 w-5 rotate-180" /></button>
@@ -96,12 +96,12 @@ export default function Destinations() {
                 {[...row, ...row].map((c, k) => {
                   const dup = k >= row.length;
                   return (
-                    <Link key={`${c.slug}-${k}`} href={`/visa/${c.slug}`} dir="rtl" aria-hidden={dup || undefined} tabIndex={dup ? -1 : undefined} className="mcard relative mr-3 block h-[230px] w-[170px] shrink-0 overflow-hidden rounded-2xl border border-white/10 shadow-[0_20px_40px_-20px_rgba(0,0,0,.8)] active:scale-[.97]">
+                    <Link key={`${c.slug}-${k}`} href={`/visa/${c.slug}`} dir="rtl" aria-hidden={dup || undefined} tabIndex={dup ? -1 : undefined} className="mcard relative mr-3 block h-[230px] w-[170px] shrink-0 md:h-[300px] md:w-[225px] overflow-hidden rounded-2xl border border-white/10 shadow-[0_20px_40px_-20px_rgba(0,0,0,.8)] active:scale-[.97]">
                       <Image src={c.img} alt={dup ? "" : c.name} fill sizes="200px" className="scale-[1.2] object-cover" />
                       <div className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/20 to-transparent" />
                       <div className="absolute inset-x-0 bottom-0 p-3">
                         <p className="font-serif text-[10px] tracking-[.22em] text-sky-2">{c.en.toUpperCase()}</p>
-                        <h3 className="mt-0.5 text-lg font-bold">{c.name}</h3>
+                        <h3 className="mt-0.5 text-lg font-bold md:text-xl">{c.name}</h3>
                         <p className="text-[11px] text-mist/75">{c.time}</p>
                       </div>
                     </Link>

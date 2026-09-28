@@ -69,13 +69,13 @@ export default function ServiceDeck() {
 
   return (
     <div>
-      <div ref={ref} className="relative mx-auto h-[470px] w-full max-w-sm">
+      <div ref={ref} className="relative mx-auto h-[470px] w-full max-w-sm md:h-[560px] md:max-w-lg">
         {order.slice(0, 3).map((idx, depth) => {
           const s = services[idx];
           return (
             <div key={idx} className="absolute inset-0 transition-all duration-500 ease-[cubic-bezier(.2,.8,.2,1)]" style={{ zIndex: 10 - depth, transform: `translateY(${depth * 16}px) scale(${1 - depth * 0.06})`, opacity: depth === 2 ? 0.5 : 1 }}>
               <article data-top={depth === 0 ? "1" : "0"} className="relative h-full touch-pan-y overflow-hidden rounded-3xl border border-white/10 bg-navy-2 shadow-[0_30px_60px_-30px_rgba(0,0,0,.9)]">
-                <Image src={s.img} alt="" fill sizes="384px" draggable={false} className="pointer-events-none object-cover brightness-110" />
+                <Image src={s.img} alt="" fill sizes="(min-width: 768px) 512px, 384px" draggable={false} className="pointer-events-none object-cover brightness-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/10" />
                 <div className="absolute inset-x-0 bottom-0 p-6">
                   <span className="num-outline font-serif text-6xl">{String(idx + 1).padStart(2, "0")}</span>
