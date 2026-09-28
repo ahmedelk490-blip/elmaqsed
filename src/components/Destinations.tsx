@@ -25,6 +25,15 @@ export default function Destinations() {
       gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
         gsap.from(".dest-card", { autoAlpha: 0, y: 40, stagger: 0.07, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: rail.current, start: "top 82%", once: true } });
       });
+      // mobile: two rows of destinations that glide in opposite directions as you scroll
+      gsap.matchMedia().add("(max-width: 1023px) and (prefers-reduced-motion: no-preference)", () => {
+        const rows = gsap.utils.toArray<HTMLElement>(".mrow", ref.current);
+        const travel = (el: HTMLElement) => -Math.max(0, el.scrollWidth - window.innerWidth);
+        rows.forEach((row, i) => {
+          gsap.fromTo(row, { x: i % 2 ? () => travel(row) : 0 }, { x: i % 2 ? 0 : () => travel(row), ease: "none", scrollTrigger: { trigger: ".mrows", start: "top bottom", end: "bottom top", scrub: 0.8, invalidateOnRefresh: true } });
+          gsap.fromTo(row.querySelectorAll(".mcard img"), { xPercent: i % 2 ? 8 : -8 }, { xPercent: i % 2 ? -8 : 8, ease: "none", scrollTrigger: { trigger: ".mrows", start: "top bottom", end: "bottom top", scrub: 0.8 } });
+        });
+      });
     },
     { scope: ref },
   );
@@ -51,7 +60,7 @@ export default function Destinations() {
           </div>
         </Reveal>
       </div>
-      <div ref={rail} className="rail relative flex snap-x snap-mandatory gap-5 overflow-x-auto px-[max(1rem,calc((100vw-76rem)/2))] pb-6">
+      <div ref={rail} className="rail relative hidden lg:flex snap-x snap-mandatory gap-5 overflow-x-auto px-[max(1rem,calc((100vw-76rem)/2))] pb-6">
         {countries.map((c, i) => (
           <Link key={c.slug} href={`/visa/${c.slug}`} className="dest-card group relative aspect-[3/4] w-[250px] shrink-0 snap-start overflow-hidden rounded-3xl bg-navy-2 shadow-[0_30px_60px_-30px_rgba(0,0,0,.8)] md:w-[300px]" data-cursor>
             <Image src={c.img} alt={c.name} fill sizes="300px" className="object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
@@ -67,6 +76,23 @@ export default function Destinations() {
               </div>
             </div>
           </Link>
+        ))}
+      </div>
+      <div className="mrows space-y-3 lg:hidden" dir="ltr">
+        {[0, 1].map((r) => (
+          <div key={r} className="mrow flex w-max gap-3 px-4 will-change-transform">
+            {countries.filter((_, k) => k % 2 === r).map((c) => (
+              <Link key={c.slug} href={`/visa/${c.slug}`} dir="rtl" className="mcard relative block h-[230px] w-[170px] shrink-0 overflow-hidden rounded-2xl border border-white/10 shadow-[0_20px_40px_-20px_rgba(0,0,0,.8)] active:scale-[.97]">
+                <Image src={c.img} alt={c.name} fill sizes="200px" className="scale-[1.2] object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/20 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-3">
+                  <p className="font-serif text-[9px] tracking-[.22em] text-sky-2">{c.en.toUpperCase()}</p>
+                  <h3 className="mt-0.5 text-lg font-bold">{c.name}</h3>
+                  <p className="text-[11px] text-mist/75">{c.time}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         ))}
       </div>
     </section>
