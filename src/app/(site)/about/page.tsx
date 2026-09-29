@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { getContent } from "@/lib/content";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import SectionHead from "@/components/SectionHead";
 import SymbolConverge from "@/components/SymbolConverge";
 
-export const metadata: Metadata = { title: "من نحن", description: "قصة المقصد: شركة سعودية مرخصة لاستشارات تأشيرات السفر، وفلسفة الاتجاه والوصول التي بُنيت عليها العلامة." };
+export const metadata: Metadata = pageMeta({ path: "/about", title: "من نحن", description: "قصة المقصد: شركة سعودية مرخصة لاستشارات تأشيرات السفر، وفلسفة الاتجاه والوصول التي بُنيت عليها العلامة." });
 
 export default async function AboutPage() {
   const { about, site, why } = await getContent();

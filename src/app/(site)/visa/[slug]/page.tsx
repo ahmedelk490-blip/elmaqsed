@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import fs from "node:fs";
+import path from "node:path";
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -24,10 +27,13 @@ export async function generateMetadata({ params }: PageProps<"/visa/[slug]">): P
   const { countries } = await getContent();
   const c = countries.find((x) => x.slug === slug);
   if (!c) return {};
-  return {
+  const og = fs.existsSync(path.join(process.cwd(), "public", "og", `${c.slug}.jpg`)) ? `/og/${c.slug}.jpg` : undefined;
+  return pageMeta({
+    path: `/visa/${c.slug}`,
     title: `تأشيرة ${c.name} — المتطلبات والمدة والخطوات`,
     description: `استشارة وتجهيز طلب تأشيرة ${c.name} (${c.en}) من السعودية: المستندات المطلوبة، مدة المعالجة ${c.time}، وخطوات التقديم مع المقصد.`,
-  };
+    image: og,
+  });
 }
 
 export default async function CountryPage({ params }: PageProps<"/visa/[slug]">) {
@@ -85,6 +91,14 @@ export default async function CountryPage({ params }: PageProps<"/visa/[slug]">)
       {Hero && t ? <Hero c={c} t={t} wa={wa} /> : <HeroClassic c={c} wa={wa} />}
 
       {(t ? ORDER[t.concept] : ["docs", "steps", "others"]).map((k) => <Fragment key={k}>{blocks[k]}</Fragment>)}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@graph": [
+        { "@type": "BreadcrumbList", itemListElement: [
+          { "@type": "ListItem", position: 1, name: "الرئيسية", item: site.url },
+          { "@type": "ListItem", position: 2, name: "الوجهات", item: `${site.url}/destinations` },
+          { "@type": "ListItem", position: 3, name: `تأشيرة ${c.name}`, item: `${site.url}/visa/${c.slug}` },
+        ] },
+        { "@type": "Service", name: `استشارات تأشيرة ${c.name}`, serviceType: "Visa consulting", description: c.note, areaServed: "SA", provider: { "@type": "TravelAgency", name: site.name, url: site.url } },
+      ] }) }} />
       <FAQ compact />
     </div>
   );

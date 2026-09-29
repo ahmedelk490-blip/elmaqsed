@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { getContent } from "@/lib/content";
 import { waLink } from "@/lib/types";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import ServiceStack from "@/components/ServiceStack";
 
-export const metadata: Metadata = { title: "خدماتنا", description: "ست خدمات استشارية تغطي رحلة التأشيرة كاملة: التقييم، المستندات، النماذج، المواعيد، الخطابات، والمتابعة." };
+export const metadata: Metadata = pageMeta({ path: "/services", title: "خدماتنا", description: "ست خدمات استشارية تغطي رحلة التأشيرة كاملة: التقييم، المستندات، النماذج، المواعيد، الخطابات، والمتابعة." });
 
 export default async function ServicesPage() {
   const { services, site } = await getContent();

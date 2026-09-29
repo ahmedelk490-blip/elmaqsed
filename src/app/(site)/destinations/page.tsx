@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import PageHero from "@/components/PageHero";
 import Marquee from "@/components/Marquee";
 import DestinationsExplorer from "@/components/DestinationsExplorer";
 
-export const metadata: Metadata = { title: "الوجهات", description: "ابحث عن وجهتك وفلتر حسب نوع التقديم: شنغن، أمريكا، بريطانيا، كندا، أستراليا، تركيا واليابان وغيرها." };
+export const metadata: Metadata = pageMeta({ path: "/destinations", title: "الوجهات", description: "ابحث عن وجهتك وفلتر حسب نوع التقديم: شنغن، أمريكا، بريطانيا، كندا، أستراليا، تركيا واليابان وغيرها." });
 
 export default function DestinationsPage() {
   return (

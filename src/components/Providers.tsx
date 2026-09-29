@@ -1,6 +1,7 @@
 "use client";
 import { ReactLenis, useLenis } from "lenis/react";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -8,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 function GsapSync() {
   const lenis = useLenis();
+  const pathname = usePathname();
   useEffect(() => {
     if (!lenis) return;
     const onScroll = () => ScrollTrigger.update();
@@ -20,6 +22,24 @@ function GsapSync() {
       lenis.off("scroll", onScroll);
       gsap.ticker.remove(tick);
     };
+  }, [lenis]);
+
+  // After a client-side navigation the new page has its own height (pinned sections add more):
+  // re-measure, otherwise Lenis stops scrolling where the previous page ended.
+  useEffect(() => {
+    if (!lenis) return;
+    const sync = () => { lenis.resize(); ScrollTrigger.refresh(); lenis.resize(); };
+    const a = requestAnimationFrame(() => requestAnimationFrame(sync));
+    const t = window.setTimeout(sync, 700); // once the page-enter animation has finished
+    return () => { cancelAnimationFrame(a); clearTimeout(t); };
+  }, [lenis, pathname]);
+
+  // <html> is height:100%, so Lenis' own observer never sees the content grow; watch <body> instead
+  useEffect(() => {
+    if (!lenis) return;
+    const ro = new ResizeObserver(() => lenis.resize());
+    ro.observe(document.body);
+    return () => ro.disconnect();
   }, [lenis]);
   return null;
 }

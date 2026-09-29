@@ -342,6 +342,10 @@ html.has-cursor, html.has-cursor a, html.has-cursor button { cursor: none; }
 .dtrack { animation: mdrift 42s linear infinite; }
 .drail.is-off .dtrack { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .dtrack { animation: none; } .drail { overflow-x: auto; } }
+
+/* ---------- globe fallback (no WebGL / lost GPU context) ---------- */
+.globe-fallback { position: absolute; inset: 6%; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(99,182,234,.38), rgba(16,40,74,.92) 55%, #06132a 100%); box-shadow: 0 0 80px rgba(46,148,210,.35), inset 0 0 60px rgba(0,0,0,.6); }
+.globe-fallback::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background-image: radial-gradient(rgba(99,182,234,.6) 1px, transparent 1.6px); background-size: 14px 14px; opacity: .55; -webkit-mask-image: radial-gradient(circle, #000 58%, transparent 72%); mask-image: radial-gradient(circle, #000 58%, transparent 72%); }
 }
 
 @property --beam { syntax: "<angle>"; inherits: false; initial-value: 0deg; }

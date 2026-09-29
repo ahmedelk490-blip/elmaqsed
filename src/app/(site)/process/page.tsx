@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { getContent } from "@/lib/content";
 import { waLink } from "@/lib/types";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import RouteLine from "@/components/RouteLine";
 
-export const metadata: Metadata = { title: "كيف نعمل", description: "خمس محطات واضحة من أول رسالة إلى ختم الجواز: التقييم، خطة المستندات، التجهيز والتقديم، الموعد والمقابلة، والمتابعة." };
+export const metadata: Metadata = pageMeta({ path: "/process", title: "كيف نعمل", description: "خمس محطات واضحة من أول رسالة إلى ختم الجواز: التقييم، خطة المستندات، التجهيز والتقديم، الموعد والمقابلة، والمتابعة." });
 
 const before = ["جواز سفر ساري لأكثر من 6 أشهر", "فكرة عن موعد السفر ومدته", "معرفة إن كان لديك رفض سابق", "حساب واتساب للمتابعة"];
 

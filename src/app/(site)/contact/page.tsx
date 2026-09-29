@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { getContent } from "@/lib/content";
 import { waLink } from "@/lib/types";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import Wizard from "@/components/Wizard";
 
-export const metadata: Metadata = { title: "تواصل معنا", description: "ابدأ استشارتك المجانية في ثلاث خطوات، أو تواصل معنا مباشرة عبر واتساب والهاتف والبريد." };
+export const metadata: Metadata = pageMeta({ path: "/contact", title: "تواصل معنا", description: "ابدأ استشارتك المجانية في ثلاث خطوات، أو تواصل معنا مباشرة عبر واتساب والهاتف والبريد." });
 
 export default async function ContactPage() {
   const { site } = await getContent();
