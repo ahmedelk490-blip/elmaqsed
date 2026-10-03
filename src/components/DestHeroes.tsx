@@ -20,12 +20,14 @@ function Intro({ c, wa, tag, center = false }: { c: Country; wa: string; tag: st
         <span className="text-white">{c.name}</span>
       </nav>
       <p data-r className="eyebrow mb-4 text-[var(--accent)]">{tag}</p>
+      {c.group && <p data-r className="mb-4"><span className="badge badge-sky bg-sky/15">{c.group === "للمقيمين" ? "للمقيمين في السعودية" : `تأشيرة ${c.group}`}</span></p>}
       <h1 data-r className="text-balance text-5xl font-bold leading-[1.15] md:text-7xl">تأشيرة {c.name}</h1>
       <p data-r className={`mt-6 max-w-xl text-lg leading-9 text-mist/85 ${center ? "mx-auto" : ""}`}>{c.note}</p>
       <div data-r className={`mt-9 flex flex-wrap gap-4 ${center ? "justify-center" : ""}`}>
-        <a href={wa} target="_blank" rel="noopener" className="btn btn-primary btn-lg">ابدأ استشارتك <Icon name="arrow" className="h-5 w-5" /></a>
+        <Link href={`/apply?dest=${c.slug}`} className="btn btn-primary btn-lg">قدّم الآن <Icon name="arrow" className="h-5 w-5" /></Link>
         <a href="#docs" className="btn btn-ghost btn-lg">المستندات المطلوبة</a>
       </div>
+      <p data-r className="mt-4 text-sm"><a href={wa} target="_blank" rel="noopener" className="text-sky-2 underline-offset-4 hover:underline">أو اسألنا على واتساب</a></p>
     </>
   );
 }

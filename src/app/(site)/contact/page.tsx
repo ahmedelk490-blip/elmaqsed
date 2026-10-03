@@ -4,7 +4,8 @@ import { getContent } from "@/lib/content";
 import { waLink } from "@/lib/types";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
-import Wizard from "@/components/Wizard";
+import { Suspense } from "react";
+import ApplyFlow from "@/components/ApplyFlow";
 
 export const metadata: Metadata = pageMeta({ path: "/contact", title: "تواصل معنا", description: "ابدأ استشارتك المجانية في ثلاث خطوات، أو تواصل معنا مباشرة عبر واتساب والهاتف والبريد." });
 
@@ -20,7 +21,7 @@ export default async function ContactPage() {
       <PageHero image="/img/p14.jpg" eyebrow="Contact" title="ابدأ من هنا" text="ثلاث خطوات قصيرة وتصلنا رسالتك جاهزة على واتساب. الاستشارة الأولى مجانية بلا التزام." />
       <section className="pb-24">
         <div className="container-x grid gap-10 lg:grid-cols-[1.1fr_.9fr]">
-          <Wizard />
+          <Suspense fallback={<div className="card h-80" />}><ApplyFlow /></Suspense>
           <Reveal className="space-y-4">
             {channels.map(([k, v, h]) => (
               <a key={k} href={h} target={h.startsWith("http") ? "_blank" : undefined} rel="noopener" data-r className="card flex items-center justify-between p-5">

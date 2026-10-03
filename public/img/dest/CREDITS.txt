@@ -1,14 +1,24 @@
 Destination photos: Wikimedia Commons (CC licences) — placeholder imagery, replace with licensed photos before launch.
 
-schengen.jpg — Tour_Eiffel_Wikimedia_Commons_(cropped).jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/1920px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg
+france.jpg — Tour_Eiffel_Wikimedia_Commons_(cropped).jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/1920px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg
 usa.jpg — Front_view_of_Statue_of_Liberty_(cropped).jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Front_view_of_Statue_of_Liberty_%28cropped%29.jpg/1920px-Front_view_of_Statue_of_Liberty_%28cropped%29.jpg
 uk.jpg — Elizabeth_Tower_and_the_north_front_of_the_Palace_of_Westminster,_London.jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/Elizabeth_Tower_and_the_north_front_of_the_Palace_of_Westminster%2C_London.jpg/1920px-Elizabeth_Tower_and_the_north_front_of_the_Palace_of_Westminster%2C_London.jpg
-canada.jpg — Moraine_Lake_17092005.jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Moraine_Lake_17092005.jpg/1920px-Moraine_Lake_17092005.jpg
-australia.jpg — Sydney_Australia._(21339175489).jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Sydney_Australia._%2821339175489%29.jpg/1920px-Sydney_Australia._%2821339175489%29.jpg
 turkey.jpg — Hagia_Sophia_(228968325).jpeg — https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Hagia_Sophia_%28228968325%29.jpeg/1920px-Hagia_Sophia_%28228968325%29.jpeg
-japan.jpg — View_of_Mount_Fuji_from_Ōwakudani_20211202.jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/View_of_Mount_Fuji_from_%C5%8Cwakudani_20211202.jpg/1920px-View_of_Mount_Fuji_from_%C5%8Cwakudani_20211202.jpg
-china.jpg — The_Great_Wall_of_China_at_Jinshanling-edit.jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/The_Great_Wall_of_China_at_Jinshanling-edit.jpg/1920px-The_Great_Wall_of_China_at_Jinshanling-edit.jpg
-india.jpg — Taj_Mahal_(Edited).jpeg — https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/1920px-Taj_Mahal_%28Edited%29.jpeg
 uae.jpg — Burj_Khalifa_(worlds_tallest_building)_and_the_Dubai_skyline_(25781049892).jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Burj_Khalifa_%28worlds_tallest_building%29_and_the_Dubai_skyline_%2825781049892%29.jpg/1920px-Burj_Khalifa_%28worlds_tallest_building%29_and_the_Dubai_skyline_%2825781049892%29.jpg
 egypt.jpg — Great_Pyramid_of_Giza_-_Pyramid_of_Khufu.jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Great_Pyramid_of_Giza_-_Pyramid_of_Khufu.jpg/1920px-Great_Pyramid_of_Giza_-_Pyramid_of_Khufu.jpg
-bosnia.jpg — Mostar_Old_Town_Panorama_2007.jpg — https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Mostar_Old_Town_Panorama_2007.jpg/1920px-Mostar_Old_Town_Panorama_2007.jpg
+germany.jpg — Brandenburger_Tor_abends.jpg — https://commons.wikimedia.org/wiki/File:Brandenburger_Tor_abends.jpg
+italy.jpg — Colosseo_2020.jpg — https://commons.wikimedia.org/wiki/File:Colosseo_2020.jpg
+netherlands.jpg — Zaanstad_Zaanse_Schans_22.jpg — https://commons.wikimedia.org/wiki/File:Zaanstad_Zaanse_Schans_22.jpg
+spain.jpg — SF_maig_2_cropped.jpg — https://commons.wikimedia.org/wiki/File:SF_maig_2_cropped.jpg
+sweden.jpg — Gamla_stan_September_2014_01.jpg — https://commons.wikimedia.org/wiki/File:Gamla_stan_September_2014_01.jpg
+switzerland.jpg — Matterhorn_from_Domhütte_-_2.jpg — https://commons.wikimedia.org/wiki/File:Matterhorn_from_Domhütte_-_2.jpg
+czech.jpg — Prague_07-2016_view_from_Lesser_Town_Tower_of_Charles_Bridge_img3.jpg — https://commons.wikimedia.org/wiki/File:Prague_07-2016_view_from_Lesser_Town_Tower_of_Charles_Bridge_img3.jpg
+austria.jpg — Hallstatt_-_Zentrum_.JPG — https://commons.wikimedia.org/wiki/File:Hallstatt_-_Zentrum_.JPG
+hungary.jpg — Hungarian_Parliament_Building_from_across_the_Danube,_2025-01-11.jpg — https://commons.wikimedia.org/wiki/File:Hungarian_Parliament_Building_from_across_the_Danube,_2025-01-11.jpg
+greece.jpg — The_Parthenon_in_Athens.jpg — https://commons.wikimedia.org/wiki/File:The_Parthenon_in_Athens.jpg
+portugal.jpg — Torre_Belém_April_2009-4a.jpg — https://commons.wikimedia.org/wiki/File:Torre_Belém_April_2009-4a.jpg
+malaysia.jpg — Masjid_Putra,_Putrajaya,_Malaysia.jpg — https://commons.wikimedia.org/wiki/File:Masjid_Putra,_Putrajaya,_Malaysia.jpg
+seychelles.jpg — Luftbild_Insel_La_Digue_Seychellen.DNG_(39617026111).jpg — https://commons.wikimedia.org/wiki/File:Luftbild_Insel_La_Digue_Seychellen.DNG_(39617026111).jpg
+indonesia.jpg — Pradaksina.jpg — https://commons.wikimedia.org/wiki/File:Pradaksina.jpg
+qatar.jpg — Museum_of_Islamic_Art_in_Doha,_Qatar_(32673171432).jpg — https://commons.wikimedia.org/wiki/File:Museum_of_Islamic_Art_in_Doha,_Qatar_(32673171432).jpg
+bahrain.jpg — Bahrain_WTC.JPG — https://commons.wikimedia.org/wiki/File:Bahrain_WTC.JPG

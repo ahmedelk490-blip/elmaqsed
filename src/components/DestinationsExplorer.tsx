@@ -14,8 +14,8 @@ export default function DestinationsExplorer() {
   const [q, setQ] = useState("");
   const [kind, setKind] = useState("الكل");
   const ref = useRef<HTMLDivElement>(null);
-  const kinds = ["الكل", ...Array.from(new Set(countries.map((c) => c.kind)))];
-  const list = countries.filter((c) => (kind === "الكل" || c.kind === kind) && (c.name + c.en).toLowerCase().includes(q.trim().toLowerCase()));
+  const kinds = ["الكل", ...Array.from(new Set(countries.map((c) => c.group ?? "").filter(Boolean))), ...Array.from(new Set(countries.map((c) => c.kind)))];
+  const list = countries.filter((c) => (kind === "الكل" || c.kind === kind || c.group === kind) && (c.name + c.en).toLowerCase().includes(q.trim().toLowerCase()));
 
   useGSAP(
     () => {

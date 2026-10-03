@@ -1,7 +1,5 @@
 import Hero from "@/components/Hero";
-import Stats from "@/components/Stats";
 import Marquee from "@/components/Marquee";
-import VisaChecker from "@/components/VisaChecker";
 import Testimonials from "@/components/Testimonials";
 import Services from "@/components/Services";
 import Destinations from "@/components/Destinations";
@@ -31,10 +29,8 @@ export default async function Home() {
     <>
       <Hero />
       <Marquee />
-      <Stats />
-      <Services />
       <Destinations />
-      <VisaChecker />
+      <Services />
       <Process />
       <Why />
       <Testimonials />

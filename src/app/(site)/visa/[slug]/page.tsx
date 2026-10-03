@@ -11,6 +11,7 @@ import Reveal from "@/components/Reveal";
 import FAQ from "@/components/FAQ";
 import SectionHead from "@/components/SectionHead";
 import VisaChecklist from "@/components/VisaChecklist";
+import PriceNote from "@/components/PriceNote";
 import StepsStrip from "@/components/StepsStrip";
 import { Fragment, type CSSProperties, type ReactNode } from "react";
 import { THEMES, ORDER } from "@/lib/destinations";
@@ -55,6 +56,10 @@ export default async function CountryPage({ params }: PageProps<"/visa/[slug]">)
         <div className="container-x">
           <Reveal><SectionHead eyebrow="Documents" title="جهّز ملفك خطوة بخطوة" text="علّم المستندات المتوفرة لديك وأرسل القائمة لنراجع الناقص معك. القائمة النهائية تصلك بعد الاستشارة حسب جنسيتك وغرض السفر." /></Reveal>
           <VisaChecklist reqs={c.reqs} country={c.name} whatsapp={site.whatsapp} />
+          <div className="mt-8 grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
+            <PriceNote price={c.price} includes={site.priceIncludes} excludes={site.priceExcludes} />
+            <Link href={`/apply?dest=${c.slug}`} className="btn btn-primary btn-lg justify-center">قدّم على تأشيرة {c.name}</Link>
+          </div>
         </div>
       </section>
     ),
