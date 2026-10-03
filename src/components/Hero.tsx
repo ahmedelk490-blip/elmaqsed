@@ -63,7 +63,7 @@ export default function Hero() {
 
   return (
     <section ref={ref} className="relative flex min-h-[100svh] items-center overflow-hidden pt-[84px]">
-      <BgImage src="/img/p05.jpg" priority kenburns overlay="bg-[radial-gradient(ellipse_at_50%_45%,rgba(11,31,57,.97)_0%,rgba(11,31,57,.93)_42%,rgba(11,31,57,.74)_100%)]" />
+      <BgImage src="/img/p05.jpg" priority kenburns overlay="bg-[linear-gradient(180deg,rgba(11,31,57,.76)_0%,rgba(11,31,57,.96)_30%,rgba(11,31,57,.985)_62%,#0b1f39_100%)]" />
       <div className="orb absolute left-[10%] top-[16%] h-72 w-72 rounded-full bg-sky/25 blur-[90px]" />
       <div className="orb absolute right-[8%] top-[52%] h-96 w-96 rounded-full bg-[#1d4f8f]/40 blur-[110px]" />
       <div className="grid-bg absolute inset-0 opacity-70" />
