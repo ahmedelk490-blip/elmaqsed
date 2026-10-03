@@ -14,8 +14,9 @@ export default async function Footer() {
   const row = "flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[.03] px-4 py-3 transition-colors hover:border-sky/50 hover:bg-sky/10";
   return (
     <footer className="font-alex relative overflow-hidden bg-[linear-gradient(180deg,#0b1f39_0%,#06132a_45%,#050f22_100%)]">
+      <div className="on-light relative">
       <div className="dots-bg absolute inset-0 opacity-60" />
-      <Reveal className="container-x relative grid items-center gap-12 pb-12 pt-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16 lg:pt-28">
+      <Reveal className="container-x relative grid items-center gap-12 pb-16 pt-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16 lg:pb-20 lg:pt-28">
         {/* globe */}
         <div data-r className="relative mx-auto w-[min(80vw,460px)]">
           <div className="absolute inset-[-12%] rounded-full bg-sky/15 blur-[80px]" />
@@ -25,7 +26,7 @@ export default async function Footer() {
         {/* brand + contact */}
         <div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img data-r src="/brand/logo.svg" alt="المقصد ELMAQSED" className="h-12 w-auto" />
+          <img data-r src="/brand/logo-navy.svg" alt="المقصد ELMAQSED" className="h-12 w-auto" />
           <h2 data-r className="mt-8 text-3xl font-bold leading-[1.25] md:text-5xl">من الرياض… إلى {countries.length} وجهة حول العالم</h2>
           <p data-r className="mt-5 max-w-lg text-lg leading-9 text-mist/75">{site.footerNote}</p>
           <div data-r className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -39,9 +40,10 @@ export default async function Footer() {
           <p data-r className="mt-4 text-sm text-mist/50">{site.city}<br className="sm:hidden" /><span className="hidden sm:inline"> · </span>{site.hours}</p>
         </div>
       </Reveal>
+      </div>
 
       {/* link columns */}
-      <div className="container-x relative border-t border-white/10 py-14">
+      <div className="container-x relative py-14">
         <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4">
           <div>
             <h3 className="foot-h"><span>PAGES</span>الصفحات</h3>

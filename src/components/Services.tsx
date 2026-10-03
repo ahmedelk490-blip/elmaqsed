@@ -50,7 +50,7 @@ export default function Services() {
   );
 
   return (
-    <section id="services" ref={root} className="relative overflow-hidden py-24 md:py-32">
+    <section id="services" ref={root} className="on-light relative overflow-hidden py-24 md:py-32">
       <span className="ghost left-[-3%] top-8" data-t="SERVICES" aria-hidden="true" />
       <div className="container-x relative">
         <Reveal>

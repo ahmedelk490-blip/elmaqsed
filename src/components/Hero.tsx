@@ -1,37 +1,30 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 import Symbol from "./Symbol";
 import BgImage from "./BgImage";
 import HeroSearch from "./HeroSearch";
+import { useContent } from "./ContentProvider";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
-const SERVICES = ["تأشيرة شنغن", "تأشيرة أمريكا", "بريطانيا ETA", "تأشيرات المقيمين", "حجز الفنادق", "ملف سفرك كاملاً"];
+const CHIPS: [string, string, string][] = [
+  ["fr", "فرنسا", "-left-36 top-0 hidden md:inline-flex"],
+  ["us", "أمريكا", "-right-40 top-8 hidden md:inline-flex"],
+  ["gb", "بريطانيا", "-left-28 bottom-0 hidden md:inline-flex"],
+  ["ae", "الإمارات", "-right-32 -bottom-8 hidden md:inline-flex"],
+  ["tr", "تركيا", "chip-far -left-56 top-24 hidden lg:inline-flex"],
+  ["my", "ماليزيا", "chip-far -right-60 -top-10 hidden lg:inline-flex"],
+];
 
-/** The headline writes the services one after another. */
-function Typed() {
-  const [text, setText] = useState(SERVICES[0]);
-  useEffect(() => {
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let i = 0, ch = SERVICES[0].length, del = true, hold = 24;
-    const t = setInterval(() => {
-      if (hold > 0) { hold--; return; }
-      ch += del ? -1 : 1;
-      if (del && ch <= 0) { del = false; ch = 0; i = (i + 1) % SERVICES.length; }
-      else if (!del && ch >= SERVICES[i].length) { del = true; hold = 28; }
-      setText(SERVICES[i].slice(0, ch));
-    }, 65);
-    return () => clearInterval(t);
-  }, []);
-  return <span className="typed grad-text" aria-hidden="true">{text}</span>;
-}
-
-/** Search-first hero: the brand symbol assembles, the headline types the services, and the visitor picks a visa or a hotel right away. */
+/** Brand hero: the symbol's arrows converge on one point, approvals float around it, then the visitor searches for a visa or a hotel. */
 export default function Hero() {
+  const { site } = useContent();
   const ref = useRef<HTMLElement>(null);
+  const symRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -47,16 +40,42 @@ export default function Hero() {
           gsap.set(p, { x: (b.x + b.width / 2 - cx) * 1.3, y: (b.y + b.height / 2 - cy) * 1.3, opacity: 0, scale: 0.5, transformOrigin: "50% 50%" });
         });
         gsap.timeline({ defaults: { ease: "power4.out" } })
-          .to(arrows, { x: 0, y: 0, opacity: 1, scale: 1, duration: 1.1, stagger: { each: 0.06, from: "random" } }, 0.1)
-          .fromTo(".sym-core", { scale: 0, opacity: 0, transformOrigin: "50% 50%" }, { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(3)" }, 0.7)
-          .fromTo(".sym-glow", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 1 }, 0.7)
-          .fromTo("[data-h]", { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.1 }, 0.25);
-        gsap.to(".sym-glow", { opacity: 0.55, scale: 1.15, duration: 2.6, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 2 });
+          .to(arrows, { x: 0, y: 0, opacity: 1, scale: 1, duration: 1.4, stagger: { each: 0.08, from: "random" } }, 0.2)
+          .fromTo(".sym-core", { scale: 0, opacity: 0, transformOrigin: "50% 50%" }, { scale: 1, opacity: 1, duration: 0.7, ease: "back.out(3)" }, 1)
+          .fromTo(".ignite", { scale: 0, opacity: 0.9 }, { scale: 4, opacity: 0, duration: 1.3, ease: "power2.out" }, 1.05)
+          .fromTo(".sym-glow", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 1.2 }, 1.05)
+          .fromTo("[data-h]", { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.1 }, 0.9);
+
+        SplitText.create(".hero-title", {
+          type: "words",
+          autoSplit: true,
+          onSplit: (self) => {
+            gsap.set(".hero-title", { opacity: 1 });
+            return gsap.from(self.words, { opacity: 0, y: 26, filter: "blur(16px)", duration: 1, ease: "power3.out", stagger: 0.07, delay: 0.7 });
+          },
+        });
+
+        // idle life
+        gsap.to(".sym-glow", { opacity: 0.6, scale: 1.15, duration: 2.6, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 2.5 });
+        gsap.to(symRef.current, { y: -10, duration: 3, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 2.5 });
+        gsap.to(".chip", { y: "random(-9, 9)", x: "random(-5, 5)", duration: "random(2.5, 4)", yoyo: true, repeat: -1, ease: "sine.inOut", stagger: 0.5, delay: 2.5 });
+
+        // the symbol tilts in 3D toward the pointer
+        const rY = gsap.quickTo(".sym-tilt", "rotationY", { duration: 0.9, ease: "power3" });
+        const rX = gsap.quickTo(".sym-tilt", "rotationX", { duration: 0.9, ease: "power3" });
+        const el = ref.current!;
+        const move = (e: MouseEvent) => {
+          const r = el.getBoundingClientRect();
+          rY(((e.clientX - r.left) / r.width - 0.5) * 30);
+          rX(-((e.clientY - r.top) / r.height - 0.5) * 30);
+        };
+        el.addEventListener("mousemove", move);
+        return () => el.removeEventListener("mousemove", move);
       });
       mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
         gsap.to(".hero-content", { yPercent: -10, opacity: 0.2, ease: "none", scrollTrigger: { trigger: ref.current, start: "top top", end: "bottom top", scrub: true } });
       });
-      mm.add("(prefers-reduced-motion: reduce)", () => gsap.set(["[data-h]", ".sym-glow"], { autoAlpha: 1 }));
+      mm.add("(prefers-reduced-motion: reduce)", () => gsap.set(["[data-h]", ".sym-glow", ".hero-title"], { autoAlpha: 1 }));
     },
     { scope: ref },
   );
@@ -66,28 +85,40 @@ export default function Hero() {
       <BgImage src="/img/p05.jpg" priority kenburns overlay="bg-[linear-gradient(180deg,rgba(11,31,57,.76)_0%,rgba(11,31,57,.96)_30%,rgba(11,31,57,.985)_62%,#0b1f39_100%)]" />
       <div className="orb absolute left-[10%] top-[16%] h-72 w-72 rounded-full bg-sky/25 blur-[90px]" />
       <div className="orb absolute right-[8%] top-[52%] h-96 w-96 rounded-full bg-[#1d4f8f]/40 blur-[110px]" />
+      <div className="orb absolute -bottom-[10%] left-[38%] h-80 w-80 rounded-full bg-white/10 blur-[100px]" />
       <div className="grid-bg absolute inset-0 opacity-70" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-[-10%] h-[58%]" aria-hidden="true">
+        {[0, 1, 2].map((i) => <span key={i} className="ripple-ring" style={{ animationDelay: `${i * 2.8}s` }} />)}
+      </div>
 
-      <div className="hero-content container-x relative flex flex-col items-center py-10 text-center md:py-14">
-        <div className="relative mb-5 w-16 md:mb-7 md:w-24">
-          <div className="sym-glow absolute inset-[-45%] rounded-full bg-[radial-gradient(circle,rgba(46,148,210,.55),transparent_65%)]" />
-          <Symbol className="sym-svg relative w-full text-white" id="hero" />
+      <div className="hero-content container-x relative flex flex-col items-center py-6 text-center md:py-6">
+        <p data-h className="pill mb-5 hidden md:inline-flex"><i />{site.nameEn} · Visa Consulting</p>
+
+        <div ref={symRef} className="relative mb-6 w-[min(30vw,120px)] md:mb-7 md:w-[180px]" style={{ perspective: 800 }}>
+          <div className="ignite absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,.95),rgba(46,148,210,.6)_35%,transparent_70%)]" />
+          <div className="sym-glow absolute inset-[-45%] rounded-full bg-[radial-gradient(circle,rgba(46,148,210,.5),transparent_65%)]" />
+          {CHIPS.map(([code, name, pos]) => (
+            <span key={code} data-h className={`chip absolute ${pos}`}><i /><span className={`fi fi-${code} rounded-sm`} />{name} · موافقة</span>
+          ))}
+          <div className="sym-tilt relative" style={{ transformStyle: "preserve-3d" }}>
+            <Symbol className="sym-svg w-full text-white" id="hero" />
+          </div>
         </div>
-        <h1 data-h className="text-[2.1rem] font-bold leading-[1.3] sm:text-6xl lg:text-7xl">
-          <span className="sr-only">المقصد: تأشيرات السفر وحجز الفنادق من السعودية</span>
-          <span aria-hidden="true" className="block">نجهّز لك</span>
-          <span className="block min-h-[1.3em]"><Typed /></span>
+
+        <h1 className="hero-title max-w-4xl text-4xl font-bold leading-[1.3] sm:text-5xl lg:text-6xl">
+          مسار واضح
+          <br />
+          <span className="grad-text">لوجهتك الصحيحة</span>
         </h1>
-        <p data-h className="mt-4 max-w-xl text-base leading-8 text-mist/85 md:mt-6 md:text-xl md:leading-9">
-          اختر وجهتك وقدّم طلبك في دقيقتين، ونحن نجهّز ملفك ونتابعه حتى الاستلام.
+        <p data-h className="mt-4 max-w-2xl text-[15px] leading-7 text-mist/85 md:mt-5 md:text-lg md:leading-8">
+          استشارات تأشيرات السفر وتجهيز الطلبات باحترافية: نقيّم ملفك بصدق، نجهّز مستنداتك بدقة، ونرافقك خطوة بخطوة حتى تصل إلى مقصدك.
         </p>
-        <div data-h className="mt-7 w-full max-w-4xl md:mt-9"><HeroSearch /></div>
-        <ul data-h className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-mist/70">
+        <div data-h className="mt-6 w-full max-w-4xl md:mt-6"><HeroSearch /></div>
+        <ul data-h className="mt-6 flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-mist/70">
+          <li>✓ شركة استشارية مرخصة</li>
           <li>✓ رد خلال 24 ساعة</li>
-          <li>✓ سعر واضح قبل البدء</li>
-          <li>✓ متابعة حتى الاستلام</li>
+          <li>✓ رسوم واضحة قبل البدء</li>
         </ul>
-        <a href="#services" data-h className="mt-6 hidden items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-sm text-mist/85 transition-colors hover:border-sky hover:text-white md:inline-flex">تعرّف على خدماتنا <span aria-hidden="true">↓</span></a>
       </div>
     </section>
   );

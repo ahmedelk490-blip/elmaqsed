@@ -12,7 +12,7 @@ export default function FAQ({ compact = false }: { compact?: boolean }) {
   const [open, setOpen] = useState<number | null>(0);
   const items = compact ? faq.slice(0, 4) : faq;
   return (
-    <section id="faq" className="relative overflow-clip py-24 md:py-32">
+    <section id="faq" className="on-light relative overflow-clip py-24 md:py-32">
       <div className="retro-grid" aria-hidden="true" />
       <div className="container-x relative">
         <Reveal>

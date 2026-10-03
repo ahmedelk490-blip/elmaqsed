@@ -9,6 +9,7 @@ export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 const links = [
   { href: "/admin", label: "لوحة التحكم" },
+  { href: "/admin/bookings", label: "الحجوزات" },
   { href: "/admin/single/site", label: "إعدادات الموقع" },
   { href: "/admin/single/about", label: "صفحة من نحن" },
   ...Object.entries(collections).map(([k, c]) => ({ href: `/admin/${k}`, label: c.label })),

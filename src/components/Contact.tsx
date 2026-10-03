@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { waLink } from "@/lib/types";
+import { createBooking } from "@/lib/actions";
 import { useContent } from "./ContentProvider";
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
@@ -15,6 +16,7 @@ export default function Contact() {
     e.preventDefault();
     const msg = `السلام عليكم، أرغب في استشارة تأشيرة.\nالاسم: ${f.name}\nالجوال: ${f.phone}\nالجنسية: ${f.nationality}\nالوجهة: ${f.dest}\nالغرض: ${f.purpose}\nتاريخ السفر المتوقع: ${f.date || "غير محدد"}\nرفض سابق: ${f.refused}`;
     window.open(waLink(site.whatsapp, msg), "_blank", "noopener");
+    void createBooking({ service: "contact", name: f.name, phone: f.phone, email: "", summary: `استشارة: ${f.dest || "غير محدد"}`, rows: [["الاسم", f.name], ["الجوال", f.phone], ["الجنسية", f.nationality], ["الوجهة", f.dest], ["الغرض", f.purpose], ["تاريخ السفر", f.date || "غير محدد"], ["رفض سابق", f.refused]] });
   };
 
   return (

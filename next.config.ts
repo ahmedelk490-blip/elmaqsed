@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/visa/schengen", destination: "/visa/france", permanent: true },
+      { source: "/apply", destination: "/booking", permanent: true },
       ...["canada", "australia", "japan", "china", "india", "bosnia"].map((s) => ({ source: `/visa/${s}`, destination: "/destinations", permanent: false })),
     ];
   },

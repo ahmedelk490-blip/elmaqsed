@@ -75,7 +75,7 @@ export default function Why() {
   );
 
   return (
-    <section id="why" ref={ref} className="relative overflow-hidden py-24 md:py-32">
+    <section id="why" ref={ref} className="on-light relative overflow-hidden py-24 md:py-32">
       <span className="ghost right-[-3%] top-8" data-t="WHY ELMAQSED" aria-hidden="true" />
       <div className="pointer-events-none absolute left-1/2 top-[42%] h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky/10 blur-[120px]" />
       <Reveal className="container-x relative">

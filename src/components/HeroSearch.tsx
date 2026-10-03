@@ -60,11 +60,11 @@ export default function HeroSearch() {
   const [h, setH] = useState({ city: "", inn: "", out: "", guests: "2" });
   const goVisa = () => {
     if (!dest) { setOpen(true); return; }
-    router.push(`/apply?dest=${dest.slug}${type ? `&type=${encodeURIComponent(type)}` : ""}`);
+    router.push(`/booking?dest=${dest.slug}`);
   };
   const goHotel = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push(`/apply?${new URLSearchParams({ service: "hotel", city: h.city, in: h.inn, out: h.out, guests: h.guests })}`);
+    router.push(`/booking?${new URLSearchParams({ service: "hotel", city: h.city, in: h.inn, out: h.out, guests: h.guests })}`);
   };
   return (
     <div className="hs beam">

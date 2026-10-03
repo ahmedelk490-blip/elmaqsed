@@ -1,15 +1,22 @@
 import Link from "next/link";
 import { getContent } from "@/lib/content";
 import { collections } from "@/lib/admin";
+import { readBookings } from "@/lib/bookings";
 import type { Content } from "@/lib/types";
 
 export default async function Dashboard() {
   const c = await getContent();
+  const bookings = await readBookings();
+  const fresh = bookings.filter((b) => b.status === "new").length;
   return (
     <div>
       <h1 className="text-2xl font-bold">لوحة التحكم</h1>
       <p className="mt-1 text-sm text-slate-500">من هنا تدير كل محتوى الموقع. أي حفظ يُنشر على الموقع مباشرة.</p>
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Link href="/admin/bookings" className="a-card mt-8 flex items-center justify-between gap-4 p-6 transition-shadow hover:shadow-md">
+        <div><h2 className="font-bold">الحجوزات والطلبات</h2><p className="mt-1 text-sm text-slate-500">كل من حجز أو أرسل طلباً من الموقع، مع بيانات التواصل.</p></div>
+        <p className="shrink-0"><span className="font-serif text-4xl font-semibold">{bookings.length}</span>{fresh > 0 && <span className="mr-2 rounded-full bg-[#e0f2fe] px-2.5 py-1 text-xs font-bold text-[#075985]">{fresh} جديد</span>}</p>
+      </Link>
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {Object.entries(collections).map(([k, d]) => (
           <Link key={k} href={`/admin/${k}`} className="a-card p-5 transition-shadow hover:shadow-md">
             <p className="text-sm text-slate-500">{d.label}</p>

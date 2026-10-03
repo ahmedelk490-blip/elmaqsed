@@ -58,7 +58,7 @@ export default async function CountryPage({ params }: PageProps<"/visa/[slug]">)
           <VisaChecklist reqs={c.reqs} country={c.name} whatsapp={site.whatsapp} />
           <div className="mt-8 grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
             <PriceNote price={c.price} includes={site.priceIncludes} excludes={site.priceExcludes} />
-            <Link href={`/apply?dest=${c.slug}`} className="btn btn-primary btn-lg justify-center">قدّم على تأشيرة {c.name}</Link>
+            <Link href={`/booking?dest=${c.slug}`} className="btn btn-primary btn-lg justify-center">قدّم على تأشيرة {c.name}</Link>
           </div>
         </div>
       </section>
