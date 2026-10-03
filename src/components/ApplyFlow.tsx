@@ -75,7 +75,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
 
   if (sent) {
     return (
-      <div id="form" className="card scroll-mt-28 p-7 text-center md:p-10">
+      <div id="form" className="card min-w-0 scroll-mt-28 p-7 text-center md:p-10">
         <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-sky text-3xl text-white">✓</span>
         <h3 className="mt-5 text-2xl font-bold">تم استلام طلبك</h3>
         <p className="mx-auto mt-3 max-w-md leading-8 text-mist/80">سجّلنا طلبك وسنتواصل معك خلال 24 ساعة. إذا لم يفتح واتساب تلقائياً يمكنك فتحه من الزر.</p>
@@ -88,7 +88,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
   }
 
   return (
-    <div id="form" className="card scroll-mt-28 p-5 md:p-9">
+    <div id="form" className="card min-w-0 scroll-mt-28 p-5 md:p-9">
       <div className="mb-6 flex items-center gap-4">
         <span className="bk-ring" style={{ "--p": (step + 1) / 3 } as React.CSSProperties}>{step + 1}/3</span>
         <div>
