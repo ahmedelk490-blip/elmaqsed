@@ -373,9 +373,9 @@ body:has(.admin)::after { display: none; }
 @keyframes pkfade { from { opacity: 0; } }
 @keyframes pkup { from { transform: translateY(40px); opacity: 0; } }
 /* ---------- forms + price note ---------- */
-.fl { display: grid; gap: .4rem; }
+.fl { display: grid; gap: .4rem; min-width: 0; }
 .fl > span { font-size: .84rem; color: rgba(206,210,215,.72); }
-.field { color-scheme: dark; }
+.field { color-scheme: dark; min-width: 0; }
 .price-note { border-radius: 18px; border: 1px dashed rgba(99,182,234,.4); background: rgba(46,148,210,.06); padding: 1rem 1.2rem; font-size: .9rem; line-height: 1.9; color: rgba(206,210,215,.85); }
 @media (prefers-reduced-motion: reduce) { .typed::after, .picker, .picker-panel { animation: none; } }
 

@@ -142,7 +142,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
               <div className="rail mt-2.5 flex gap-2 overflow-x-auto pb-1">
                 {HOTEL_CITIES.map((x) => <button key={x} type="button" onClick={() => setH({ ...h, city: x })} aria-pressed={h.city === x} className={`badge shrink-0 ${h.city === x ? "badge-sky bg-sky/15" : ""}`}>{x}</button>)}
               </div>
-              <div className="mt-5 grid grid-cols-2 gap-4">
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
                 <label className="fl"><span>تاريخ الوصول</span><input className="field" type="date" min={today} value={h.inn} onChange={(e) => setH({ ...h, inn: e.target.value })} /></label>
                 <label className="fl"><span>تاريخ المغادرة</span><input className="field" type="date" min={h.inn || today} value={h.out} onChange={(e) => setH({ ...h, out: e.target.value })} /></label>
               </div>
