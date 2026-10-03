@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useContent } from "./ContentProvider";
 import { waLink } from "@/lib/types";
-import { createBooking } from "@/lib/actions";
+import { submitBooking } from "@/lib/submit";
 import PriceNote from "./PriceNote";
 
 const CITIES = ["الرياض", "جدة", "الدمام"];
@@ -36,7 +36,8 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
   const first = countries.find((c) => c.slug === sp.get("dest"));
   const [service, setService] = useState<"visa" | "hotel">(sp.get("service") === "hotel" ? "hotel" : "visa");
   const [step, setStep] = useState(0);
-  const [sent, setSent] = useState(false);
+  const [sent, setSent] = useState<false | "ok" | "fail">(false);
+  const [busy, setBusy] = useState(false);
   const [dest, setDest] = useState(first?.slug ?? "");
   const [date, setDate] = useState("");
   const [city, setCity] = useState(CITIES[0]);
@@ -64,24 +65,30 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
   const contact: Row[] = [...(visa ? [] : [["الاسم", p.name] as Row]), ["الجوال", p.phone], ...(p.email.trim() ? [["البريد", p.email.trim()] as Row] : []), ["الجنسية", p.nationality || "غير محدد"], ["الصفة", p.status], ...(visa ? [["رفض سابق", p.refused] as Row] : []), ...(p.notes.trim() ? [["ملاحظات", p.notes.trim()] as Row] : [])];
   const lines = [visa ? "السلام عليكم، أرغب في حجز تأشيرة." : "السلام عليكم، أرغب في حجز فندق.", ...trip.map(([k, v]) => `${k}: ${v}`), ...(visa ? travellers.map((n, i) => `${i + 1}) ${n}${i >= adults ? " (طفل)" : ""}`) : []), ...contact.map(([k, v]) => `${k}: ${v}`)];
   const message = lines.join("\n");
-  const send = () => {
+  // WhatsApp opens at once (it must happen inside the click); the request is then saved for the dashboard and the visitor is told whether that worked
+  const send = async () => {
     window.open(waLink(site.whatsapp, message), "_blank", "noopener");
-    void createBooking({
+    setBusy(true);
+    const ok = await submitBooking({
       service, name: visa ? travellers[0] : p.name, phone: p.phone, email: p.email, summary: visa ? `تأشيرة ${c?.name ?? ""}` : `فندق: ${h.city}`,
       rows: [...trip, ...(visa ? travellers.map((n, i) => [`المسافر ${i + 1}`, `${n}${i >= adults ? " (طفل)" : ""}`] as Row) : []), ...contact],
     });
-    setSent(true);
+    setBusy(false);
+    setSent(ok ? "ok" : "fail");
   };
 
   if (sent) {
+    const ok = sent === "ok";
     return (
       <div id="form" className="card min-w-0 scroll-mt-28 p-7 text-center md:p-10">
-        <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-sky text-3xl text-white">✓</span>
-        <h3 className="mt-5 text-2xl font-bold">تم استلام طلبك</h3>
-        <p className="mx-auto mt-3 max-w-md leading-8 text-mist/80">سجّلنا طلبك وسنتواصل معك خلال 24 ساعة. إذا لم يفتح واتساب تلقائياً يمكنك فتحه من الزر.</p>
+        <span className={`mx-auto grid h-16 w-16 place-items-center rounded-full text-3xl text-white ${ok ? "bg-sky" : "bg-amber-500"}`}>{ok ? "✓" : "!"}</span>
+        <h3 className="mt-5 text-2xl font-bold">{ok ? "تم استلام طلبك" : "لم يكتمل تسجيل الطلب"}</h3>
+        <p className="mx-auto mt-3 max-w-md leading-8 text-mist/80">{ok ? "سجّلنا طلبك وسنتواصل معك خلال 24 ساعة. إذا لم يفتح واتساب تلقائياً يمكنك فتحه من الزر." : "تعذّر حفظ طلبك الآن. أرسله لنا عبر واتساب من الزر ليصلنا فوراً، أو أعد المحاولة."}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <a href={waLink(site.whatsapp, message)} target="_blank" rel="noopener" className="btn btn-primary">فتح واتساب</a>
-          <button type="button" onClick={() => { setSent(false); setStep(0); }} className="btn btn-ghost">طلب جديد</button>
+          <a href={waLink(site.whatsapp, message)} target="_blank" rel="noopener" className="btn btn-primary">{ok ? "فتح واتساب" : "إرسال عبر واتساب"}</a>
+          {ok
+            ? <button type="button" onClick={() => { setSent(false); setStep(0); }} className="btn btn-ghost">طلب جديد</button>
+            : <button type="button" onClick={() => setSent(false)} className="btn btn-ghost">إعادة المحاولة</button>}
         </div>
       </div>
     );
@@ -214,7 +221,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
           <p className="mt-5 text-sm leading-7 text-mist/75">بعد الإرسال يصلنا طلبك على واتساب، ونرد خلال 24 ساعة بالمتطلبات والسعر النهائي قبل أي التزام.</p>
           <div className="mt-6 flex gap-3">
             <button type="button" onClick={() => setStep(1)} className="btn btn-ghost">تعديل</button>
-            <button type="button" onClick={send} className="btn btn-primary flex-1 justify-center sm:flex-none">تأكيد وإرسال الطلب</button>
+            <button type="button" onClick={send} disabled={busy} className="btn btn-primary flex-1 justify-center disabled:opacity-60 sm:flex-none">{busy ? "جارٍ الإرسال…" : "تأكيد وإرسال الطلب"}</button>
           </div>
         </div>
       )}

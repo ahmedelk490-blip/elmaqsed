@@ -22,6 +22,6 @@ export async function readBookings(): Promise<Booking[]> {
 export async function writeBookings(list: Booking[]) {
   await fs.mkdir(path.dirname(FILE), { recursive: true });
   const tmp = `${FILE}.tmp`;
-  await fs.writeFile(tmp, JSON.stringify(list, null, 2), "utf8");
+  await fs.writeFile(tmp, JSON.stringify(list, null, 2), { encoding: "utf8", mode: 0o600 }); // customers' details: owner-only
   await fs.rename(tmp, FILE);
 }
