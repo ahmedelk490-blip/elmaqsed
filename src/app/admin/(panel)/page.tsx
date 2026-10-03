@@ -3,8 +3,10 @@ import { getContent } from "@/lib/content";
 import { collections } from "@/lib/admin";
 import { readBookings } from "@/lib/bookings";
 import type { Content } from "@/lib/types";
+import { requireAdmin } from "@/lib/auth";
 
 export default async function Dashboard() {
+  await requireAdmin();
   const c = await getContent();
   const bookings = await readBookings();
   const fresh = bookings.filter((b) => b.status === "new").length;
@@ -40,7 +42,7 @@ export default async function Dashboard() {
           <li>حدّث رقم الواتساب والهاتف والبريد من إعدادات الموقع.</li>
           <li>استبدل الإحصائيات وشهادات العملاء ببيانات حقيقية.</li>
           <li>راجع الوجهات: أضف ما تخدمه فعلاً واحذف الباقي، وحدّث المدد والمستندات.</li>
-          <li>غيّر كلمة مرور اللوحة من ملف <code dir="ltr">.env.local</code> (المتغير ADMIN_PASSWORD).</li>
+          <li>غيّر اسم المستخدم أو كلمة المرور من صفحة <Link href="/admin/account" className="underline">حساب الدخول</Link>.</li>
         </ul>
       </div>
     </div>

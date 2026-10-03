@@ -4,8 +4,10 @@ import { getContent } from "@/lib/content";
 import { collections } from "@/lib/admin";
 import { saveItem } from "@/lib/actions";
 import Fields from "@/components/admin/Fields";
+import { requireAdmin } from "@/lib/auth";
 
 export default async function EditPage({ params }: { params: Promise<{ collection: string; id: string }> }) {
+  await requireAdmin();
   const { collection, id } = await params;
   const def = collections[collection];
   if (!def) notFound();

@@ -13,6 +13,7 @@ const links = [
   { href: "/admin/single/site", label: "إعدادات الموقع" },
   { href: "/admin/single/about", label: "صفحة من نحن" },
   ...Object.entries(collections).map(([k, c]) => ({ href: `/admin/${k}`, label: c.label })),
+  { href: "/admin/account", label: "حساب الدخول" },
 ];
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {

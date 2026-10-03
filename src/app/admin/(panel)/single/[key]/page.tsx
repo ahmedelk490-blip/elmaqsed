@@ -3,8 +3,10 @@ import { getContent } from "@/lib/content";
 import { singles } from "@/lib/admin";
 import { saveSingle } from "@/lib/actions";
 import Fields from "@/components/admin/Fields";
+import { requireAdmin } from "@/lib/auth";
 
 export default async function SinglePage({ params, searchParams }: { params: Promise<{ key: string }>; searchParams: Promise<{ saved?: string }> }) {
+  await requireAdmin();
   const { key } = await params;
   const { saved } = await searchParams;
   const def = singles[key];

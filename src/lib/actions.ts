@@ -1,8 +1,8 @@
 "use server";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { COOKIE, PASSWORD, isAuthed, token } from "./auth";
+import { COOKIE, blocked, credsProblem, getCreds, isAuthed, normUser, pardon, passOk, saveCreds, sessionToken, setupCodeOk, strike, type AuthState } from "./auth";
 import { getContent, saveContent } from "./content";
 import { collections, fromInput, setPath, singles } from "./admin";
 import type { Content } from "./types";
@@ -10,11 +10,63 @@ import { readBookings, writeBookings, type Booking } from "./bookings";
 
 type Lists = Record<string, Record<string, unknown>[]>;
 
-export async function login(_prev: { error?: string } | null, fd: FormData) {
-  if (!PASSWORD) return { error: "لوحة التحكم غير مفعّلة: أضف ADMIN_PASSWORD في متغيرات البيئة بالاستضافة" };
-  if (String(fd.get("password")) !== PASSWORD) return { error: "كلمة المرور غير صحيحة" };
-  (await cookies()).set(COOKIE, token(), { httpOnly: true, sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 30 });
+const SESSION = { httpOnly: true, sameSite: "lax" as const, secure: process.env.NODE_ENV === "production", path: "/", maxAge: 60 * 60 * 24 * 30 };
+const TOO_MANY = "محاولات كثيرة. حاول مرة أخرى بعد ربع ساعة.";
+const clientIp = async () => (await headers()).get("x-forwarded-for")?.split(",")[0].trim() || "local";
+const pause = () => new Promise((r) => setTimeout(r, 700));
+
+export async function login(_prev: AuthState, fd: FormData): Promise<AuthState> {
+  const ip = await clientIp(), user = normUser(fd.get("username"));
+  if (blocked(ip)) return { error: TOO_MANY, user };
+  const creds = await getCreds();
+  if (!creds) redirect("/admin/setup");
+  const pass = await passOk(creds, String(fd.get("password") ?? ""));
+  if (!pass || user !== creds.user) {
+    strike(ip);
+    await pause();
+    return { error: "اسم المستخدم أو كلمة المرور غير صحيحة", user };
+  }
+  pardon(ip);
+  (await cookies()).set(COOKIE, sessionToken(creds), SESSION);
   redirect("/admin");
+}
+
+/** First-time setup: needs the owner's setup code and only works while no account exists. */
+export async function setupAdmin(_prev: AuthState, fd: FormData): Promise<AuthState> {
+  const ip = await clientIp(), user = normUser(fd.get("username")), code = String(fd.get("code") ?? "").trim().slice(0, 80);
+  if (blocked(ip)) return { error: TOO_MANY, user, code };
+  if (await getCreds()) redirect("/admin/login");
+  if (!setupCodeOk(code)) {
+    strike(ip);
+    await pause();
+    return { error: "رمز الإعداد غير صحيح", user, code };
+  }
+  const pass = String(fd.get("password") ?? "");
+  const problem = credsProblem(user, pass, String(fd.get("confirm") ?? ""));
+  if (problem) return { error: problem, user, code };
+  const creds = await saveCreds(user, pass, false);
+  if (!creds) return { error: "تعذّر إنشاء الحساب. حدّث الصفحة وحاول مرة أخرى.", user, code };
+  (await cookies()).set(COOKIE, sessionToken(creds), SESSION);
+  redirect("/admin");
+}
+
+export async function changeAccount(_prev: AuthState, fd: FormData): Promise<AuthState> {
+  await guard();
+  const ip = await clientIp(), user = normUser(fd.get("username")), creds = await getCreds();
+  if (!creds) redirect("/admin/login");
+  if (blocked(ip)) return { error: TOO_MANY, user };
+  if (!(await passOk(creds, String(fd.get("current") ?? "")))) {
+    strike(ip);
+    await pause();
+    return { error: "كلمة المرور الحالية غير صحيحة", user };
+  }
+  const pass = String(fd.get("password") ?? "");
+  const problem = credsProblem(user, pass, String(fd.get("confirm") ?? ""));
+  if (problem) return { error: problem, user };
+  const next = await saveCreds(user, pass, true);
+  if (!next) return { error: "تعذّر الحفظ. حاول مرة أخرى.", user };
+  (await cookies()).set(COOKIE, sessionToken(next), SESSION);
+  return { ok: "تم تحديث بيانات الدخول", user };
 }
 
 export async function logout() {

@@ -22,8 +22,9 @@ export default function Globe({ className = "" }: { className?: string }) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const size = el.offsetWidth || 300;
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    let size = el.offsetWidth || 300;
+    // cobe multiplies width/height by devicePixelRatio itself. Never below 1: a scaled-down preview reports less and turned the globe to mush.
+    const dpr = Math.min(Math.max(window.devicePixelRatio || 1, 1), 2);
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
     let phi = 4.2, velocity = 0, dragging = false, lastX = 0, raf = 0, visible = false, retry = 0;
     let globe: ReturnType<typeof createGlobe> | null = null;
@@ -35,7 +36,7 @@ export default function Globe({ className = "" }: { className?: string }) {
     };
     try {
       globe = createGlobe(el, {
-        devicePixelRatio: dpr, width: size * dpr, height: size * dpr, phi, theta: 0.28, dark: 1, diffuse: 1.4,
+        devicePixelRatio: dpr, width: size, height: size, phi, theta: 0.28, dark: 1, diffuse: 1.4,
         mapSamples: 12000, mapBrightness: 5, baseColor: [0.08, 0.2, 0.38], markerColor: [0.39, 0.71, 0.92], glowColor: [0.08, 0.28, 0.55],
         markers: [...dests.map((location) => ({ location, size: 0.05 })), { location: RIYADH, size: 0.1 }],
         arcs: dests.map((to) => ({ from: RIYADH, to })), arcColor: [0.39, 0.71, 0.92], arcWidth: 0.6, arcHeight: 0.35,
@@ -53,6 +54,9 @@ export default function Globe({ className = "" }: { className?: string }) {
     const start = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); };
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) start(); else cancelAnimationFrame(raf); });
     io.observe(el);
+    // keep the drawing buffer matched to the box (rotation, a late layout, a resized window)
+    const ro = new ResizeObserver(() => { const s = el.offsetWidth; if (s && s !== size) { size = s; g.update({ width: s, height: s }); } });
+    ro.observe(el);
     const lost = (e: Event) => { e.preventDefault(); fail(); };
     const down = (e: PointerEvent) => { dragging = true; lastX = e.clientX; velocity = 0; el.style.cursor = "grabbing"; el.setPointerCapture(e.pointerId); };
     const move = (e: PointerEvent) => {
@@ -68,7 +72,7 @@ export default function Globe({ className = "" }: { className?: string }) {
     el.addEventListener("pointerup", up);
     el.addEventListener("pointercancel", up);
     return () => {
-      io.disconnect(); cancelAnimationFrame(raf); clearTimeout(retry);
+      io.disconnect(); ro.disconnect(); cancelAnimationFrame(raf); clearTimeout(retry);
       try { g.destroy(); } catch { /* context already gone */ }
       el.removeEventListener("webglcontextlost", lost);
       el.removeEventListener("pointerdown", down); el.removeEventListener("pointermove", move);

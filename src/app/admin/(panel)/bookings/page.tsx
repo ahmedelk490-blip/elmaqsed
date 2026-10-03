@@ -1,5 +1,6 @@
 import { readBookings } from "@/lib/bookings";
 import { deleteBooking, setBookingStatus } from "@/lib/actions";
+import { requireAdmin } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,7 @@ const wa = (p: string) => p.replace(/\D/g, "").replace(/^0/, "966");
 
 /** Every booking and enquiry sent from the site, newest first, with contact shortcuts and a status. */
 export default async function BookingsPage() {
+  await requireAdmin();
   const list = await readBookings();
   const fresh = list.filter((b) => b.status === "new").length;
   return (
@@ -40,7 +42,7 @@ export default async function BookingsPage() {
                 <a href={`https://wa.me/${wa(b.phone)}`} target="_blank" rel="noopener" className="a-btn">واتساب</a>
                 <a href={`tel:${b.phone}`} className="a-btn a-btn-ghost">اتصال</a>
                 {b.email && <a href={`mailto:${b.email}`} className="a-btn a-btn-ghost">بريد</a>}
-                <form action={setBookingStatus.bind(null, b.id)} className="flex items-center gap-2 sm:mr-auto">
+                <form key={b.status} action={setBookingStatus.bind(null, b.id)} className="flex items-center gap-2 sm:mr-auto">
                   <select name="status" defaultValue={b.status} className="a-input w-auto" aria-label="حالة الطلب">
                     {Object.entries(STATUS).map(([k, [label]]) => <option key={k} value={k}>{label}</option>)}
                   </select>

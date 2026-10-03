@@ -4,8 +4,10 @@ import { getContent } from "@/lib/content";
 import { collections } from "@/lib/admin";
 import { deleteItem, moveItem } from "@/lib/actions";
 import DeleteButton from "@/components/admin/DeleteButton";
+import { requireAdmin } from "@/lib/auth";
 
 export default async function ListPage({ params, searchParams }: { params: Promise<{ collection: string }>; searchParams: Promise<{ saved?: string }> }) {
+  await requireAdmin();
   const { collection } = await params;
   const { saved } = await searchParams;
   const def = collections[collection];
