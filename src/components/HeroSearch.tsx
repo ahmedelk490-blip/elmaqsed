@@ -58,7 +58,7 @@ const dayMonth = new Intl.DateTimeFormat("ar-SA-u-ca-gregory-nu-latn", { day: "n
 function DateField({ label, value, min, onChange }: { label: string; value: string; min?: string; onChange: (v: string) => void }) {
   return (
     <label className="hs-field hs-half hs-date">
-      <span className="hs-label">{label}</span>
+      <span className="hs-label"><Icon name="calendar" className="hs-ico" />{label}</span>
       <span className={`hs-value ${value ? "" : "is-empty"}`}>{value ? dayMonth.format(new Date(`${value}T00:00:00`)) : "اختر التاريخ"}</span>
       <input
         required type="date" value={value} min={min} aria-label={label} className="hs-date-input"
@@ -104,11 +104,11 @@ export default function HeroSearch() {
         <div className="hs-bar">
           <div className="hs-group">
             <button type="button" onClick={() => setOpen(true)} className="hs-field">
-              <span className="hs-label">الوجهة</span>
+              <span className="hs-label"><Icon name="pin" className="hs-ico" />الوجهة</span>
               <span className="hs-value">{dest ? <><span className={`fi fi-${dest.code} rounded-sm`} />{dest.name}</> : "اختر الوجهة"}</span>
             </button>
             <label className="hs-field">
-              <span className="hs-label">نوع التأشيرة</span>
+              <span className="hs-label"><Icon name="docs" className="hs-ico" />نوع التأشيرة</span>
               <select value={type} onChange={(e) => setType(e.target.value)} className="hs-select">
                 {types.map((t) => <option key={t}>{t}</option>)}
               </select>
@@ -120,11 +120,11 @@ export default function HeroSearch() {
       {tab === "hotel" && (
         <form onSubmit={goHotel} className="hs-bar hs-hotel">
           <div className="hs-group">
-            <label className="hs-field"><span className="hs-label">المدينة أو الوجهة</span><input required value={h.city} onChange={(e) => setH({ ...h, city: e.target.value })} placeholder="مثال: باريس" className="hs-input" /></label>
+            <label className="hs-field"><span className="hs-label"><Icon name="pin" className="hs-ico" />المدينة أو الوجهة</span><input required value={h.city} onChange={(e) => setH({ ...h, city: e.target.value })} placeholder="مثال: باريس" className="hs-input" /></label>
             <DateField label="الوصول" value={h.inn} onChange={(v) => setH({ ...h, inn: v })} />
             <DateField label="المغادرة" value={h.out} min={h.inn} onChange={(v) => setH({ ...h, out: v })} />
             <button type="button" onClick={() => setGuests(!guests)} aria-expanded={guests} className="hs-field hs-wide">
-              <span className="hs-label">النزلاء</span>
+              <span className="hs-label"><Icon name="users" className="hs-ico" />النزلاء</span>
               <span className="hs-people">{people}</span>
             </button>
           </div>
@@ -141,16 +141,16 @@ export default function HeroSearch() {
       {tab === "esim" && (
         <form onSubmit={goEsim} className="hs-bar hs-esim">
           <div className="hs-group">
-            <label className="hs-field"><span className="hs-label">وجهة السفر</span><input required value={sim.country} onChange={(e) => setSim({ ...sim, country: e.target.value })} placeholder="مثال: تركيا" className="hs-input" /></label>
-            <label className="hs-field hs-half"><span className="hs-label">مدة السفر</span><select value={sim.days} onChange={(e) => setSim({ ...sim, days: e.target.value })} className="hs-select">{TRIP_LENGTHS.map((d, i) => <option key={d} value={i}>{d}</option>)}</select></label>
-            <label className="hs-field hs-half"><span className="hs-label">عدد الشرائح</span><select value={sim.qty} onChange={(e) => setSim({ ...sim, qty: e.target.value })} className="hs-select">{["1", "2", "3", "4", "5"].map((n) => <option key={n}>{n}</option>)}</select></label>
+            <label className="hs-field"><span className="hs-label"><Icon name="pin" className="hs-ico" />وجهة السفر</span><input required value={sim.country} onChange={(e) => setSim({ ...sim, country: e.target.value })} placeholder="مثال: تركيا" className="hs-input" /></label>
+            <label className="hs-field hs-half"><span className="hs-label"><Icon name="clock" className="hs-ico" />مدة السفر</span><select value={sim.days} onChange={(e) => setSim({ ...sim, days: e.target.value })} className="hs-select">{TRIP_LENGTHS.map((d, i) => <option key={d} value={i}>{d}</option>)}</select></label>
+            <label className="hs-field hs-half"><span className="hs-label"><Icon name="sim" className="hs-ico" />عدد الشرائح</span><select value={sim.qty} onChange={(e) => setSim({ ...sim, qty: e.target.value })} className="hs-select">{["1", "2", "3", "4", "5"].map((n) => <option key={n}>{n}</option>)}</select></label>
           </div>
           <button type="submit" className="btn btn-primary hs-go">اطلب شريحتك <Icon name="arrow" className="h-5 w-5" /></button>
         </form>
       )}
       {tab === "pack" && (
         <div className="hs-bar hs-soon">
-          <div className="hs-group"><p className="hs-field"><span className="hs-label">بكجات السفر</span><span className="hs-value">قريباً</span></p></div>
+          <div className="hs-group"><p className="hs-field"><span className="hs-label"><Icon name="compass" className="hs-ico" />بكجات السفر</span><span className="hs-value">قريباً</span></p></div>
           <a href={waLink(site.whatsapp, "السلام عليكم، أرغب في الاستفسار عن بكجات السفر.")} target="_blank" rel="noopener" className="btn btn-primary hs-go">اسأل عن البكجات <Icon name="arrow" className="h-5 w-5" /></a>
         </div>
       )}
