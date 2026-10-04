@@ -369,7 +369,8 @@ body:has(.admin)::after { display: none; }
 .picker { position: fixed; inset: 0; z-index: 80; display: flex; align-items: flex-end; justify-content: center; background: rgba(4,12,26,.8); animation: pkfade .25s ease both; }
 .picker-panel { width: 100%; max-height: 88dvh; display: flex; flex-direction: column; padding: 1.2rem 1rem 1rem; border-radius: 26px 26px 0 0; background: #0b1f39; border: 1px solid rgba(99,182,234,.25); animation: pkup .35s cubic-bezier(.2,.8,.2,1) both; }
 @media (min-width: 768px) { .picker { align-items: center; padding: 2rem; } .picker-panel { max-width: 760px; max-height: 80dvh; border-radius: 26px; padding: 1.6rem; } }
-.picker-list { margin-top: .9rem; overflow-y: auto; overscroll-behavior: contain; display: grid; gap: .5rem; grid-template-columns: 1fr; align-content: start; padding-bottom: .5rem; }
+.picker-panel > :not(.picker-list) { flex-shrink: 0; }
+.picker-list { flex: 1 1 auto; min-height: 0; margin-top: .9rem; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(99,182,234,.35) transparent; display: grid; gap: .5rem; grid-template-columns: 1fr; align-content: start; padding-bottom: .5rem; }
 @media (min-width: 640px) { .picker-list { grid-template-columns: 1fr 1fr; } }
 .picker-item { display: flex; align-items: center; gap: .8rem; padding: .8rem .9rem; border-radius: 16px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.03); transition: border-color .25s, background .25s; }
 .picker-item:hover { border-color: rgba(99,182,234,.6); background: rgba(46,148,210,.1); }

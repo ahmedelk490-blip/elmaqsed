@@ -67,7 +67,6 @@ export default async function Footer() {
         <div className="container-x flex flex-col items-center gap-4 py-7 text-center text-sm md:flex-row md:justify-between md:text-start">
           <p className="text-mist/55">© {new Date().getFullYear()} · جميع الحقوق محفوظة</p>
           <Symbol className="hidden h-6 w-6 text-white/35 md:block" id="foot-mini" />
-          <a href="https://qmarketingeg.com/" target="_blank" rel="noopener" className="font-semibold text-white transition-colors hover:text-sky-2">تصميم وبرمجة شركة Q Marketing</a>
         </div>
       </div>
     </footer>
