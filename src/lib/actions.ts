@@ -136,7 +136,7 @@ export async function createBooking(input: { service: string; name: string; phon
   const list = await readBookings();
   const recent = Date.now() - 10 * 60 * 1000;
   if (list.filter((b) => Date.parse(b.at) > recent).length >= 40) return { ok: false };
-  const service = input.service === "hotel" ? "hotel" : input.service === "contact" ? "contact" : "visa";
+  const service = (["hotel", "esim", "contact"] as const).find((s) => s === input.service) ?? "visa";
   const rows = (Array.isArray(input.rows) ? input.rows : []).filter(Array.isArray).slice(0, 30).map(([k, v]) => [clip(k, 60), clip(v, 400)] as [string, string]);
   list.unshift({ id: `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 7)}`, at: new Date().toISOString(), status: "new", service, summary: clip(input.summary, 120), name: clip(input.name, 120), phone, email: clip(input.email, 160), rows });
   await writeBookings(list.slice(0, 3000));

@@ -1,5 +1,4 @@
 import Hero from "@/components/Hero";
-import Marquee from "@/components/Marquee";
 import Testimonials from "@/components/Testimonials";
 import Services from "@/components/Services";
 import Destinations from "@/components/Destinations";
@@ -28,7 +27,6 @@ export default async function Home() {
   return (
     <>
       <Hero />
-      <Marquee />
       <Services />
       <Destinations />
       <Process />

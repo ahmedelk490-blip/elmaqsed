@@ -2,13 +2,15 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useContent } from "./ContentProvider";
-import { waLink } from "@/lib/types";
+import { TRIP_LENGTHS, waLink } from "@/lib/types";
 import { submitBooking } from "@/lib/submit";
 import PriceNote from "./PriceNote";
+import Counter from "./Counter";
 
 const CITIES = ["الرياض", "جدة", "الدمام"];
 const HOTEL_CITIES = ["الرياض", "جدة", "مكة المكرمة", "دبي", "باريس", "لندن", "إسطنبول", "القاهرة"];
-const STEPS = { visa: ["تفاصيل الرحلة", "تفاصيل المسافرين", "المراجعة والإرسال"], hotel: ["تفاصيل الإقامة", "بياناتك", "المراجعة والإرسال"] };
+const STEPS = { visa: ["تفاصيل الرحلة", "تفاصيل المسافرين", "المراجعة والإرسال"], hotel: ["تفاصيل الإقامة", "بياناتك", "المراجعة والإرسال"], esim: ["تفاصيل الشريحة", "بياناتك", "المراجعة والإرسال"] };
+type Service = keyof typeof STEPS;
 type Row = [string, string];
 
 /** Re-mounts the form when the query changes (e.g. another destination picked on the booking page). */
@@ -17,60 +19,53 @@ export default function ApplyFlow() {
   return <Flow key={sp.toString()} sp={sp} />;
 }
 
-function Counter({ label, value, min, onChange }: { label: string; value: number; min: number; onChange: (n: number) => void }) {
-  return (
-    <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[.03] px-4 py-3">
-      <span className="text-sm font-semibold">{label}</span>
-      <span className="flex items-center gap-3">
-        <button type="button" onClick={() => onChange(Math.max(min, value - 1))} aria-label={`تقليل ${label}`} className="cnt-btn">−</button>
-        <b className="w-5 text-center">{value}</b>
-        <button type="button" onClick={() => onChange(Math.min(9, value + 1))} aria-label={`زيادة ${label}`} className="cnt-btn">+</button>
-      </span>
-    </div>
-  );
-}
-
-/** Booking in three steps. Visas: trip details, travellers, review. Hotels: stay details, contact, review. The last step sends a ready WhatsApp message. */
+/** Request in three steps. Visas: trip details, travellers, review. Hotels and eSIM: what is needed, contact, review. The last step saves the request and opens a ready WhatsApp message. */
 function Flow({ sp }: { sp: { get(name: string): string | null } }) {
   const { countries, site } = useContent();
   const first = countries.find((c) => c.slug === sp.get("dest"));
-  const [service, setService] = useState<"visa" | "hotel">(sp.get("service") === "hotel" ? "hotel" : "visa");
+  const asked = sp.get("service");
+  const [service, setService] = useState<Service>(asked === "hotel" || asked === "esim" ? asked : "visa");
   const [step, setStep] = useState(0);
   const [sent, setSent] = useState<false | "ok" | "fail">(false);
   const [busy, setBusy] = useState(false);
   const [dest, setDest] = useState(first?.slug ?? "");
   const [date, setDate] = useState("");
   const [city, setCity] = useState(CITIES[0]);
-  const [adults, setAdults] = useState(service === "hotel" ? parseInt(sp.get("guests") ?? "2") || 2 : 1);
-  const [kids, setKids] = useState(0);
+  const count = (k: string, fallback: number) => { const n = parseInt(sp.get(k) ?? "", 10); return Number.isFinite(n) ? Math.min(9, Math.max(0, n)) : fallback; };
+  const [adults, setAdults] = useState(Math.max(1, count("adults", service === "hotel" ? 2 : 1)));
+  const [kids, setKids] = useState(count("kids", 0));
+  const [infants, setInfants] = useState(count("infants", 0)); // under two: priced differently from children, so counted apart
   const [names, setNames] = useState<string[]>([]);
   const [h, setH] = useState({ city: sp.get("city") ?? "", inn: sp.get("in") ?? "", out: sp.get("out") ?? "", rooms: 1, stars: "لا يهم" });
+  const [sim, setSim] = useState({ country: sp.get("country") ?? "", start: "", days: TRIP_LENGTHS[Number(sp.get("days"))] ?? TRIP_LENGTHS[0], qty: Math.max(1, count("qty", 1)) });
   const [p, setP] = useState({ name: "", phone: "", email: "", nationality: "", status: first?.group === "للمقيمين" ? "مقيم في السعودية" : "مواطن سعودي", refused: "لا", notes: "" });
   const [today] = useState(() => new Date().toISOString().slice(0, 10));
   const onP = (k: keyof typeof p) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setP((x) => ({ ...x, [k]: e.target.value }));
 
   const c = countries.find((x) => x.slug === dest);
-  const visa = service === "visa";
+  const visa = service === "visa", esim = service === "esim";
   const appointment = !!c && !c.kind.includes("إلكترون");
   const total = adults + kids;
   const travellers = Array.from({ length: total }, (_, i) => names[i] ?? "");
   const steps = STEPS[service];
-  const ok0 = visa ? !!c && !!date : !!(h.city.trim() && h.inn && h.out);
+  const ok0 = visa ? !!c && !!date : esim ? !!sim.country.trim() : !!(h.city.trim() && h.inn && h.out);
   const ok1 = !!p.phone.trim() && (visa ? travellers.every((n) => n.trim()) : !!p.name.trim());
   const people = `${adults} بالغ${kids ? ` + ${kids} طفل` : ""}`;
 
   const trip: Row[] = visa
     ? [["الوجهة", c?.name ?? ""], ["نوع التأشيرة", c?.types[0] ?? "سياحية"], ["تاريخ السفر المتوقع", date], ...(appointment ? [["مدينة الموعد", city] as Row] : []), ["المسافرون", people]]
-    : [["مكان الإقامة", h.city], ["الوصول", h.inn], ["المغادرة", h.out], ["النزلاء", people], ["الغرف", String(h.rooms)], ["تصنيف الفندق", h.stars]];
-  const contact: Row[] = [...(visa ? [] : [["الاسم", p.name] as Row]), ["الجوال", p.phone], ...(p.email.trim() ? [["البريد", p.email.trim()] as Row] : []), ["الجنسية", p.nationality || "غير محدد"], ["الصفة", p.status], ...(visa ? [["رفض سابق", p.refused] as Row] : []), ...(p.notes.trim() ? [["ملاحظات", p.notes.trim()] as Row] : [])];
-  const lines = [visa ? "السلام عليكم، أرغب في حجز تأشيرة." : "السلام عليكم، أرغب في حجز فندق.", ...trip.map(([k, v]) => `${k}: ${v}`), ...(visa ? travellers.map((n, i) => `${i + 1}) ${n}${i >= adults ? " (طفل)" : ""}`) : []), ...contact.map(([k, v]) => `${k}: ${v}`)];
+    : esim
+      ? [["وجهة السفر", sim.country], ["تاريخ السفر", sim.start || "غير محدد"], ["مدة السفر", sim.days], ["عدد الشرائح", String(sim.qty)]]
+      : [["مكان الإقامة", h.city], ["الوصول", h.inn], ["المغادرة", h.out], ["البالغون", String(adults)], ["الأطفال", String(kids)], ["الرضّع (أقل من سنتين)", String(infants)], ["الغرف", String(h.rooms)], ["تصنيف الفندق", h.stars]];
+  const contact: Row[] = [...(visa ? [] : [["الاسم", p.name] as Row]), ["الجوال", p.phone], ...(p.email.trim() ? [["البريد", p.email.trim()] as Row] : []), ...(esim ? [] : [["الجنسية", p.nationality || "غير محدد"] as Row, ["الصفة", p.status] as Row]), ...(visa ? [["رفض سابق", p.refused] as Row] : []), ...(p.notes.trim() ? [["ملاحظات", p.notes.trim()] as Row] : [])];
+  const lines = [visa ? "السلام عليكم، أرغب في حجز تأشيرة." : esim ? "السلام عليكم، أرغب في طلب شريحة eSIM." : "السلام عليكم، أرغب في حجز فندق.", ...trip.map(([k, v]) => `${k}: ${v}`), ...(visa ? travellers.map((n, i) => `${i + 1}) ${n}${i >= adults ? " (طفل)" : ""}`) : []), ...contact.map(([k, v]) => `${k}: ${v}`)];
   const message = lines.join("\n");
   // WhatsApp opens at once (it must happen inside the click); the request is then saved for the dashboard and the visitor is told whether that worked
   const send = async () => {
     window.open(waLink(site.whatsapp, message), "_blank", "noopener");
     setBusy(true);
     const ok = await submitBooking({
-      service, name: visa ? travellers[0] : p.name, phone: p.phone, email: p.email, summary: visa ? `تأشيرة ${c?.name ?? ""}` : `فندق: ${h.city}`,
+      service, name: visa ? travellers[0] : p.name, phone: p.phone, email: p.email, summary: visa ? `تأشيرة ${c?.name ?? ""}` : esim ? `eSIM: ${sim.country}` : `فندق: ${h.city}`,
       rows: [...trip, ...(visa ? travellers.map((n, i) => [`المسافر ${i + 1}`, `${n}${i >= adults ? " (طفل)" : ""}`] as Row) : []), ...contact],
     });
     setBusy(false);
@@ -108,7 +103,8 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
         <div>
           <div className="hs-tabs" role="tablist" aria-label="الخدمة">
             <button type="button" role="tab" aria-selected={visa} onClick={() => setService("visa")} className={`hs-tab ${visa ? "is-on" : ""}`}>تأشيرة</button>
-            <button type="button" role="tab" aria-selected={!visa} onClick={() => setService("hotel")} className={`hs-tab ${!visa ? "is-on" : ""}`}>فندق</button>
+            <button type="button" role="tab" aria-selected={service === "hotel"} onClick={() => setService("hotel")} className={`hs-tab ${service === "hotel" ? "is-on" : ""}`}>فندق</button>
+            <button type="button" role="tab" aria-selected={esim} onClick={() => setService("esim")} className={`hs-tab ${esim ? "is-on" : ""}`}>eSIM</button>
           </div>
           {visa ? (
             <>
@@ -143,6 +139,18 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
                 <Counter label="أطفال" value={kids} min={0} onChange={setKids} />
               </div>
             </>
+          ) : esim ? (
+            <>
+              <div className="mt-2 grid gap-4 sm:grid-cols-2">
+                <label className="fl"><span>وجهة السفر</span><input className="field" value={sim.country} onChange={(e) => setSim({ ...sim, country: e.target.value })} placeholder="مثال: تركيا" /></label>
+                <label className="fl"><span>تاريخ السفر (اختياري)</span><input className="field" type="date" min={today} value={sim.start} onChange={(e) => setSim({ ...sim, start: e.target.value })} /></label>
+                <label className="fl"><span>مدة السفر</span>
+                  <select className="field" value={sim.days} onChange={(e) => setSim({ ...sim, days: e.target.value })}>{TRIP_LENGTHS.map((d) => <option key={d}>{d}</option>)}</select>
+                </label>
+                <div className="self-end"><Counter label="عدد الشرائح" value={sim.qty} min={1} onChange={(n) => setSim({ ...sim, qty: n })} /></div>
+              </div>
+              <p className="bk-info mt-5">شريحة eSIM تعمل على الجوالات التي تدعمها فقط. تأكد من جوالك قبل الطلب، أو اسألنا ونتحقق معك.</p>
+            </>
           ) : (
             <>
               <label className="fl mt-2"><span>مكان الإقامة</span><input className="field" value={h.city} onChange={(e) => setH({ ...h, city: e.target.value })} placeholder="المدينة أو اسم الفندق" /></label>
@@ -153,9 +161,10 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
                 <label className="fl"><span>تاريخ الوصول</span><input className="field" type="date" min={today} value={h.inn} onChange={(e) => setH({ ...h, inn: e.target.value })} /></label>
                 <label className="fl"><span>تاريخ المغادرة</span><input className="field" type="date" min={h.inn || today} value={h.out} onChange={(e) => setH({ ...h, out: e.target.value })} /></label>
               </div>
-              <div className="mt-5 grid gap-2.5 sm:grid-cols-3">
+              <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
                 <Counter label="بالغون" value={adults} min={1} onChange={setAdults} />
-                <Counter label="أطفال" value={kids} min={0} onChange={setKids} />
+                <Counter label="أطفال" hint="من 2 إلى 11 سنة" value={kids} min={0} onChange={setKids} />
+                <Counter label="رضّع" hint="أقل من سنتين" value={infants} min={0} onChange={setInfants} />
                 <Counter label="غرف" value={h.rooms} min={1} onChange={(n) => setH({ ...h, rooms: n })} />
               </div>
               <label className="fl mt-5 sm:max-w-xs"><span>تصنيف الفندق</span>
@@ -187,8 +196,12 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
             {!visa && <label className="fl"><span>الاسم الكامل</span><input className="field" value={p.name} onChange={onP("name")} autoComplete="name" /></label>}
             <label className="fl"><span>رقم الجوال</span><input className="field" type="tel" dir="ltr" value={p.phone} onChange={onP("phone")} autoComplete="tel" placeholder="05xxxxxxxx" /></label>
             <label className="fl"><span>البريد الإلكتروني (اختياري)</span><input className="field" type="email" dir="ltr" value={p.email} onChange={onP("email")} autoComplete="email" /></label>
-            <label className="fl"><span>الجنسية</span><input className="field" value={p.nationality} onChange={onP("nationality")} /></label>
-            <label className="fl"><span>الصفة</span><select className="field" value={p.status} onChange={onP("status")}>{["مواطن سعودي", "مقيم في السعودية", "زائر"].map((s) => <option key={s}>{s}</option>)}</select></label>
+            {!esim && (
+              <>
+                <label className="fl"><span>الجنسية</span><input className="field" value={p.nationality} onChange={onP("nationality")} /></label>
+                <label className="fl"><span>الصفة</span><select className="field" value={p.status} onChange={onP("status")}>{["مواطن سعودي", "مقيم في السعودية", "زائر"].map((s) => <option key={s}>{s}</option>)}</select></label>
+              </>
+            )}
             {visa && (
               <label className="fl"><span>هل سبق رفض تأشيرتك؟</span>
                 <select className="field" value={p.refused} onChange={onP("refused")}><option value="لا">لا، لم يسبق</option><option value="نعم">نعم، سبق رفضها</option></select>

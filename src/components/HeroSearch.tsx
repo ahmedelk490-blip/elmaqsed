@@ -5,10 +5,12 @@ import { useRouter } from "next/navigation";
 import { useLenis } from "lenis/react";
 import { useContent } from "./ContentProvider";
 import { Icon } from "./Icons";
-import type { Country } from "@/lib/types";
+import { TRIP_LENGTHS, waLink, type Country } from "@/lib/types";
+import Counter from "./Counter";
 
 const GROUPS = ["الكل", "شنغن", "للمقيمين", "وجهات أخرى"];
 export const inGroup = (c: Country, g: string) => g === "الكل" || (g === "وجهات أخرى" ? !c.group : c.group === g);
+const TABS = [["visa", "تأشيرات"], ["hotel", "فنادق"], ["esim", "eSIM"], ["pack", "بكجات"]] as const;
 
 /** "Where do you want to go?": searchable list of destinations. Bottom sheet on phones, centred dialog on desktop. */
 function Picker({ onPick, onClose }: { onPick: (c: Country) => void; onClose: () => void }) {
@@ -50,29 +52,38 @@ function Picker({ onPick, onClose }: { onPick: (c: Country) => void; onClose: ()
   );
 }
 
-/** Hero search: pick the service, the destination and the visa type, then go straight to the application form. */
+/** Hero search: pick the service (visa, hotel, eSIM, packages), fill the few fields that matter, and land on the request form with them. */
 export default function HeroSearch() {
   const router = useRouter();
-  const [tab, setTab] = useState<"visa" | "hotel">("visa");
+  const { site } = useContent();
+  const [tab, setTab] = useState<(typeof TABS)[number][0]>("visa");
   const [open, setOpen] = useState(false);
   const [dest, setDest] = useState<Country | null>(null);
-  const [type, setType] = useState("");
-  const [h, setH] = useState({ city: "", inn: "", out: "", guests: "2" });
+  const [type, setType] = useState("سياحية");
+  const [h, setH] = useState({ city: "", inn: "", out: "", adults: 2, kids: 0, infants: 0 });
+  const [guests, setGuests] = useState(false); // the guests panel under the hotel fields
+  const [sim, setSim] = useState({ country: "", days: "0", qty: "1" });
+  const types = dest?.types.length ? dest.types : ["سياحية"]; // tourist visas only, so the field is never empty
+  const people = `${h.adults} بالغ${h.kids ? ` · ${h.kids} طفل` : ""}${h.infants ? ` · ${h.infants} رضيع` : ""}`;
+  const book = (params: Record<string, string>) => router.push(`/booking?${new URLSearchParams(params)}`);
   const goVisa = () => {
     if (!dest) { setOpen(true); return; }
-    router.push(`/booking?dest=${dest.slug}`);
+    book({ dest: dest.slug });
   };
   const goHotel = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push(`/booking?${new URLSearchParams({ service: "hotel", city: h.city, in: h.inn, out: h.out, guests: h.guests })}`);
+    book({ service: "hotel", city: h.city, in: h.inn, out: h.out, adults: String(h.adults), kids: String(h.kids), infants: String(h.infants) });
+  };
+  const goEsim = (e: React.FormEvent) => {
+    e.preventDefault();
+    book({ service: "esim", country: sim.country, days: sim.days, qty: sim.qty });
   };
   return (
-    <div className="hs beam">
+    <div className="hs on-light beam">
       <div className="hs-tabs" role="tablist" aria-label="الخدمة">
-        <button type="button" role="tab" aria-selected={tab === "visa"} onClick={() => setTab("visa")} className={`hs-tab ${tab === "visa" ? "is-on" : ""}`}>تأشيرات</button>
-        <button type="button" role="tab" aria-selected={tab === "hotel"} onClick={() => setTab("hotel")} className={`hs-tab ${tab === "hotel" ? "is-on" : ""}`}>فنادق</button>
+        {TABS.map(([k, label]) => <button key={k} type="button" role="tab" aria-selected={tab === k} onClick={() => setTab(k)} className={`hs-tab ${tab === k ? "is-on" : ""}`}>{label}</button>)}
       </div>
-      {tab === "visa" ? (
+      {tab === "visa" && (
         <div className="hs-bar">
           <button type="button" onClick={() => setOpen(true)} className="hs-field">
             <span className="hs-label">الوجهة</span>
@@ -80,22 +91,47 @@ export default function HeroSearch() {
           </button>
           <label className="hs-field">
             <span className="hs-label">نوع التأشيرة</span>
-            <select value={type} onChange={(e) => setType(e.target.value)} disabled={!dest} className="hs-select">
-              {dest ? dest.types.map((t) => <option key={t}>{t}</option>) : <option value="">اختر الوجهة أولاً</option>}
+            <select value={type} onChange={(e) => setType(e.target.value)} className="hs-select">
+              {types.map((t) => <option key={t}>{t}</option>)}
             </select>
           </label>
           <button type="button" onClick={goVisa} className="btn btn-primary hs-go">قدّم الآن <Icon name="arrow" className="h-5 w-5" /></button>
         </div>
-      ) : (
+      )}
+      {tab === "hotel" && (
         <form onSubmit={goHotel} className="hs-bar hs-hotel">
           <label className="hs-field"><span className="hs-label">المدينة أو الوجهة</span><input required value={h.city} onChange={(e) => setH({ ...h, city: e.target.value })} placeholder="مثال: باريس" className="hs-input" /></label>
           <label className="hs-field"><span className="hs-label">الوصول</span><input required type="date" value={h.inn} onChange={(e) => setH({ ...h, inn: e.target.value })} className="hs-input" /></label>
           <label className="hs-field"><span className="hs-label">المغادرة</span><input required type="date" min={h.inn} value={h.out} onChange={(e) => setH({ ...h, out: e.target.value })} className="hs-input" /></label>
-          <label className="hs-field"><span className="hs-label">النزلاء</span><select value={h.guests} onChange={(e) => setH({ ...h, guests: e.target.value })} className="hs-select">{["1", "2", "3", "4", "5", "6+"].map((n) => <option key={n}>{n}</option>)}</select></label>
+          <button type="button" onClick={() => setGuests(!guests)} aria-expanded={guests} className="hs-field hs-wide">
+            <span className="hs-label">النزلاء</span>
+            <span className="hs-people">{people}</span>
+          </button>
           <button type="submit" className="btn btn-primary hs-go">اطلب عرضاً <Icon name="arrow" className="h-5 w-5" /></button>
+          {guests && (
+            <div className="hs-guests">
+              <Counter label="بالغون" value={h.adults} min={1} onChange={(n) => setH({ ...h, adults: n })} />
+              <Counter label="أطفال" hint="من 2 إلى 11 سنة" value={h.kids} min={0} onChange={(n) => setH({ ...h, kids: n })} />
+              <Counter label="رضّع" hint="أقل من سنتين" value={h.infants} min={0} onChange={(n) => setH({ ...h, infants: n })} />
+            </div>
+          )}
         </form>
       )}
-      {open && <Picker onPick={(c) => { setDest(c); setType(c.types[0] ?? ""); setOpen(false); }} onClose={() => setOpen(false)} />}
+      {tab === "esim" && (
+        <form onSubmit={goEsim} className="hs-bar hs-esim">
+          <label className="hs-field"><span className="hs-label">وجهة السفر</span><input required value={sim.country} onChange={(e) => setSim({ ...sim, country: e.target.value })} placeholder="مثال: تركيا" className="hs-input" /></label>
+          <label className="hs-field"><span className="hs-label">مدة السفر</span><select value={sim.days} onChange={(e) => setSim({ ...sim, days: e.target.value })} className="hs-select">{TRIP_LENGTHS.map((d, i) => <option key={d} value={i}>{d}</option>)}</select></label>
+          <label className="hs-field"><span className="hs-label">عدد الشرائح</span><select value={sim.qty} onChange={(e) => setSim({ ...sim, qty: e.target.value })} className="hs-select">{["1", "2", "3", "4", "5"].map((n) => <option key={n}>{n}</option>)}</select></label>
+          <button type="submit" className="btn btn-primary hs-go">اطلب شريحتك <Icon name="arrow" className="h-5 w-5" /></button>
+        </form>
+      )}
+      {tab === "pack" && (
+        <div className="hs-bar hs-soon">
+          <p className="hs-field"><span className="hs-label">بكجات السفر</span><span className="hs-value">قريباً</span></p>
+          <a href={waLink(site.whatsapp, "السلام عليكم، أرغب في الاستفسار عن بكجات السفر.")} target="_blank" rel="noopener" className="btn btn-primary hs-go">اسأل عن البكجات <Icon name="arrow" className="h-5 w-5" /></a>
+        </div>
+      )}
+      {open && <Picker onPick={(c) => { setDest(c); setType(c.types[0] ?? "سياحية"); setOpen(false); }} onClose={() => setOpen(false)} />}
     </div>
   );
 }

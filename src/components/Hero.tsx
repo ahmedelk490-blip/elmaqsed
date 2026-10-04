@@ -11,16 +11,7 @@ import { useContent } from "./ContentProvider";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
-const CHIPS: [string, string, string][] = [
-  ["fr", "فرنسا", "-left-36 top-0 hidden md:inline-flex"],
-  ["us", "أمريكا", "-right-40 top-8 hidden md:inline-flex"],
-  ["gb", "بريطانيا", "-left-28 bottom-0 hidden md:inline-flex"],
-  ["ae", "الإمارات", "-right-32 -bottom-8 hidden md:inline-flex"],
-  ["tr", "تركيا", "chip-far -left-56 top-24 hidden lg:inline-flex"],
-  ["my", "ماليزيا", "chip-far -right-60 -top-10 hidden lg:inline-flex"],
-];
-
-/** Brand hero: the symbol's arrows converge on one point, approvals float around it, then the visitor searches for a visa or a hotel. */
+/** Brand hero: the symbol's arrows converge on one point, then the visitor searches for a visa or a hotel. */
 export default function Hero() {
   const { site } = useContent();
   const ref = useRef<HTMLElement>(null);
@@ -58,7 +49,6 @@ export default function Hero() {
         // idle life
         gsap.to(".sym-glow", { opacity: 0.6, scale: 1.15, duration: 2.6, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 2.5 });
         gsap.to(symRef.current, { y: -10, duration: 3, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 2.5 });
-        gsap.to(".chip", { y: "random(-9, 9)", x: "random(-5, 5)", duration: "random(2.5, 4)", yoyo: true, repeat: -1, ease: "sine.inOut", stagger: 0.5, delay: 2.5 });
 
         // the symbol tilts in 3D toward the pointer
         const rY = gsap.quickTo(".sym-tilt", "rotationY", { duration: 0.9, ease: "power3" });
@@ -94,12 +84,9 @@ export default function Hero() {
       <div className="hero-content container-x relative flex flex-col items-center py-6 text-center md:py-6">
         <p data-h className="pill mb-5 hidden md:inline-flex"><i />{site.nameEn} · Visa Consulting</p>
 
-        <div ref={symRef} className="relative mb-6 w-[min(30vw,120px)] md:mb-7 md:w-[180px]" style={{ perspective: 800 }}>
+        <div ref={symRef} className="relative mb-4 w-[min(22vw,84px)] md:mb-5 md:w-[116px]" style={{ perspective: 800 }}>
           <div className="ignite absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,.95),rgba(46,148,210,.6)_35%,transparent_70%)]" />
           <div className="sym-glow absolute inset-[-45%] rounded-full bg-[radial-gradient(circle,rgba(46,148,210,.5),transparent_65%)]" />
-          {CHIPS.map(([code, name, pos]) => (
-            <span key={code} data-h className={`chip absolute ${pos}`}><i /><span className={`fi fi-${code} rounded-sm`} />{name} · موافقة</span>
-          ))}
           <div className="sym-tilt relative" style={{ transformStyle: "preserve-3d" }}>
             <Symbol className="sym-svg w-full text-white" id="hero" />
           </div>
@@ -113,7 +100,7 @@ export default function Hero() {
         <p data-h className="mt-4 max-w-2xl text-[15px] leading-7 text-mist/85 md:mt-5 md:text-lg md:leading-8">
           استشارات تأشيرات السفر وتجهيز الطلبات باحترافية: نقيّم ملفك بصدق، نجهّز مستنداتك بدقة، ونرافقك خطوة بخطوة حتى تصل إلى مقصدك.
         </p>
-        <div data-h className="mt-6 w-full max-w-4xl md:mt-6"><HeroSearch /></div>
+        <div data-h className="mt-7 w-full min-w-0 max-w-5xl md:mt-8"><HeroSearch /></div>
         <ul data-h className="mt-6 flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-mist/70">
           <li>✓ شركة استشارية مرخصة</li>
           <li>✓ رد خلال 24 ساعة</li>

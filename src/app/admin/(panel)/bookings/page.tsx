@@ -10,7 +10,7 @@ const STATUS: Record<string, [string, string]> = {
   done: ["مكتمل", "bg-[#d1fae5] text-[#065f46]"],
   cancelled: ["ملغي", "bg-[#e2e8f0] text-[#475569]"],
 };
-const SERVICE: Record<string, string> = { visa: "تأشيرة", hotel: "فندق", contact: "استشارة" };
+const SERVICE: Record<string, string> = { visa: "تأشيرة", hotel: "فندق", esim: "eSIM", contact: "استشارة" };
 const when = (iso: string) => new Date(iso).toLocaleString("ar-SA-u-nu-latn-ca-gregory", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Riyadh" });
 const wa = (p: string) => p.replace(/\D/g, "").replace(/^0/, "966");
 

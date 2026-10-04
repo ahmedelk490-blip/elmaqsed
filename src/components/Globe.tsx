@@ -8,10 +8,13 @@ const dests: [number, number][] = [
   [48.21, 16.37], [47.5, 19.04], [37.98, 23.73], [38.72, -9.14], [38.9, -77.04], [51.5, -0.12], [3.14, 101.69], [41.0, 28.97],
   [-4.62, 55.45], [30.04, 31.24], [-6.2, 106.85], [25.2, 55.27], [25.29, 51.53], [26.22, 50.59],
 ];
+// The fixed pose: Arabia just right of centre, Europe up-left, South-East Asia towards the right edge.
+const HOME = { phi: 4.01, theta: 0.33 };
 
 /**
- * Dotted globe with flight arcs out of Riyadh. Drag it left/right to spin (with inertia); renders only while on screen.
- * If the browser has no WebGL or the GPU drops the context, a drawn globe is shown instead and the canvas is retried twice.
+ * Brand-navy dotted globe with flight arcs out of Riyadh, held in one pose: it turns into place when it first appears,
+ * springs back after a drag, and then stops drawing. If the browser has no WebGL or the GPU drops the context, a drawn
+ * globe is shown instead and the canvas is retried twice.
  */
 export default function Globe({ className = "" }: { className?: string }) {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -26,7 +29,7 @@ export default function Globe({ className = "" }: { className?: string }) {
     // cobe multiplies width/height by devicePixelRatio itself. Never below 1: a scaled-down preview reports less and turned the globe to mush.
     const dpr = Math.min(Math.max(window.devicePixelRatio || 1, 1), 2);
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let phi = 4.2, velocity = 0, dragging = false, lastX = 0, raf = 0, visible = false, retry = 0;
+    let phi = still ? HOME.phi : HOME.phi - 0.8, velocity = 0, dragging = false, lastX = 0, raf = 0, visible = false, awake = 0, retry = 0;
     let globe: ReturnType<typeof createGlobe> | null = null;
 
     const fail = () => {
@@ -35,37 +38,44 @@ export default function Globe({ className = "" }: { className?: string }) {
       if (tries.current++ < 2) retry = window.setTimeout(() => { setDead(false); setGen((g) => g + 1); }, 2500);
     };
     try {
+      // dark mode paints the sphere at a tenth of baseColor, so these values give a flat brand-navy body with azure land dots
       globe = createGlobe(el, {
-        devicePixelRatio: dpr, width: size, height: size, phi, theta: 0.28, dark: 1, diffuse: 1.4,
-        mapSamples: 12000, mapBrightness: 5, baseColor: [0.08, 0.2, 0.38], markerColor: [0.39, 0.71, 0.92], glowColor: [0.08, 0.28, 0.55],
-        markers: [...dests.map((location) => ({ location, size: 0.05 })), { location: RIYADH, size: 0.1 }],
-        arcs: dests.map((to) => ({ from: RIYADH, to })), arcColor: [0.39, 0.71, 0.92], arcWidth: 0.6, arcHeight: 0.35,
+        devicePixelRatio: dpr, width: size, height: size, phi, theta: HOME.theta, dark: 1, diffuse: 1.2,
+        mapSamples: 16000, mapBrightness: 0.55, baseColor: [0.5, 1.1, 2.1], markerColor: [0.62, 0.84, 1], glowColor: [0.6, 0.8, 1],
+        markers: [...dests.map((location) => ({ location, size: 0.03 })), { location: RIYADH, size: 0.07, color: [1, 1, 1] as [number, number, number] }],
+        // light arcs: clear over the navy sphere, and they fade into the pale background where they pass its edge
+        arcs: dests.map((to) => ({ from: RIYADH, to })), arcColor: [0.62, 0.84, 1], arcWidth: 0.45, arcHeight: 0.2, markerElevation: 0,
       });
     } catch {
       queueMicrotask(fail);
       return () => clearTimeout(retry);
     }
     const g = globe;
-    const tick = () => {
-      if (!dragging) { phi += (still ? 0 : 0.003) + velocity; velocity *= 0.94; }
+    const tick = (now: number) => {
+      raf = 0;
+      if (!dragging) { velocity *= 0.92; phi += velocity + (HOME.phi - phi) * 0.06; }
       g.update({ phi });
-      raf = requestAnimationFrame(tick);
+      // settled = static: nothing is drawn again until a drag, a resize or the next time it scrolls into view
+      if (visible && (dragging || now < awake || Math.abs(HOME.phi - phi) > 0.002 || Math.abs(velocity) > 0.0005)) raf = requestAnimationFrame(tick);
     };
-    const start = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); };
-    const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) start(); else cancelAnimationFrame(raf); });
+    const wake = (ms = 400) => { awake = performance.now() + ms; if (visible && !raf) raf = requestAnimationFrame(tick); };
+    const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) wake(1500); else { cancelAnimationFrame(raf); raf = 0; } });
     io.observe(el);
     // keep the drawing buffer matched to the box (rotation, a late layout, a resized window)
-    const ro = new ResizeObserver(() => { const s = el.offsetWidth; if (s && s !== size) { size = s; g.update({ width: s, height: s }); } });
+    const ro = new ResizeObserver(() => { const s = el.offsetWidth; if (s && s !== size) { size = s; g.update({ width: s, height: s }); wake(); } });
     ro.observe(el);
     const lost = (e: Event) => { e.preventDefault(); fail(); };
-    const down = (e: PointerEvent) => { dragging = true; lastX = e.clientX; velocity = 0; el.style.cursor = "grabbing"; el.setPointerCapture(e.pointerId); };
+    const down = (e: PointerEvent) => { dragging = true; lastX = e.clientX; velocity = 0; el.style.cursor = "grabbing"; el.setPointerCapture(e.pointerId); wake(); };
     const move = (e: PointerEvent) => {
       if (!dragging) return;
       const d = (e.clientX - lastX) * 0.006;
       lastX = e.clientX; phi += d; velocity = d;
-      if (!visible) g.update({ phi });
     };
-    const up = () => { dragging = false; el.style.cursor = "grab"; };
+    const up = () => {
+      dragging = false; el.style.cursor = "grab";
+      phi = HOME.phi + ((((phi - HOME.phi + Math.PI) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)) - Math.PI; // go home the short way round
+      wake();
+    };
     el.addEventListener("webglcontextlost", lost);
     el.addEventListener("pointerdown", down);
     el.addEventListener("pointermove", move);

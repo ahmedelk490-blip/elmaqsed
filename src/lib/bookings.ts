@@ -3,7 +3,7 @@ import os from "os";
 import path from "path";
 
 export type Booking = {
-  id: string; at: string; status: "new" | "contacted" | "done" | "cancelled"; service: "visa" | "hotel" | "contact";
+  id: string; at: string; status: "new" | "contacted" | "done" | "cancelled"; service: "visa" | "hotel" | "esim" | "contact";
   summary: string; name: string; phone: string; email: string; rows: [string, string][];
 };
 

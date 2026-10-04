@@ -20,3 +20,6 @@ export type Content = {
 
 export const waLink = (whatsapp: string, msg = "السلام عليكم، أرغب في استشارة بخصوص تأشيرة السفر") =>
   `https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`;
+
+// eSIM requests ask how long the trip is; the hero passes the index, the booking form shows the text
+export const TRIP_LENGTHS = ["حتى 7 أيام", "8 – 15 يوماً", "16 – 30 يوماً", "أكثر من شهر"];
