@@ -10,7 +10,7 @@ export function Glance({ c, t }: { c: Country; t: DestTheme }) {
     <section className="relative py-14 md:py-20">
       <div className="container-x">
         <Reveal><SectionHead eyebrow="At a glance" title={`${c.name} في سطور`} /></Reveal>
-        <Reveal className="-mt-6 grid grid-cols-2 gap-3 md:grid-cols-5">
+        <Reveal className="-mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
           {items.map(([k, v], i) => (
             <div key={k} data-r className={`card p-5 ${i === 4 ? "col-span-2 md:col-span-1" : ""}`}>
               <span className="mb-3 block h-1 w-8 rounded-full bg-[var(--accent)]" />
