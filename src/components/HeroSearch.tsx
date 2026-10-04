@@ -116,7 +116,7 @@ export default function HeroSearch() {
       {tab === "visa" && (
         <div className="hs-bar">
           <div className="hs-group">
-            <button type="button" onClick={() => setOpen("visa")} className="hs-field">
+            <button type="button" onClick={() => setOpen("visa")} aria-haspopup="dialog" className="hs-field">
               <span className="hs-label"><Icon name="pin" className="hs-ico" />الوجهة</span>
               <span className="hs-value">{dest ? <><span className={`fi fi-${dest.code} rounded-sm`} />{dest.name}</> : "اختر الوجهة"}</span>
             </button>
@@ -154,7 +154,7 @@ export default function HeroSearch() {
       {tab === "esim" && (
         <form onSubmit={goEsim} className="hs-bar hs-esim">
           <div className="hs-group">
-            <button type="button" onClick={() => setOpen("esim")} className="hs-field">
+            <button type="button" onClick={() => setOpen("esim")} aria-haspopup="dialog" className="hs-field">
               <span className="hs-label"><Icon name="pin" className="hs-ico" />وجهة السفر</span>
               <span className="hs-value">{sim.country ? <>{simDest && <span className={`fi fi-${simDest.code} rounded-sm`} />}{sim.country}</> : "اختر الوجهة"}</span>
             </button>

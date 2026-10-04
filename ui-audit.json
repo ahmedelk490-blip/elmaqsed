@@ -1,0 +1,155 @@
+{
+  "name": "elmaqsed",
+  "build": "npm run build",
+  "start": "npx next start -p 3599",
+  "url": "http://localhost:3599",
+  "live": "https://elmaqsed.com",
+  "widths": [
+    336,
+    375,
+    414,
+    768,
+    1024,
+    1280
+  ],
+  "fullWidths": [
+    336
+  ],
+  "ignore": [
+    "[aria-hidden=\"true\"]",
+    ".ghost",
+    ".marquee",
+    ".dtrack",
+    ".mtrack",
+    ".orb",
+    ".ripple-ring",
+    ".sym-glow",
+    ".ignite"
+  ],
+  "pages": [
+    "/",
+    "/services",
+    "/destinations",
+    "/process",
+    "/about",
+    "/faq",
+    "/contact",
+    "/booking",
+    "/visa/france",
+    "/visa/uk",
+    "/visa/turkey",
+    "/visa/malaysia",
+    "/visa/uae",
+    "/admin/login"
+  ],
+  "discover": [
+    "/",
+    "/booking"
+  ],
+  "discoverWidths": [
+    336,
+    768
+  ],
+  "states": [
+    {
+      "name": "visa-picker",
+      "page": "/",
+      "steps": [
+        {
+          "click": ".hs-bar .hs-field >> nth=0"
+        }
+      ]
+    },
+    {
+      "name": "hotel-guests",
+      "page": "/",
+      "steps": [
+        {
+          "click": ".hs-tab >> nth=1"
+        },
+        {
+          "click": ".hs-wide"
+        }
+      ]
+    },
+    {
+      "name": "esim-picker",
+      "page": "/",
+      "steps": [
+        {
+          "click": ".hs-tab >> nth=2"
+        },
+        {
+          "click": ".hs-esim .hs-field >> nth=0"
+        }
+      ]
+    },
+    {
+      "name": "packages",
+      "page": "/",
+      "steps": [
+        {
+          "click": ".hs-tab >> nth=3"
+        }
+      ]
+    },
+    {
+      "name": "menu",
+      "page": "/",
+      "maxWidth": 1023,
+      "steps": [
+        {
+          "click": ".hdr-burger"
+        }
+      ]
+    },
+    {
+      "name": "booking-hotel",
+      "page": "/booking?service=hotel"
+    },
+    {
+      "name": "booking-esim",
+      "page": "/booking?service=esim"
+    },
+    {
+      "name": "booking-visa-travellers",
+      "page": "/booking?dest=france",
+      "steps": [
+        {
+          "fill": [
+            "#form input[type=date]",
+            "2027-01-20"
+          ]
+        },
+        {
+          "click": "#form button:has-text(\"حفظ واستمرار\")"
+        }
+      ]
+    },
+    {
+      "name": "booking-hotel-review",
+      "page": "/booking?service=hotel&city=Dubai&in=2027-01-20&out=2027-01-25&adults=2&kids=1&infants=1",
+      "steps": [
+        {
+          "click": "#form button:has-text(\"حفظ واستمرار\")"
+        },
+        {
+          "fill": [
+            "#form input >> nth=0",
+            "Test"
+          ]
+        },
+        {
+          "fill": [
+            "#form input[type=tel]",
+            "0500000000"
+          ]
+        },
+        {
+          "click": "#form button:has-text(\"حفظ واستمرار\")"
+        }
+      ]
+    }
+  ],
+  "allow": []
+}
