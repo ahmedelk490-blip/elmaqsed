@@ -163,8 +163,8 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
               </div>
               <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
                 <Counter label="بالغون" value={adults} min={1} onChange={setAdults} />
-                <Counter label="أطفال" hint="من 2 إلى 11 سنة" value={kids} min={0} onChange={setKids} />
-                <Counter label="رضّع" hint="أقل من سنتين" value={infants} min={0} onChange={setInfants} />
+                <Counter label="أطفال" hint="2 – 11 سنة" value={kids} min={0} onChange={setKids} />
+                <Counter label="رضّع" hint="دون سنتين" value={infants} min={0} onChange={setInfants} />
                 <Counter label="غرف" value={h.rooms} min={1} onChange={(n) => setH({ ...h, rooms: n })} />
               </div>
               <label className="fl mt-5 sm:max-w-xs"><span>تصنيف الفندق</span>

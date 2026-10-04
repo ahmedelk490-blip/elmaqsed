@@ -111,8 +111,8 @@ export default function HeroSearch() {
           {guests && (
             <div className="hs-guests">
               <Counter label="بالغون" value={h.adults} min={1} onChange={(n) => setH({ ...h, adults: n })} />
-              <Counter label="أطفال" hint="من 2 إلى 11 سنة" value={h.kids} min={0} onChange={(n) => setH({ ...h, kids: n })} />
-              <Counter label="رضّع" hint="أقل من سنتين" value={h.infants} min={0} onChange={(n) => setH({ ...h, infants: n })} />
+              <Counter label="أطفال" hint="2 – 11 سنة" value={h.kids} min={0} onChange={(n) => setH({ ...h, kids: n })} />
+              <Counter label="رضّع" hint="دون سنتين" value={h.infants} min={0} onChange={(n) => setH({ ...h, infants: n })} />
             </div>
           )}
         </form>
