@@ -6,6 +6,7 @@ import { TRIP_LENGTHS, waLink } from "@/lib/types";
 import { submitBooking } from "@/lib/submit";
 import PriceNote from "./PriceNote";
 import Counter from "./Counter";
+import NationalitySelect from "./NationalitySelect";
 
 const CITIES = ["الرياض", "جدة", "الدمام"];
 const HOTEL_CITIES = ["الرياض", "جدة", "مكة المكرمة", "دبي", "باريس", "لندن", "إسطنبول", "القاهرة"];
@@ -21,7 +22,7 @@ export default function ApplyFlow() {
 
 /** Request in three steps. Visas: trip details, travellers, review. Hotels and eSIM: what is needed, contact, review. The last step saves the request and opens a ready WhatsApp message. */
 function Flow({ sp }: { sp: { get(name: string): string | null } }) {
-  const { countries, site } = useContent();
+  const { countries, site, esim: simDests = [] } = useContent();
   const first = countries.find((c) => c.slug === sp.get("dest"));
   const asked = sp.get("service");
   const [service, setService] = useState<Service>(asked === "hotel" || asked === "esim" ? asked : "visa");
@@ -31,14 +32,15 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
   const [dest, setDest] = useState(first?.slug ?? "");
   const [date, setDate] = useState("");
   const [city, setCity] = useState(CITIES[0]);
-  const count = (k: string, fallback: number) => { const n = parseInt(sp.get(k) ?? "", 10); return Number.isFinite(n) ? Math.min(9, Math.max(0, n)) : fallback; };
+  const count = (k: string, fallback: number) => { const n = parseInt(sp.get(k) ?? "", 10); return Number.isFinite(n) ? Math.min(20, Math.max(0, n)) : fallback; };
   const [adults, setAdults] = useState(Math.max(1, count("adults", service === "hotel" ? 2 : 1)));
   const [kids, setKids] = useState(count("kids", 0));
   const [infants, setInfants] = useState(count("infants", 0)); // under two: priced differently from children, so counted apart
   const [names, setNames] = useState<string[]>([]);
   const [h, setH] = useState({ city: sp.get("city") ?? "", inn: sp.get("in") ?? "", out: sp.get("out") ?? "", rooms: 1, stars: "لا يهم" });
   const [sim, setSim] = useState({ country: sp.get("country") ?? "", start: "", days: TRIP_LENGTHS[Number(sp.get("days"))] ?? TRIP_LENGTHS[0], qty: Math.max(1, count("qty", 1)) });
-  const [p, setP] = useState({ name: "", phone: "", email: "", nationality: "", status: first?.group === "للمقيمين" ? "مقيم في السعودية" : "مواطن سعودي", refused: "لا", notes: "" });
+  const [simOther, setSimOther] = useState(() => !!sim.country && !simDests.some((x) => x.name === sim.country)); // a place typed in, not one from the list
+  const [p, setP] = useState({ name: "", phone: "", email: "", nationality: first?.group === "للمقيمين" ? "" : "المملكة العربية السعودية", status: first?.group === "للمقيمين" ? "مقيم في السعودية" : "مواطن سعودي", refused: "لا", notes: "" });
   const [today] = useState(() => new Date().toISOString().slice(0, 10));
   const onP = (k: keyof typeof p) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setP((x) => ({ ...x, [k]: e.target.value }));
 
@@ -142,7 +144,14 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
           ) : esim ? (
             <>
               <div className="mt-2 grid gap-4 sm:grid-cols-2">
-                <label className="fl"><span>وجهة السفر</span><input className="field" value={sim.country} onChange={(e) => setSim({ ...sim, country: e.target.value })} placeholder="مثال: تركيا" /></label>
+                <label className="fl"><span>وجهة السفر</span>
+                  <select className="field" value={simOther ? "*" : sim.country} onChange={(e) => { const v = e.target.value; setSimOther(v === "*"); setSim({ ...sim, country: v === "*" ? "" : v }); }}>
+                    <option value="">اختر الوجهة</option>
+                    {simDests.map((x) => <option key={x.name}>{x.name}</option>)}
+                    <option value="*">وجهة أخرى…</option>
+                  </select>
+                </label>
+                {simOther && <label className="fl"><span>اكتب الوجهة</span><input className="field" value={sim.country} onChange={(e) => setSim({ ...sim, country: e.target.value })} placeholder="مثال: اليابان" /></label>}
                 <label className="fl"><span>تاريخ السفر (اختياري)</span><input className="field" type="date" min={today} value={sim.start} onChange={(e) => setSim({ ...sim, start: e.target.value })} /></label>
                 <label className="fl"><span>مدة السفر</span>
                   <select className="field" value={sim.days} onChange={(e) => setSim({ ...sim, days: e.target.value })}>{TRIP_LENGTHS.map((d) => <option key={d}>{d}</option>)}</select>
@@ -198,7 +207,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
             <label className="fl"><span>البريد الإلكتروني (اختياري)</span><input className="field" type="email" dir="ltr" value={p.email} onChange={onP("email")} autoComplete="email" /></label>
             {!esim && (
               <>
-                <label className="fl"><span>الجنسية</span><input className="field" value={p.nationality} onChange={onP("nationality")} /></label>
+                <label className="fl"><span>الجنسية</span><NationalitySelect className="field" value={p.nationality} onChange={onP("nationality")} /></label>
                 <label className="fl"><span>الصفة</span><select className="field" value={p.status} onChange={onP("status")}>{["مواطن سعودي", "مقيم في السعودية", "زائر"].map((s) => <option key={s}>{s}</option>)}</select></label>
               </>
             )}

@@ -805,5 +805,117 @@
         "text": "رسوم معلنة وخطوات معروفة قبل البدء."
       }
     ]
-  }
+  },
+  "esim": [
+    {
+      "name": "فرنسا",
+      "en": "France",
+      "code": "fr"
+    },
+    {
+      "name": "ألمانيا",
+      "en": "Germany",
+      "code": "de"
+    },
+    {
+      "name": "إيطاليا",
+      "en": "Italy",
+      "code": "it"
+    },
+    {
+      "name": "هولندا",
+      "en": "Netherlands",
+      "code": "nl"
+    },
+    {
+      "name": "إسبانيا",
+      "en": "Spain",
+      "code": "es"
+    },
+    {
+      "name": "السويد",
+      "en": "Sweden",
+      "code": "se"
+    },
+    {
+      "name": "سويسرا",
+      "en": "Switzerland",
+      "code": "ch"
+    },
+    {
+      "name": "التشيك",
+      "en": "Czechia",
+      "code": "cz"
+    },
+    {
+      "name": "النمسا",
+      "en": "Austria",
+      "code": "at"
+    },
+    {
+      "name": "المجر",
+      "en": "Hungary",
+      "code": "hu"
+    },
+    {
+      "name": "اليونان",
+      "en": "Greece",
+      "code": "gr"
+    },
+    {
+      "name": "البرتغال",
+      "en": "Portugal",
+      "code": "pt"
+    },
+    {
+      "name": "أمريكا",
+      "en": "United States",
+      "code": "us"
+    },
+    {
+      "name": "بريطانيا",
+      "en": "United Kingdom",
+      "code": "gb"
+    },
+    {
+      "name": "ماليزيا",
+      "en": "Malaysia",
+      "code": "my"
+    },
+    {
+      "name": "تركيا",
+      "en": "Türkiye",
+      "code": "tr"
+    },
+    {
+      "name": "سيشل",
+      "en": "Seychelles",
+      "code": "sc"
+    },
+    {
+      "name": "مصر",
+      "en": "Egypt",
+      "code": "eg"
+    },
+    {
+      "name": "إندونيسيا",
+      "en": "Indonesia",
+      "code": "id"
+    },
+    {
+      "name": "الإمارات",
+      "en": "UAE",
+      "code": "ae"
+    },
+    {
+      "name": "قطر",
+      "en": "Qatar",
+      "code": "qa"
+    },
+    {
+      "name": "البحرين",
+      "en": "Bahrain",
+      "code": "bh"
+    }
+  ]
 }

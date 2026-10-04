@@ -21,6 +21,10 @@ export const collections: Record<string, Coll> = {
       t("note", "نبذة قصيرة", { type: "textarea" }),
     ],
   },
+  esim: {
+    label: "وجهات eSIM", single: "وجهة", title: "name",
+    fields: [t("name", "الاسم بالعربي", { required: true }), t("en", "الاسم بالإنجليزي"), t("code", "رمز العلم", { hint: "رمز الدولة ISO بحرفين مثل: tr, ae, jp" })],
+  },
   services: {
     label: "الخدمات", single: "خدمة", title: "title",
     fields: [

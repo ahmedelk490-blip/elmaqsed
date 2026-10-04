@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { waLink } from "@/lib/types";
 import { submitBooking } from "@/lib/submit";
+import NationalitySelect from "./NationalitySelect";
 import { useContent } from "./ContentProvider";
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
@@ -30,7 +31,7 @@ export default function Contact() {
           <div className="mt-7 grid gap-4 sm:grid-cols-2">
             <input data-r className="field" placeholder="الاسم الكامل" required value={f.name} onChange={on("name")} />
             <input data-r className="field" placeholder="رقم الجوال" type="tel" required value={f.phone} onChange={on("phone")} dir="ltr" />
-            <input data-r className="field" placeholder="الجنسية" required value={f.nationality} onChange={on("nationality")} />
+            <NationalitySelect data-r className="field" prompt="الجنسية" required value={f.nationality} onChange={on("nationality")} />
             <select data-r className="field" required value={f.dest} onChange={on("dest")} aria-label="الوجهة المطلوبة">
               <option value="">الوجهة المطلوبة</option>
               {countries.map((c) => <option key={c.slug} value={c.name}>{c.name}</option>)}

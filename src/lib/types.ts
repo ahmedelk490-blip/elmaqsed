@@ -9,13 +9,14 @@ export type Stat = { value: number; suffix: string; label: string; decimals?: nu
 export type Service = { icon: string; title: string; text: string; bullets: string[]; img: string };
 export type Step = { n: string; title: string; text: string };
 export type Country = { slug: string; name: string; en: string; code: string; kind: string; time: string; types: string[]; reqs: string[]; note: string; img: string; group?: string; price?: string };
+export type EsimDest = { name: string; en: string; code: string };
 export type Why = { title: string; text: string };
 export type Faq = { q: string; a: string; cat: string };
 export type Testimonial = { name: string; city: string; visa: string; text: string };
 export type About = { title: string; intro: string; story: string[]; values: { title: string; text: string }[] };
 export type Content = {
   site: Site; nav: NavItem[]; stats: Stat[]; services: Service[]; steps: Step[]; countries: Country[];
-  why: Why[]; faq: Faq[]; testimonials: Testimonial[]; about: About;
+  why: Why[]; faq: Faq[]; testimonials: Testimonial[]; about: About; esim: EsimDest[];
 };
 
 export const waLink = (whatsapp: string, msg = "السلام عليكم، أرغب في استشارة بخصوص تأشيرة السفر") =>

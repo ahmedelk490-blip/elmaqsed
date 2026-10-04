@@ -9,11 +9,16 @@ const REPO_FILE = path.join(process.cwd(), "content", "site.json");
 // Live content edited from /admin. In production it lives OUTSIDE the app folder so redeploys (git push) never wipe admin edits.
 const DATA_FILE = process.env.CONTENT_FILE || (process.env.NODE_ENV === "production" ? path.join(os.homedir(), "elmaqsed-data", "site.json") : REPO_FILE);
 
+const read = async (file: string) => JSON.parse(await fs.readFile(file, "utf8")) as Content;
+
 export const getContent = cache(async (): Promise<Content> => {
+  const seed = await read(REPO_FILE);
+  if (DATA_FILE === REPO_FILE) return seed;
   try {
-    return JSON.parse(await fs.readFile(DATA_FILE, "utf8")) as Content;
+    // sections added to the site after the last save from /admin come from the seed
+    return { ...seed, ...(await read(DATA_FILE)) };
   } catch {
-    return JSON.parse(await fs.readFile(REPO_FILE, "utf8")) as Content;
+    return seed;
   }
 });
 
