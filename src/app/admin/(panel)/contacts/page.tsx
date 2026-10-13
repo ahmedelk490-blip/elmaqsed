@@ -43,7 +43,7 @@ export default async function ContactsPage() {
         ))}
       </div>
 
-      <div className="mt-4 grid gap-4 md:grid-cols-2">
+      <div className="mt-4 grid gap-4 lg:grid-cols-2">
         {boxes.map(([title, rows]) => (
           <div key={title} className="a-card p-5">
             <h2 className="font-bold">{title}</h2>
@@ -54,7 +54,19 @@ export default async function ContactsPage() {
         ))}
       </div>
 
-      <div className="a-card mt-4 overflow-x-auto p-0">
+      <ul className="a-card mt-4 divide-y divide-slate-100 p-0 md:hidden">
+        {list.slice(0, 200).map((h, i) => (
+          <li key={i} className="flex items-start gap-3 p-4 text-sm">
+            <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-bold ${KIND[h.kind][1]}`}>{KIND[h.kind][0]}</span>
+            <span className="min-w-0 flex-1">
+              <b className="block truncate" dir="ltr">{h.page}</b>
+              <span className="mt-0.5 block text-xs text-slate-500">{when(h.at)} · {h.device === "mobile" ? "موبايل" : "كمبيوتر"}</span>
+            </span>
+          </li>
+        ))}
+        {!list.length && <li className="p-6 text-center text-sm text-slate-500">لا توجد ضغطات بعد.</li>}
+      </ul>
+      <div className="a-card mt-4 hidden overflow-x-auto p-0 md:block">
         <table className="w-full min-w-[560px] text-sm">
           <thead className="bg-slate-50 text-slate-500"><tr><th className="p-3 text-start font-medium">الوقت</th><th className="p-3 text-start font-medium">النوع</th><th className="p-3 text-start font-medium">الرقم</th><th className="p-3 text-start font-medium">الصفحة</th><th className="p-3 text-start font-medium">الزر</th><th className="p-3 text-start font-medium">الجهاز</th></tr></thead>
           <tbody>

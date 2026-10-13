@@ -50,7 +50,7 @@ export default async function Dashboard() {
           <li>حدّث رقم الواتساب والهاتف والبريد من إعدادات الموقع.</li>
           <li>استبدل الإحصائيات وشهادات العملاء ببيانات حقيقية.</li>
           <li>راجع الوجهات: أضف ما تخدمه فعلاً واحذف الباقي، وحدّث المدد والمستندات.</li>
-          <li>غيّر اسم المستخدم أو كلمة المرور من صفحة <Link href="/admin/account" className="underline">حساب الدخول</Link>.</li>
+          <li>غيّر اسم المستخدم أو كلمة المرور من صفحة <Link href="/admin/account" className="inline-block py-1 font-semibold underline">المستخدمون والحساب</Link>.</li>
         </ul>
       </div>
     </div>

@@ -78,6 +78,17 @@ body:has(.admin)::after { display: none; }
 .a-btn:hover { background: #13396c; }
 .a-btn-ghost { background: #fff; color: #0b1f39; border: 1px solid #cbd5e1; } .a-btn-ghost:hover { background: #f1f5f9; }
 .a-btn-danger { background: #fee2e2; color: #b91c1c; } .a-btn-danger:hover { background: #fecaca; }
+.a-nav[aria-current="page"] { background: rgba(255,255,255,.12); color: #fff; font-weight: 600; }
+.a-top { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: .75rem; min-height: 56px; padding: .5rem 1rem; background: #0b1f39; color: #fff; box-shadow: 0 1px 0 rgba(255,255,255,.06), 0 8px 24px -16px rgba(0,0,0,.5); }
+.a-burger { display: grid; gap: 5px; place-content: center; width: 42px; height: 42px; flex: none; border-radius: .7rem; background: rgba(255,255,255,.08); }
+.a-burger span { display: block; width: 20px; height: 2px; border-radius: 2px; background: #fff; transition: transform .25s, opacity .25s; }
+.a-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.a-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.a-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.a-menu { position: fixed; inset: 56px 0 0 0; z-index: 39; background: rgba(4,12,26,.55); }
+.a-menu-panel { max-height: calc(100dvh - 56px); overflow-y: auto; padding: .75rem 1rem 1.25rem; background: #0b1f39; color: #fff; font-size: .95rem; border-radius: 0 0 1.25rem 1.25rem; animation: a-drop .2s ease-out both; }
+.a-menu-panel .a-nav { padding: .8rem .9rem; }
+@keyframes a-drop { from { opacity: 0; transform: translateY(-8px); } }
 .a-card { border-radius: 1rem; background: #fff; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
 
 .kenburns { animation: kb 26s ease-in-out infinite alternate; transform-origin: 50% 40%; will-change: transform; }

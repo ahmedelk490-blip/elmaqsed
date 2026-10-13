@@ -1,7 +1,7 @@
 {
   "name": "elmaqsed",
   "build": "npm run build",
-  "start": "npx next start -p 3599",
+  "start": "set \"USERPROFILE=D:\\dev-cache\\elmaqsed-audit-home\" && npx next start -p 3599",
   "url": "http://localhost:3599",
   "live": "https://elmaqsed.com",
   "widths": [
@@ -162,6 +162,64 @@
           "wait": 600
         }
       ]
+    },
+    {
+      "name": "admin-dashboard",
+      "page": "/admin/login",
+      "steps": [
+        {
+          "fill": [
+            "[name=username]",
+            "audit"
+          ]
+        },
+        {
+          "fill": [
+            "[name=password]",
+            "audit-local-only"
+          ]
+        },
+        {
+          "click": "form button"
+        },
+        {
+          "wait": 1200
+        }
+      ]
+    },
+    {
+      "name": "admin-menu",
+      "page": "/admin",
+      "maxWidth": 767,
+      "steps": [
+        {
+          "click": ".a-burger"
+        }
+      ]
+    },
+    {
+      "name": "admin-bookings",
+      "page": "/admin/bookings"
+    },
+    {
+      "name": "admin-contacts",
+      "page": "/admin/contacts"
+    },
+    {
+      "name": "admin-account",
+      "page": "/admin/account"
+    },
+    {
+      "name": "admin-settings",
+      "page": "/admin/single/site"
+    },
+    {
+      "name": "admin-countries",
+      "page": "/admin/countries"
+    },
+    {
+      "name": "admin-esim",
+      "page": "/admin/esim"
     }
   ],
   "allow": [
@@ -170,5 +228,6 @@
       "el": "img.kenburns",
       "why": "the small ELMAQSED caption tag sits on the inner-page photo frame by design (live since 2026-09-28)"
     }
-  ]
+  ],
+  "note": "The audit server keeps its data in D:/dev-cache/elmaqsed-audit-home (a local test dashboard user 'audit' that exists only there, plus sample bookings and calls). Never the production data."
 }
