@@ -50,8 +50,8 @@ export const singles: Record<string, { label: string; fields: Field[] }> = {
     label: "إعدادات الموقع",
     fields: [
       t("name", "اسم الشركة"), t("nameEn", "الاسم بالإنجليزي"), t("tagline", "الشعار النصي"), t("description", "وصف الموقع (SEO)", { type: "textarea" }),
-      t("url", "رابط الموقع", { hint: "https://..." }), t("whatsapp", "رقم واتساب", { hint: "بصيغة دولية بدون + مثل 9665xxxxxxxx" }),
-      t("phone", "الهاتف"), t("email", "البريد"), t("city", "المدينة / العنوان"), t("hours", "ساعات العمل"),
+      t("url", "رابط الموقع", { hint: "https://..." }), t("whatsapp", "رقم واتساب", { hint: "بصيغة دولية بدون + مثل 9665xxxxxxxx. يُستخدم في كل أزرار واتساب بالموقع" }),
+      t("phone", "رقم الاتصال", { hint: "مثل +966 50 000 0000. يُستخدم في زر الاتصال على الموبايل وكل روابط الاتصال" }), t("email", "البريد"), t("city", "المدينة / العنوان"), t("hours", "ساعات العمل"),
       t("cr", "السجل التجاري"), t("license", "رقم ترخيص السياحة"),
       t("social.instagram", "إنستغرام"), t("social.x", "منصة X"), t("social.tiktok", "تيك توك"), t("social.snapchat", "سناب شات"),
       t("priceIncludes", "السعر يشمل", { type: "textarea" }), t("priceExcludes", "السعر لا يشمل", { type: "textarea" }),

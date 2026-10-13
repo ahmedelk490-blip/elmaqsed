@@ -149,7 +149,26 @@
           "click": "#form button:has-text(\"حفظ واستمرار\")"
         }
       ]
+    },
+    {
+      "name": "call-button",
+      "page": "/services",
+      "maxWidth": 1023,
+      "steps": [
+        {
+          "press": "End"
+        },
+        {
+          "wait": 600
+        }
+      ]
     }
   ],
-  "allow": []
+  "allow": [
+    {
+      "type": "overlap",
+      "el": "img.kenburns",
+      "why": "the small ELMAQSED caption tag sits on the inner-page photo frame by design (live since 2026-09-28)"
+    }
+  ]
 }

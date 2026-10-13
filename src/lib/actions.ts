@@ -2,7 +2,7 @@
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { COOKIE, blocked, credsProblem, getCreds, isAuthed, normUser, pardon, passOk, saveCreds, sessionToken, setupCodeOk, strike, type AuthState } from "./auth";
+import { COOKIE, blocked, credsProblem, currentUser, findUser, getCreds, getUsers, isAuthed, makeCreds, normUser, pardon, passOk, sessionToken, setupCodeOk, strike, writeUsers, type AuthState } from "./auth";
 import { getContent, saveContent } from "./content";
 import { collections, fromInput, setPath, singles } from "./admin";
 import type { Content } from "./types";
@@ -18,10 +18,10 @@ const pause = () => new Promise((r) => setTimeout(r, 700));
 export async function login(_prev: AuthState, fd: FormData): Promise<AuthState> {
   const ip = await clientIp(), user = normUser(fd.get("username"));
   if (blocked(ip)) return { error: TOO_MANY, user };
-  const creds = await getCreds();
-  if (!creds) redirect("/admin/setup");
-  const pass = await passOk(creds, String(fd.get("password") ?? ""));
-  if (!pass || user !== creds.user) {
+  if (!(await getCreds())) redirect("/admin/setup");
+  const creds = await findUser(user);
+  const pass = String(fd.get("password") ?? "");
+  if (!creds || !(await passOk(creds, pass))) {
     strike(ip);
     await pause();
     return { error: "اسم المستخدم أو كلمة المرور غير صحيحة", user };
@@ -31,7 +31,7 @@ export async function login(_prev: AuthState, fd: FormData): Promise<AuthState> 
   redirect("/admin");
 }
 
-/** First-time setup: needs the owner's setup code and only works while no account exists. */
+/** First-time setup: needs the owner's setup code and only works while no user exists. */
 export async function setupAdmin(_prev: AuthState, fd: FormData): Promise<AuthState> {
   const ip = await clientIp(), user = normUser(fd.get("username")), code = String(fd.get("code") ?? "").trim().slice(0, 80);
   if (blocked(ip)) return { error: TOO_MANY, user, code };
@@ -44,18 +44,19 @@ export async function setupAdmin(_prev: AuthState, fd: FormData): Promise<AuthSt
   const pass = String(fd.get("password") ?? "");
   const problem = credsProblem(user, pass, String(fd.get("confirm") ?? ""));
   if (problem) return { error: problem, user, code };
-  const creds = await saveCreds(user, pass, false);
-  if (!creds) return { error: "تعذّر إنشاء الحساب. حدّث الصفحة وحاول مرة أخرى.", user, code };
+  const creds = await makeCreds(user, pass);
+  if (!(await writeUsers([creds], true))) return { error: "تعذّر إنشاء الحساب. حدّث الصفحة وحاول مرة أخرى.", user, code };
   (await cookies()).set(COOKIE, sessionToken(creds), SESSION);
   redirect("/admin");
 }
 
+/** The signed-in user changes their own name or password (needs the current password). */
 export async function changeAccount(_prev: AuthState, fd: FormData): Promise<AuthState> {
   await guard();
-  const ip = await clientIp(), user = normUser(fd.get("username")), creds = await getCreds();
-  if (!creds) redirect("/admin/login");
+  const ip = await clientIp(), user = normUser(fd.get("username")), me = await currentUser();
+  if (!me) redirect("/admin/login");
   if (blocked(ip)) return { error: TOO_MANY, user };
-  if (!(await passOk(creds, String(fd.get("current") ?? "")))) {
+  if (!(await passOk(me, String(fd.get("current") ?? "")))) {
     strike(ip);
     await pause();
     return { error: "كلمة المرور الحالية غير صحيحة", user };
@@ -63,10 +64,36 @@ export async function changeAccount(_prev: AuthState, fd: FormData): Promise<Aut
   const pass = String(fd.get("password") ?? "");
   const problem = credsProblem(user, pass, String(fd.get("confirm") ?? ""));
   if (problem) return { error: problem, user };
-  const next = await saveCreds(user, pass, true);
-  if (!next) return { error: "تعذّر الحفظ. حاول مرة أخرى.", user };
+  const users = await getUsers();
+  if (user !== me.user && users.some((c) => c.user === user)) return { error: "هذا الاسم مستخدم لحساب آخر", user };
+  const next = await makeCreds(user, pass);
+  if (!(await writeUsers(users.map((c) => (c.user === me.user ? next : c))))) return { error: "تعذّر الحفظ. حاول مرة أخرى.", user };
   (await cookies()).set(COOKIE, sessionToken(next), SESSION);
+  revalidatePath("/admin/account");
   return { ok: "تم تحديث بيانات الدخول", user };
+}
+
+/** Adds another dashboard user (an email or a username, with a password). */
+export async function addUser(_prev: AuthState, fd: FormData): Promise<AuthState> {
+  await guard();
+  const user = normUser(fd.get("username")), pass = String(fd.get("password") ?? "");
+  const problem = credsProblem(user, pass, String(fd.get("confirm") ?? ""));
+  if (problem) return { error: problem, user };
+  const users = await getUsers();
+  if (users.some((c) => c.user === user)) return { error: "هذا المستخدم موجود بالفعل", user };
+  if (users.length >= 20) return { error: "الحد الأقصى 20 مستخدماً", user };
+  if (!(await writeUsers([...users, await makeCreds(user, pass)]))) return { error: "تعذّر الحفظ. حاول مرة أخرى.", user };
+  revalidatePath("/admin/account");
+  return { ok: `تمت إضافة ${user}. يدخل من صفحة الدخول بالاسم وكلمة المرور.` };
+}
+
+/** Removes a user. You cannot remove yourself, so the dashboard always keeps someone who can sign in. */
+export async function deleteUser(user: string) {
+  await guard();
+  const me = await currentUser();
+  if (!me || me.user === user) return;
+  await writeUsers((await getUsers()).filter((c) => c.user !== user));
+  revalidatePath("/admin/account");
 }
 
 export async function logout() {

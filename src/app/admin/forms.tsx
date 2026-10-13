@@ -1,6 +1,6 @@
 "use client";
 import { useActionState, type InputHTMLAttributes } from "react";
-import { changeAccount, login, setupAdmin } from "@/lib/actions";
+import { addUser, changeAccount, login, setupAdmin } from "@/lib/actions";
 import type { AuthState } from "@/lib/auth";
 
 const card = "a-card w-full max-w-sm p-8";
@@ -62,6 +62,21 @@ export function AccountForm({ user }: { user: string }) {
       <Field label="تأكيد كلمة المرور الجديدة" name="confirm" type="password" autoComplete="new-password" minLength={8} />
       <Note state={state} />
       <button disabled={pending} className="a-btn mt-5 disabled:opacity-60">{pending ? "جارٍ الحفظ…" : "حفظ"}</button>
+    </form>
+  );
+}
+
+export function AddUserForm() {
+  const [state, action, pending] = useActionState(addUser, null);
+  return (
+    <form key={state?.ok} action={action} className="a-card mt-4 p-6">
+      <h2 className="font-bold">إضافة مستخدم</h2>
+      <p className="mt-1 text-sm text-slate-500">بريد إلكتروني أو اسم مستخدم، وكلمة مرور يدخل بها إلى اللوحة.</p>
+      <Field label="البريد أو اسم المستخدم" name="username" defaultValue={state?.ok ? "" : state?.user} autoComplete="off" autoCapitalize="none" />
+      <Field label="كلمة المرور" name="password" type="password" autoComplete="new-password" minLength={8} />
+      <Field label="تأكيد كلمة المرور" name="confirm" type="password" autoComplete="new-password" minLength={8} />
+      <Note state={state} />
+      <button disabled={pending} className="a-btn mt-5 disabled:opacity-60">{pending ? "جارٍ الإضافة…" : "إضافة المستخدم"}</button>
     </form>
   );
 }

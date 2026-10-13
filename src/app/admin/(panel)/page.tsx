@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getContent } from "@/lib/content";
 import { collections } from "@/lib/admin";
 import { readBookings } from "@/lib/bookings";
+import { readContacts } from "@/lib/contacts";
 import type { Content } from "@/lib/types";
 import { requireAdmin } from "@/lib/auth";
 
@@ -9,6 +10,9 @@ export default async function Dashboard() {
   await requireAdmin();
   const c = await getContent();
   const bookings = await readBookings();
+  const contacts = await readContacts();
+  const today = new Date(Date.now() + 3 * 3600_000).toISOString().slice(0, 10); // Riyadh day
+  const todayHits = contacts.filter((h) => new Date(Date.parse(h.at) + 3 * 3600_000).toISOString().slice(0, 10) === today).length;
   const fresh = bookings.filter((b) => b.status === "new").length;
   return (
     <div>
@@ -17,6 +21,10 @@ export default async function Dashboard() {
       <Link href="/admin/bookings" className="a-card mt-8 flex items-center justify-between gap-4 p-6 transition-shadow hover:shadow-md">
         <div><h2 className="font-bold">الحجوزات والطلبات</h2><p className="mt-1 text-sm text-slate-500">كل من حجز أو أرسل طلباً من الموقع، مع بيانات التواصل.</p></div>
         <p className="shrink-0"><span className="font-serif text-4xl font-semibold">{bookings.length}</span>{fresh > 0 && <span className="mr-2 rounded-full bg-[#e0f2fe] px-2.5 py-1 text-xs font-bold text-[#075985]">{fresh} جديد</span>}</p>
+      </Link>
+      <Link href="/admin/contacts" className="a-card mt-4 flex items-center justify-between gap-4 p-6 transition-shadow hover:shadow-md">
+        <div><h2 className="font-bold">الاتصالات</h2><p className="mt-1 text-sm text-slate-500">ضغطات زر الاتصال وأزرار واتساب في الموقع، ومن أي صفحة جاءت.</p></div>
+        <p className="shrink-0"><span className="font-serif text-4xl font-semibold">{contacts.length}</span>{todayHits > 0 && <span className="mr-2 rounded-full bg-[#dcfce7] px-2.5 py-1 text-xs font-bold text-[#166534]">{todayHits} اليوم</span>}</p>
       </Link>
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {Object.entries(collections).map(([k, d]) => (

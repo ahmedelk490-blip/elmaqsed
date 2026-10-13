@@ -3,6 +3,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import AfterScroll from "@/components/AfterScroll";
+import CallFloat from "@/components/CallFloat";
+import ContactTracker from "@/components/ContactTracker";
 import { ContentProvider } from "@/components/ContentProvider";
 import { getContent } from "@/lib/content";
 
@@ -14,7 +16,8 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
-        <AfterScroll><WhatsAppFloat /></AfterScroll>
+        <AfterScroll><WhatsAppFloat /><CallFloat /></AfterScroll>
+        <ContactTracker />
       </Providers>
     </ContentProvider>
   );
