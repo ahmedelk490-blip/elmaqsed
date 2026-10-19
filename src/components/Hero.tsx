@@ -81,10 +81,10 @@ export default function Hero() {
         {[0, 1, 2].map((i) => <span key={i} className="ripple-ring" style={{ animationDelay: `${i * 2.8}s` }} />)}
       </div>
 
-      <div className="hero-content container-x relative flex flex-col items-center py-6 text-center md:py-6">
-        <p data-h className="pill mb-5 hidden md:inline-flex"><i />{site.nameEn} · Visa Consulting</p>
+      <div className="hero-content container-x relative flex flex-col items-center py-6 text-center md:py-6 lg:pb-24">
+        <p data-h className="pill mb-4 hidden md:inline-flex"><i />{site.nameEn} · Visa Consulting</p>
 
-        <div ref={symRef} className="relative mb-4 w-[min(22vw,84px)] md:mb-5 md:w-[116px]" style={{ perspective: 800 }}>
+        <div ref={symRef} className="relative mb-4 w-[min(22vw,84px)] md:mb-4 md:w-[96px]" style={{ perspective: 800 }}>
           <div className="ignite absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,.95),rgba(46,148,210,.6)_35%,transparent_70%)]" />
           <div className="sym-glow absolute inset-[-45%] rounded-full bg-[radial-gradient(circle,rgba(46,148,210,.5),transparent_65%)]" />
           <div className="sym-tilt relative" style={{ transformStyle: "preserve-3d" }}>
@@ -97,10 +97,10 @@ export default function Hero() {
           <br />
           <span className="grad-text">لوجهتك الصحيحة</span>
         </h1>
-        <p data-h className="mt-4 max-w-2xl text-[15px] leading-7 text-mist/85 md:mt-5 md:text-lg md:leading-8">
+        <p data-h className="mt-4 max-w-2xl text-[15px] leading-7 text-mist/85 md:mt-4 md:text-lg md:leading-8">
           استشارات تأشيرات السفر وتجهيز الطلبات باحترافية: نقيّم ملفك بصدق، نجهّز مستنداتك بدقة، ونرافقك خطوة بخطوة حتى تصل إلى مقصدك.
         </p>
-        <div data-h className="mt-7 w-full min-w-0 max-w-5xl md:mt-8"><HeroSearch /></div>
+        <div data-h className="mt-7 w-full min-w-0 max-w-5xl md:mt-6"><HeroSearch /></div>
         <ul data-h className="mt-6 flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-mist/70">
           <li>✓ شركة استشارية مرخصة</li>
           <li>✓ رد خلال 24 ساعة</li>

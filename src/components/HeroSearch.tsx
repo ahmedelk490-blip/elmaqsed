@@ -7,6 +7,7 @@ import { useContent } from "./ContentProvider";
 import { Icon } from "./Icons";
 import { TRIP_LENGTHS, waLink, type Country } from "@/lib/types";
 import Counter from "./Counter";
+import PlaceInput from "./PlaceInput";
 
 const GROUPS = ["الكل", "شنغن", "للمقيمين", "وجهات أخرى"];
 export const inGroup = (c: { group?: string }, g: string) => g === "الكل" || (g === "وجهات أخرى" ? !c.group : c.group === g);
@@ -133,7 +134,7 @@ export default function HeroSearch() {
       {tab === "hotel" && (
         <form onSubmit={goHotel} className="hs-bar hs-hotel">
           <div className="hs-group">
-            <label className="hs-field"><span className="hs-label"><Icon name="pin" className="hs-ico" />المدينة أو الوجهة</span><input required value={h.city} onChange={(e) => setH({ ...h, city: e.target.value })} placeholder="مثال: باريس" className="hs-input" /></label>
+            <label className="hs-field"><span className="hs-label"><Icon name="pin" className="hs-ico" />المدينة أو الوجهة</span><PlaceInput required value={h.city} onChange={(v) => setH({ ...h, city: v })} placeholder="اكتب مدينة أو دولة" className="hs-input" /></label>
             <DateField label="الوصول" value={h.inn} onChange={(v) => setH({ ...h, inn: v })} />
             <DateField label="المغادرة" value={h.out} min={h.inn} onChange={(v) => setH({ ...h, out: v })} />
             <button type="button" onClick={() => setGuests(!guests)} aria-expanded={guests} className="hs-field hs-wide">

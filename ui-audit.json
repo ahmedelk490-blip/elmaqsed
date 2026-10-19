@@ -73,6 +73,24 @@
       ]
     },
     {
+      "name": "hotel-suggest",
+      "page": "/",
+      "steps": [
+        {
+          "click": ".hs-tab >> nth=1"
+        },
+        {
+          "fill": [
+            ".hs-hotel .hs-input >> nth=0",
+            "بار"
+          ]
+        },
+        {
+          "wait": 400
+        }
+      ]
+    },
+    {
       "name": "esim-picker",
       "page": "/",
       "steps": [

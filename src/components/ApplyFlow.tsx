@@ -6,6 +6,7 @@ import { TRIP_LENGTHS, waLink } from "@/lib/types";
 import { submitBooking } from "@/lib/submit";
 import PriceNote from "./PriceNote";
 import Counter from "./Counter";
+import PlaceInput from "./PlaceInput";
 import NationalitySelect from "./NationalitySelect";
 
 const CITIES = ["الرياض", "جدة", "الدمام"];
@@ -59,7 +60,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
     : esim
       ? [["وجهة السفر", sim.country], ["تاريخ السفر", sim.start || "غير محدد"], ["مدة السفر", sim.days], ["عدد الشرائح", String(sim.qty)]]
       : [["مكان الإقامة", h.city], ["الوصول", h.inn], ["المغادرة", h.out], ["البالغون", String(adults)], ["الأطفال", String(kids)], ["الرضّع (أقل من سنتين)", String(infants)], ["الغرف", String(h.rooms)], ["تصنيف الفندق", h.stars]];
-  const contact: Row[] = [...(visa ? [] : [["الاسم", p.name] as Row]), ["الجوال", p.phone], ...(p.email.trim() ? [["البريد", p.email.trim()] as Row] : []), ...(esim ? [] : [["الجنسية", p.nationality || "غير محدد"] as Row, ["الصفة", p.status] as Row]), ...(visa ? [["رفض سابق", p.refused] as Row] : []), ...(p.notes.trim() ? [["ملاحظات", p.notes.trim()] as Row] : [])];
+  const contact: Row[] = [...(visa ? [] : [["الاسم", p.name] as Row]), ["الجوال", p.phone], ...(p.email.trim() ? [["البريد", p.email.trim()] as Row] : []), ...(esim ? [] : [["الجنسية", p.nationality || "غير محدد"] as Row, ["الصفة", p.status] as Row]), ...(visa ? [["تأشيرة سابقة", p.refused] as Row] : []), ...(p.notes.trim() ? [["ملاحظات", p.notes.trim()] as Row] : [])];
   const lines = [visa ? "السلام عليكم، أرغب في حجز تأشيرة." : esim ? "السلام عليكم، أرغب في طلب شريحة eSIM." : "السلام عليكم، أرغب في حجز فندق.", ...trip.map(([k, v]) => `${k}: ${v}`), ...(visa ? travellers.map((n, i) => `${i + 1}) ${n}${i >= adults ? " (طفل)" : ""}`) : []), ...contact.map(([k, v]) => `${k}: ${v}`)];
   const message = lines.join("\n");
   // WhatsApp opens at once (it must happen inside the click); the request is then saved for the dashboard and the visitor is told whether that worked
@@ -162,7 +163,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
             </>
           ) : (
             <>
-              <label className="fl mt-2"><span>مكان الإقامة</span><input className="field" value={h.city} onChange={(e) => setH({ ...h, city: e.target.value })} placeholder="المدينة أو اسم الفندق" /></label>
+              <label className="fl mt-2"><span>مكان الإقامة</span><PlaceInput className="field" value={h.city} onChange={(v) => setH({ ...h, city: v })} placeholder="اكتب مدينة أو دولة أو اسم الفندق" /></label>
               <div className="rail mt-2.5 flex gap-2 overflow-x-auto pb-1">
                 {HOTEL_CITIES.map((x) => <button key={x} type="button" onClick={() => setH({ ...h, city: x })} aria-pressed={h.city === x} className={`badge shrink-0 ${h.city === x ? "badge-sky bg-sky/15" : ""}`}>{x}</button>)}
               </div>
@@ -212,8 +213,8 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
               </>
             )}
             {visa && (
-              <label className="fl"><span>هل سبق رفض تأشيرتك؟</span>
-                <select className="field" value={p.refused} onChange={onP("refused")}><option value="لا">لا، لم يسبق</option><option value="نعم">نعم، سبق رفضها</option></select>
+              <label className="fl"><span>هل يوجد لديك تأشيرة سابقة؟</span>
+                <select className="field" value={p.refused} onChange={onP("refused")}><option value="لا">لا</option><option value="نعم">نعم، لدي تأشيرة سابقة</option></select>
               </label>
             )}
             <label className="fl sm:col-span-2"><span>ملاحظات (اختياري)</span><textarea className="field" rows={3} value={p.notes} onChange={onP("notes")} /></label>

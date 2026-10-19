@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useContent } from "./ContentProvider";
 import { Icon } from "./Icons";
+import ContactChoice, { ContactOptions } from "./ContactChoice";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -43,9 +44,7 @@ export default function Header() {
         </Link>
         <nav className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/[.06] p-1 lg:flex">{links("hdr-link")}</nav>
         <div className="flex items-center gap-4">
-          <a href={tel} className="hidden items-center gap-2 text-sm text-mist/85 transition-colors hover:text-white xl:flex" dir="ltr">
-            <Icon name="phone" className="h-4 w-4 text-sky-2" />{site.phone}
-          </a>
+          <ContactChoice />
           <Link href="/booking" className="btn btn-primary btn-sm hidden sm:inline-flex">احجز الآن</Link>
           <button onClick={() => setOpen((o) => !o)} className="hdr-burger lg:hidden" aria-label="القائمة" aria-expanded={open}>
             <span /><span /><span />
@@ -57,7 +56,7 @@ export default function Header() {
         <nav className="flex flex-col px-6 pt-2">{links("hdr-mlink")}</nav>
         <div className="mt-8 flex flex-col gap-3 px-6">
           <Link href="/booking" onClick={() => setOpen(false)} className="btn btn-primary justify-center">احجز الآن</Link>
-          <a href={tel} className="btn btn-ghost justify-center" dir="ltr">{site.phone}</a>
+          <div className="cc-menu"><ContactOptions onPick={() => setOpen(false)} /></div>
         </div>
         <p className="mt-8 px-6 text-sm text-mist/50">{site.hours}</p>
       </div>

@@ -71,6 +71,16 @@ export default function Destinations() {
     return () => io.disconnect();
   }, []);
 
+  // one card forward / back: moves the CSS glide's clock smoothly, the row keeps gliding afterwards
+  const nudge = (dir: 1 | -1) => {
+    const a = track.current?.getAnimations()[0];
+    const total = Number(a?.effect?.getComputedTiming().duration) || 0;
+    if (!a || !total) return;
+    const from = Number(a.currentTime) || 0, step = (total / 2 / list.length) * dir;
+    const o = { t: 0 };
+    gsap.to(o, { t: 1, duration: 0.55, ease: "power3.out", onUpdate: () => { a.currentTime = (((from + step * o.t) % total) + total) % total; } });
+  };
+
   return (
     <section id="destinations" ref={ref} className="relative overflow-hidden bg-ink/70 py-20 md:py-28">
       <div className="dots-bg absolute inset-0" />
@@ -84,6 +94,8 @@ export default function Destinations() {
         </Reveal>
       </div>
       <div className="drail relative hidden pb-6 lg:block" dir="ltr">
+        <button type="button" onClick={() => nudge(-1)} aria-label="الوجهة السابقة" className="drail-arrow left-6"><Icon name="arrow" className="h-5 w-5" /></button>
+        <button type="button" onClick={() => nudge(1)} aria-label="الوجهة التالية" className="drail-arrow right-6"><Icon name="arrow" className="h-5 w-5 rotate-180" /></button>
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-28 bg-gradient-to-r from-ink to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-28 bg-gradient-to-l from-ink to-transparent" />
         <div key={g} ref={track} className="dtrack flex w-max" style={{ animationDuration: `${list.length * 3.5}s` }}>

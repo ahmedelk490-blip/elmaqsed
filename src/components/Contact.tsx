@@ -15,9 +15,9 @@ export default function Contact() {
   const on = (k: keyof typeof init) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setF({ ...f, [k]: e.target.value });
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    const msg = `السلام عليكم، أرغب في استشارة تأشيرة.\nالاسم: ${f.name}\nالجوال: ${f.phone}\nالجنسية: ${f.nationality}\nالوجهة: ${f.dest}\nالغرض: ${f.purpose}\nتاريخ السفر المتوقع: ${f.date || "غير محدد"}\nرفض سابق: ${f.refused}`;
+    const msg = `السلام عليكم، أرغب في استشارة تأشيرة.\nالاسم: ${f.name}\nالجوال: ${f.phone}\nالجنسية: ${f.nationality}\nالوجهة: ${f.dest}\nالغرض: ${f.purpose}\nتاريخ السفر المتوقع: ${f.date || "غير محدد"}\nتأشيرة سابقة: ${f.refused}`;
     window.open(waLink(site.whatsapp, msg), "_blank", "noopener");
-    void submitBooking({ service: "contact", name: f.name, phone: f.phone, email: "", summary: `استشارة: ${f.dest || "غير محدد"}`, rows: [["الاسم", f.name], ["الجوال", f.phone], ["الجنسية", f.nationality], ["الوجهة", f.dest], ["الغرض", f.purpose], ["تاريخ السفر", f.date || "غير محدد"], ["رفض سابق", f.refused]] });
+    void submitBooking({ service: "contact", name: f.name, phone: f.phone, email: "", summary: `استشارة: ${f.dest || "غير محدد"}`, rows: [["الاسم", f.name], ["الجوال", f.phone], ["الجنسية", f.nationality], ["الوجهة", f.dest], ["الغرض", f.purpose], ["تاريخ السفر", f.date || "غير محدد"], ["تأشيرة سابقة", f.refused]] });
   };
 
   return (
@@ -41,9 +41,9 @@ export default function Contact() {
               {["سياحة", "أعمال", "دراسة", "علاج", "زيارة عائلية"].map((p) => <option key={p}>{p}</option>)}
             </select>
             <input data-r className="field" type="month" value={f.date} onChange={on("date")} aria-label="تاريخ السفر المتوقع" />
-            <select data-r className="field sm:col-span-2" value={f.refused} onChange={on("refused")} aria-label="هل سبق رفض تأشيرتك؟">
-              <option value="لا">لم يسبق رفض تأشيرتي</option>
-              <option value="نعم">سبق أن رُفضت تأشيرتي</option>
+            <select data-r className="field sm:col-span-2" value={f.refused} onChange={on("refused")} aria-label="هل يوجد لديك تأشيرة سابقة؟">
+              <option value="لا">لا توجد لدي تأشيرة سابقة</option>
+              <option value="نعم">لدي تأشيرة سابقة</option>
             </select>
           </div>
           <button type="submit" data-r className="btn btn-primary mt-6 w-full justify-center sm:w-auto">أرسل عبر واتساب</button>

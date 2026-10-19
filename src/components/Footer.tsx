@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getContent } from "@/lib/content";
 import { waLink } from "@/lib/types";
 import Reveal from "./Reveal";
-import Symbol from "./Symbol";
+import BackToTop from "./BackToTop";
 import Globe from "./Globe";
 import { Icon } from "./Icons";
 
@@ -66,7 +66,7 @@ export default async function Footer() {
       <div className="relative border-t border-white/10">
         <div className="container-x flex flex-col items-center gap-4 py-7 text-center text-sm md:flex-row md:justify-between md:text-start">
           <p className="text-mist/55">© {new Date().getFullYear()} · جميع الحقوق محفوظة</p>
-          <Symbol className="hidden h-6 w-6 text-white/35 md:block" id="foot-mini" />
+          <BackToTop />
         </div>
       </div>
     </footer>
