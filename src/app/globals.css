@@ -456,6 +456,10 @@ body:has(.admin)::after { display: none; }
 /* design-guard-ignore: the client asked for the WhatsApp logo in its own green (2026-10-19) */
 .cc-wa { background: #25d366; box-shadow: 0 8px 18px -8px rgba(37,211,102,.8); }
 .cc-menu { display: grid; gap: .25rem; padding: .4rem; border-radius: 18px; background: #fff; color: #0b1f39; }
+/* form date fields: text over an invisible native picker */
+.date-field { position: relative; display: flex; align-items: center; justify-content: space-between; gap: .5rem; cursor: pointer; }
+.date-field input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.date-empty { opacity: .55; }
 @keyframes pkfade { from { opacity: 0; } }
 @keyframes pkup { from { transform: translateY(40px); opacity: 0; } }
 /* ---------- forms + price note ---------- */

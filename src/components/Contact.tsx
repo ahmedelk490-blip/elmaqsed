@@ -3,6 +3,7 @@ import { useState } from "react";
 import { waLink } from "@/lib/types";
 import { submitBooking } from "@/lib/submit";
 import NationalitySelect from "./NationalitySelect";
+import DateInput from "./DateInput";
 import { useContent } from "./ContentProvider";
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
@@ -40,7 +41,7 @@ export default function Contact() {
             <select data-r className="field" value={f.purpose} onChange={on("purpose")} aria-label="غرض السفر">
               {["سياحة", "أعمال", "دراسة", "علاج", "زيارة عائلية"].map((p) => <option key={p}>{p}</option>)}
             </select>
-            <input data-r className="field" type="month" value={f.date} onChange={on("date")} aria-label="تاريخ السفر المتوقع" />
+            <DateInput reveal type="month" value={f.date} onChange={(v) => setF({ ...f, date: v })} ariaLabel="تاريخ السفر المتوقع" />
             <select data-r className="field sm:col-span-2" value={f.refused} onChange={on("refused")} aria-label="هل يوجد لديك تأشيرة سابقة؟">
               <option value="لا">لا توجد لدي تأشيرة سابقة</option>
               <option value="نعم">لدي تأشيرة سابقة</option>

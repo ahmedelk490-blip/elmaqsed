@@ -7,6 +7,7 @@ import { submitBooking } from "@/lib/submit";
 import PriceNote from "./PriceNote";
 import Counter from "./Counter";
 import PlaceInput from "./PlaceInput";
+import DateInput from "./DateInput";
 import NationalitySelect from "./NationalitySelect";
 
 const CITIES = ["الرياض", "جدة", "الدمام"];
@@ -126,7 +127,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
               </div>
               <h3 className="mt-7 text-lg font-bold">ما هو التاريخ المتوقع للسفر؟</h3>
               <p className="mt-1 text-sm leading-7 text-mist/75">يمكنك تقديم الطلب الآن، ونجهّز المستندات معك قبل الموعد.</p>
-              <input className="field mt-3 sm:max-w-xs" type="date" min={today} value={date} onChange={(e) => setDate(e.target.value)} aria-label="التاريخ المتوقع للسفر" />
+              <DateInput className="mt-3 sm:max-w-xs" min={today} value={date} onChange={setDate} ariaLabel="التاريخ المتوقع للسفر" />
               {c && (appointment ? (
                 <>
                   <h3 className="mt-7 text-lg font-bold">أين تريد حجز موعدك؟</h3>
@@ -153,7 +154,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
                   </select>
                 </label>
                 {simOther && <label className="fl"><span>اكتب الوجهة</span><input className="field" value={sim.country} onChange={(e) => setSim({ ...sim, country: e.target.value })} placeholder="مثال: اليابان" /></label>}
-                <label className="fl"><span>تاريخ السفر (اختياري)</span><input className="field" type="date" min={today} value={sim.start} onChange={(e) => setSim({ ...sim, start: e.target.value })} /></label>
+                <label className="fl"><span>تاريخ السفر (اختياري)</span><DateInput min={today} value={sim.start} onChange={(v) => setSim({ ...sim, start: v })} ariaLabel="تاريخ السفر" /></label>
                 <label className="fl"><span>مدة السفر</span>
                   <select className="field" value={sim.days} onChange={(e) => setSim({ ...sim, days: e.target.value })}>{TRIP_LENGTHS.map((d) => <option key={d}>{d}</option>)}</select>
                 </label>
@@ -168,8 +169,8 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
                 {HOTEL_CITIES.map((x) => <button key={x} type="button" onClick={() => setH({ ...h, city: x })} aria-pressed={h.city === x} className={`badge shrink-0 ${h.city === x ? "badge-sky bg-sky/15" : ""}`}>{x}</button>)}
               </div>
               <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                <label className="fl"><span>تاريخ الوصول</span><input className="field" type="date" min={today} value={h.inn} onChange={(e) => setH({ ...h, inn: e.target.value })} /></label>
-                <label className="fl"><span>تاريخ المغادرة</span><input className="field" type="date" min={h.inn || today} value={h.out} onChange={(e) => setH({ ...h, out: e.target.value })} /></label>
+                <label className="fl"><span>تاريخ الوصول</span><DateInput min={today} value={h.inn} onChange={(v) => setH({ ...h, inn: v })} ariaLabel="تاريخ الوصول" /></label>
+                <label className="fl"><span>تاريخ المغادرة</span><DateInput min={h.inn || today} value={h.out} onChange={(v) => setH({ ...h, out: v })} ariaLabel="تاريخ المغادرة" /></label>
               </div>
               <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
                 <Counter label="بالغون" value={adults} min={1} onChange={setAdults} />
