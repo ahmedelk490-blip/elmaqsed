@@ -22,6 +22,8 @@ export default function Destinations() {
   const { countries } = useContent();
   const ref = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
+  // glide direction chosen by the visitor (arrows / drag), a short push after an arrow, and the drag state
+  const ctl = useRef({ dir: 1, kick: 0, drag: false, dragged: false });
   const [g, setG] = useState("الكل");
   const list = useMemo(() => fill(countries.filter((c) => inGroup(c, g)), 8), [countries, g]);
   const rows = [list.filter((_, k) => k % 2 === 0), list.filter((_, k) => k % 2 === 1)];
@@ -42,14 +44,49 @@ export default function Destinations() {
         rail.addEventListener("mouseleave", leave);
         const st = ScrollTrigger.create({ trigger: ref.current, start: "top bottom", end: "bottom top", onUpdate: (self) => { boost = Math.min(Math.abs(self.getVelocity()) / 600, 4); } });
         const tick = () => {
-          const a = track.current?.getAnimations()[0];
-          if (!a || !st.isActive) return;
-          const target = base + boost;
+          const a = track.current?.getAnimations()[0], c = ctl.current;
+          if (!a || !st.isActive || c.drag) return;
+          const target = c.dir * (base + boost + c.kick); // keeps going the way the visitor last chose
           if (Math.abs(a.playbackRate - target) > 0.02) a.playbackRate += (target - a.playbackRate) * 0.12;
           boost *= 0.93;
+          c.kick *= 0.9;
         };
+        // drag the row with the mouse; letting go keeps it gliding in the dragged direction
+        let lastX = 0, moved = 0;
+        const down = (e: PointerEvent) => {
+          if (e.button !== 0 || (e.target as HTMLElement).closest("button")) return;
+          ctl.current.drag = true; lastX = e.clientX; moved = 0;
+          const a = track.current?.getAnimations()[0];
+          if (a) a.playbackRate = 0;
+        };
+        const move = (e: PointerEvent) => {
+          const c = ctl.current, a = track.current?.getAnimations()[0], t = track.current;
+          if (!c.drag || !a || !t) return;
+          const total = Number(a.effect?.getComputedTiming().duration) || 0;
+          if (!total) return;
+          const dx = e.clientX - lastX;
+          lastX = e.clientX; moved += dx;
+          if (Math.abs(moved) > 6) rail.setPointerCapture?.(e.pointerId);
+          a.currentTime = ((((Number(a.currentTime) || 0) - dx * (total / (t.scrollWidth / 2))) % total) + total) % total;
+        };
+        const up = () => {
+          const c = ctl.current;
+          if (!c.drag) return;
+          c.drag = false;
+          if (Math.abs(moved) > 6) { c.dir = moved < 0 ? 1 : -1; c.kick = 2; c.dragged = true; setTimeout(() => { c.dragged = false; }, 0); }
+        };
+        const click = (e: MouseEvent) => { if (ctl.current.dragged) { e.preventDefault(); e.stopPropagation(); } };
+        rail.addEventListener("pointerdown", down);
+        rail.addEventListener("pointermove", move);
+        rail.addEventListener("pointerup", up);
+        rail.addEventListener("pointercancel", up);
+        rail.addEventListener("click", click, true);
         gsap.ticker.add(tick);
-        return () => { gsap.ticker.remove(tick); rail.removeEventListener("mouseenter", enter); rail.removeEventListener("mouseleave", leave); };
+        return () => {
+          gsap.ticker.remove(tick); rail.removeEventListener("mouseenter", enter); rail.removeEventListener("mouseleave", leave);
+          rail.removeEventListener("pointerdown", down); rail.removeEventListener("pointermove", move);
+          rail.removeEventListener("pointerup", up); rail.removeEventListener("pointercancel", up); rail.removeEventListener("click", click, true);
+        };
       });
       // phones: scrolling adds a push to the two drifting rows
       gsap.matchMedia().add("(max-width: 1023px) and (prefers-reduced-motion: no-preference)", () => {
@@ -73,6 +110,9 @@ export default function Destinations() {
 
   // one card forward / back: moves the CSS glide's clock smoothly, the row keeps gliding afterwards
   const nudge = (dir: 1 | -1) => {
+    ctl.current.dir = dir; // from now on the row glides this way
+    ctl.current.kick = 7;
+    if (matchMedia("(prefers-reduced-motion: no-preference)").matches) return; // the glide loop does the move
     const a = track.current?.getAnimations()[0];
     const total = Number(a?.effect?.getComputedTiming().duration) || 0;
     if (!a || !total) return;
@@ -109,9 +149,8 @@ export default function Destinations() {
                 <div className="absolute inset-x-0 bottom-0 p-5">
                   <p className="font-serif text-[11px] tracking-[.25em] text-sky-2">{c.en.toUpperCase()}</p>
                   <h3 className="mt-1 text-2xl font-bold">{c.name}</h3>
-                  <div className="mt-3 flex items-center justify-between gap-2 text-xs text-mist/85">
+                  <div className="mt-3 flex items-center gap-2 text-xs text-mist/85">
                     <span className="badge">{c.group || c.kind}</span>
-                    <span>{c.time}</span>
                   </div>
                 </div>
               </Link>
@@ -133,7 +172,6 @@ export default function Destinations() {
                     <div className="absolute inset-x-0 bottom-0 p-3">
                       <p className="font-serif text-[10px] tracking-[.22em] text-sky-2">{c.en.toUpperCase()}</p>
                       <h3 className="mt-0.5 text-lg font-bold md:text-xl">{c.name}</h3>
-                      <p className="text-[11px] text-mist/75">{c.time}</p>
                     </div>
                   </Link>
                 );

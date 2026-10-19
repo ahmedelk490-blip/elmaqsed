@@ -1,18 +1,18 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { suggest } from "@/lib/places";
+import { suggest, type Place } from "@/lib/places";
 
 /**
  * Text input that suggests cities and countries as soon as part of a name is typed. The list is drawn in a fixed layer,
  * so sections with overflow:hidden never clip it. Free text is still accepted.
  */
-export default function PlaceInput({ value, onChange, className, placeholder, required }: { value: string; onChange: (v: string) => void; className?: string; placeholder?: string; required?: boolean }) {
+export default function PlaceInput({ value, onChange, className, placeholder, required, places }: { value: string; onChange: (v: string) => void; className?: string; placeholder?: string; required?: boolean; places?: Place[] }) {
   const ref = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [hi, setHi] = useState(0);
   const [box, setBox] = useState<{ left: number; top: number; width: number } | null>(null);
-  const list = open ? suggest(value) : [];
+  const list = open ? suggest(value, 7, places) : [];
   const show = list.length > 0 && !(list.length === 1 && list[0].n === value.trim());
 
   useLayoutEffect(() => {

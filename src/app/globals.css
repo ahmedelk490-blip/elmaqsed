@@ -375,7 +375,7 @@ body:has(.admin)::after { display: none; }
 .hs-guests { display: grid; gap: .45rem; order: 1; grid-column: 1 / -1; }
 .hs-hotel > .hs-go { order: 2; }
 @media (min-width: 768px) { .hs { padding: .9rem; border-radius: 32px; } .hs-tabs { display: inline-flex; gap: .25rem; padding: .25rem; margin-bottom: .7rem; } .hs-tab { flex: none; padding: .6rem 1.6rem; font-size: 1rem; } .hs-bar { gap: .6rem; grid-template-columns: 1.2fr 1fr auto; } .hs-hotel { grid-template-columns: 1.3fr 1fr 1fr; } .hs-esim { grid-template-columns: 1.3fr 1fr .8fr auto; } .hs-soon { grid-template-columns: 1fr auto; } .hs-group { display: contents; } .hs-group > * { grid-column: auto; } .hs-group > .hs-wide { grid-column: span 2; } .hs-field { min-height: 84px; padding: .7rem 1.4rem; border-radius: 20px; border: 1px solid var(--hs-line); background: var(--hs-cell); } .hs-field:focus-within { border-color: rgba(99,182,234,.75); } .hs-hotel .hs-field { padding-inline: 1.1rem; } .hs-label { font-size: .8rem; } .hs-value { font-size: 1.22rem; } .hs-people { font-size: .98rem; } .hs-select, .hs-input { font-size: 1.15rem; } .hs-go { min-height: 62px; border-radius: 20px; padding-inline: 2.2rem; font-size: 1.08rem; } .hs-guests { grid-template-columns: repeat(3, 1fr); gap: .5rem; } .hs-guests, .hs-hotel > .hs-go { order: 0; } }
-@media (min-width: 1024px) { .hs-hotel { grid-template-columns: 1.15fr .95fr .95fr 1.3fr auto; } .hs-group > .hs-wide { grid-column: auto; } }
+@media (min-width: 1024px) { .hs-hotel { grid-template-columns: 1.7fr 1fr 1fr 1.15fr auto; } .hs-group > .hs-wide { grid-column: auto; } }
 @media (hover: hover) { .hs-field:hover { background: var(--hs-hover); } }
 .picker { position: fixed; inset: 0; z-index: 80; display: flex; align-items: flex-end; justify-content: center; background: rgba(4,12,26,.8); animation: pkfade .25s ease both; }
 .picker-panel { width: 100%; max-height: 88dvh; display: flex; flex-direction: column; padding: 1.2rem 1rem 1rem; border-radius: 26px 26px 0 0; background: #0b1f39; border: 1px solid rgba(99,182,234,.25); animation: pkup .35s cubic-bezier(.2,.8,.2,1) both; }
@@ -431,8 +431,8 @@ body:has(.admin)::after { display: none; }
 .picker-item b { font-size: .95rem; }
 .picker-item small { font-size: .75rem; }
 .picker-panel.on-light { background: #fff; border-color: rgba(11,31,57,.08); box-shadow: 0 -20px 60px -20px rgba(4,12,26,.5); }
-.on-light .picker-item { background: #f4f8fc; border-color: rgba(11,31,57,.08); }
-@media (hover: hover) { .on-light .picker-item:hover { background: #e9f3fb; border-color: rgba(46,148,210,.55); } }
+.on-light .picker-item { background: #e6eef7; border-color: rgba(11,31,57,.13); }
+@media (hover: hover) { .on-light .picker-item:hover { background: #d8e7f5; border-color: rgba(46,148,210,.6); } }
 .on-light .picker-item small { color: #6b7a90; }
 @media (min-width: 900px) { .picker-panel { max-width: 920px; } .picker-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 /* hotel place suggestions (fixed layer under the field) */
@@ -442,6 +442,7 @@ body:has(.admin)::after { display: none; }
 .place-list b { font-weight: 700; }
 .place-list span { font-size: .8rem; color: #5a6b82; }
 /* destinations rail arrows */
+.drail { cursor: grab; touch-action: pan-y; user-select: none; } .drail:active { cursor: grabbing; } .drail img { -webkit-user-drag: none; }
 .drail-arrow { position: absolute; top: 50%; z-index: 20; display: grid; place-items: center; width: 3rem; height: 3rem; margin-top: -1.5rem; border-radius: 50%; color: #fff; background: rgba(11,31,57,.85); border: 1px solid rgba(99,182,234,.45); box-shadow: 0 12px 30px -12px rgba(0,0,0,.6); transition: background .25s, border-color .25s; }
 @media (hover: hover) { .drail-arrow:hover { background: #2e94d2; border-color: #2e94d2; } }
 .to-top { display: inline-flex; align-items: center; gap: .6rem; padding: .55rem 1.1rem .55rem .6rem; border-radius: 999px; font-weight: 600; font-size: .9rem; color: #fff; background: rgba(46,148,210,.14); border: 1px solid rgba(99,182,234,.45); transition: background .25s, border-color .25s; }

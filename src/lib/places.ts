@@ -125,14 +125,21 @@ export const PLACES: Place[] = [
 // Arabic-insensitive matching: hamza forms, ta marbuta, alef maqsura, tashkeel and case are ignored.
 export const fold = (s: string) => s.toLowerCase().replace(/[\u064B-\u0652\u0640]/g, "").replace(/[أإآ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي").trim();
 
-export function suggest(q: string, max = 7): Place[] {
+export function suggest(q: string, max = 7, list: Place[] = PLACES): Place[] {
   const t = fold(q);
   if (!t) return [];
   const starts: Place[] = [], has: Place[] = [];
-  for (const p of PLACES) {
+  for (const p of list) {
     const words = [p.n, p.e ?? "", p.k].map(fold);
     if (words.some((w) => w.startsWith(t) || w.split(" ").some((x) => x.startsWith(t)))) starts.push(p);
     else if (words.some((w) => w.includes(t))) has.push(p);
   }
   return [...starts, ...has].slice(0, max);
+}
+
+/** eSIM destinations: every country we know plus whatever is listed in the dashboard ("وجهات eSIM"). */
+export function esimPlaces(extra: { name: string }[] = []): Place[] {
+  const names = new Set(PLACES.filter((p) => p.k === "دولة").map((p) => p.n));
+  for (const e of extra) names.add(e.name);
+  return [...names].map((n) => ({ n, k: "دولة" }));
 }

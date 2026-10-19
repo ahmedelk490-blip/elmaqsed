@@ -34,7 +34,7 @@ function Intro({ c, wa, tag, center = false }: { c: Country; wa: string; tag: st
 
 /** Boarding pass from Riyadh to the destination airport; a plane crosses the dashed flight line. */
 export function HeroBoarding({ c, t, wa }: P) {
-  const rows: [string, string][] = [["مدة الطيران", t.flight], ["نوع التقديم", c.kind], ["المعالجة", c.time]];
+  const rows: [string, string][] = [["مدة الطيران", t.flight], ["نوع التقديم", c.kind]];
   return (
     <section className="relative flex min-h-[100svh] items-end overflow-hidden pt-[84px]">
       <BgImage src={c.img} priority kenburns overlay="bg-gradient-to-b from-navy/30 via-navy/65 to-navy" />
@@ -85,7 +85,7 @@ export function HeroStamp({ c, t, wa }: P) {
           <div className="stamp-slam" aria-hidden="true">
             <span className="font-serif text-[10px] tracking-[.3em]">VISA · APPROVED</span>
             <span className="font-serif text-2xl font-semibold tracking-[.12em]">{c.en.toUpperCase()}</span>
-            <span className="text-[11px]">{t.iata} · {c.time}</span>
+            <span className="text-xs">{t.iata}</span>
           </div>
         </div>
       </div>
@@ -108,7 +108,6 @@ export function HeroPostcard({ c, t, wa }: P) {
             <p dir="ltr" className="text-right font-serif text-4xl font-semibold leading-none text-[var(--accent)]">{c.en}</p>
             <ul className="pc-lines">
               <li><span>إلى</span>مسافر المقصد</li>
-              <li><span>المعالجة</span>{c.time}</li>
               <li><span>التقديم</span>{c.kind}</li>
             </ul>
             <span className="pc-postmark" dir="ltr">RUH · {t.iata}</span>
@@ -155,7 +154,7 @@ export function HeroRoute({ c, t, wa }: P) {
 export function HeroClassic({ c, wa }: { c: Country; wa: string }) {
   const mrz1 = `V<${c.code.toUpperCase()}<ELMAQSED<<${c.en.toUpperCase().replace(/[^A-Z]/g, "<")}`.padEnd(44, "<").slice(0, 44);
   const mrz2 = "ELMAQSED<<VISA<CONSULTING<<RIYADH<SA".padEnd(44, "<");
-  const facts: [string, string][] = [["نوع التقديم", c.kind], ["المدة التقريبية", c.time], ["أنواع التأشيرة", c.types.join(" · ")], ["المستندات", `${c.reqs.length} مستندات`]];
+  const facts: [string, string][] = [["نوع التقديم", c.kind], ["أنواع التأشيرة", c.types.join(" · ")], ["المستندات", `${c.reqs.length} مستندات`]];
   return (
     <section className="relative flex min-h-[100svh] items-end overflow-hidden pt-[84px]">
       <BgImage src={c.img} priority kenburns overlay="bg-gradient-to-b from-navy/35 via-navy/65 to-navy" />

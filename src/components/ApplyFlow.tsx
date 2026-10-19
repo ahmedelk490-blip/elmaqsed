@@ -8,6 +8,7 @@ import PriceNote from "./PriceNote";
 import Counter from "./Counter";
 import PlaceInput from "./PlaceInput";
 import DateInput from "./DateInput";
+import { esimPlaces } from "@/lib/places";
 import NationalitySelect from "./NationalitySelect";
 
 const CITIES = ["الرياض", "جدة", "الدمام"];
@@ -41,7 +42,6 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
   const [names, setNames] = useState<string[]>([]);
   const [h, setH] = useState({ city: sp.get("city") ?? "", inn: sp.get("in") ?? "", out: sp.get("out") ?? "", rooms: 1, stars: "لا يهم" });
   const [sim, setSim] = useState({ country: sp.get("country") ?? "", start: "", days: TRIP_LENGTHS[Number(sp.get("days"))] ?? TRIP_LENGTHS[0], qty: Math.max(1, count("qty", 1)) });
-  const [simOther, setSimOther] = useState(() => !!sim.country && !simDests.some((x) => x.name === sim.country)); // a place typed in, not one from the list
   const [p, setP] = useState({ name: "", phone: "", email: "", nationality: first?.group === "للمقيمين" ? "" : "المملكة العربية السعودية", status: first?.group === "للمقيمين" ? "مقيم في السعودية" : "مواطن سعودي", refused: "لا", notes: "" });
   const [today] = useState(() => new Date().toISOString().slice(0, 10));
   const onP = (k: keyof typeof p) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setP((x) => ({ ...x, [k]: e.target.value }));
@@ -146,14 +146,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
           ) : esim ? (
             <>
               <div className="mt-2 grid gap-4 sm:grid-cols-2">
-                <label className="fl"><span>وجهة السفر</span>
-                  <select className="field" value={simOther ? "*" : sim.country} onChange={(e) => { const v = e.target.value; setSimOther(v === "*"); setSim({ ...sim, country: v === "*" ? "" : v }); }}>
-                    <option value="">اختر الوجهة</option>
-                    {simDests.map((x) => <option key={x.name}>{x.name}</option>)}
-                    <option value="*">وجهة أخرى…</option>
-                  </select>
-                </label>
-                {simOther && <label className="fl"><span>اكتب الوجهة</span><input className="field" value={sim.country} onChange={(e) => setSim({ ...sim, country: e.target.value })} placeholder="مثال: اليابان" /></label>}
+                <label className="fl"><span>وجهة السفر</span><PlaceInput className="field" value={sim.country} onChange={(v) => setSim({ ...sim, country: v })} places={esimPlaces(simDests)} placeholder="اكتب اسم الدولة" /></label>
                 <label className="fl"><span>تاريخ السفر (اختياري)</span><DateInput min={today} value={sim.start} onChange={(v) => setSim({ ...sim, start: v })} ariaLabel="تاريخ السفر" /></label>
                 <label className="fl"><span>مدة السفر</span>
                   <select className="field" value={sim.days} onChange={(e) => setSim({ ...sim, days: e.target.value })}>{TRIP_LENGTHS.map((d) => <option key={d}>{d}</option>)}</select>

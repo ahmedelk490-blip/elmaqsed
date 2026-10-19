@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: PageProps<"/visa/[slug]">): P
   return pageMeta({
     path: `/visa/${c.slug}`,
     title: `تأشيرة ${c.name} — المتطلبات والمدة والخطوات`,
-    description: `استشارة وتجهيز طلب تأشيرة ${c.name} (${c.en}) من السعودية: المستندات المطلوبة، مدة المعالجة ${c.time}، وخطوات التقديم مع المقصد.`,
+    description: `استشارة وتجهيز طلب تأشيرة ${c.name} (${c.en}) من السعودية: المستندات المطلوبة وخطوات التقديم مع المقصد.`,
     image: og,
   });
 }
@@ -82,7 +82,6 @@ export default async function CountryPage({ params }: PageProps<"/visa/[slug]">)
               <div className="absolute inset-x-0 bottom-0 p-5">
                 <p className="font-serif text-[11px] tracking-[.25em] text-sky-2">{o.en.toUpperCase()}</p>
                 <h3 className="mt-1 text-xl font-bold">{o.name}</h3>
-                <p className="mt-1 text-xs text-mist/75">{o.time}</p>
               </div>
             </Link>
           ))}

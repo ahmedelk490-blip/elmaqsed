@@ -245,6 +245,12 @@
       "type": "overlap",
       "el": "img.kenburns",
       "why": "the small ELMAQSED caption tag sits on the inner-page photo frame by design (live since 2026-09-28)"
+    },
+    {
+      "type": "field-text-cut",
+      "el": "input.a-input",
+      "at": "admin-",
+      "why": "dashboard text fields hold long values (hours, descriptions); a text input scrolls them, nothing is lost"
     }
   ],
   "note": "The audit server keeps its data in D:/dev-cache/elmaqsed-audit-home (a local test dashboard user 'audit' that exists only there, plus sample bookings and calls). Never the production data."

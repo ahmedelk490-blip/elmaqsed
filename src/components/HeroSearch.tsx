@@ -8,6 +8,7 @@ import { Icon } from "./Icons";
 import { TRIP_LENGTHS, waLink, type Country } from "@/lib/types";
 import Counter from "./Counter";
 import PlaceInput from "./PlaceInput";
+import { esimPlaces } from "@/lib/places";
 
 const GROUPS = ["الكل", "شنغن", "للمقيمين", "وجهات أخرى"];
 export const inGroup = (c: { group?: string }, g: string) => g === "الكل" || (g === "وجهات أخرى" ? !c.group : c.group === g);
@@ -85,7 +86,7 @@ export default function HeroSearch() {
   const router = useRouter();
   const { site, countries, esim = [] } = useContent();
   const [tab, setTab] = useState<(typeof TABS)[number][0]>("visa");
-  const [open, setOpen] = useState<"" | "visa" | "esim">(""); // which destination list is open
+  const [open, setOpen] = useState<"" | "visa">(""); // which destination list is open
   const close = useCallback(() => setOpen(""), []);
   const [dest, setDest] = useState<Country | null>(null);
   const [type, setType] = useState("سياحية");
@@ -93,7 +94,6 @@ export default function HeroSearch() {
   const [guests, setGuests] = useState(false); // the guests panel under the hotel fields
   const [sim, setSim] = useState({ country: "", days: "0", qty: "1" });
   const types = dest?.types.length ? dest.types : ["سياحية"]; // tourist visas only, so the field is never empty
-  const simDest = esim.find((x) => x.name === sim.country);
   const people = `${h.adults} بالغ${h.kids ? ` · ${h.kids} طفل` : ""}${h.infants ? ` · ${h.infants} رضيع` : ""}`;
   const book = (params: Record<string, string>) => router.push(`/booking?${new URLSearchParams(params)}`);
   const goVisa = () => {
@@ -106,7 +106,6 @@ export default function HeroSearch() {
   };
   const goEsim = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!sim.country) { setOpen("esim"); return; }
     book({ service: "esim", country: sim.country, days: sim.days, qty: sim.qty });
   };
   return (
@@ -155,10 +154,7 @@ export default function HeroSearch() {
       {tab === "esim" && (
         <form onSubmit={goEsim} className="hs-bar hs-esim">
           <div className="hs-group">
-            <button type="button" onClick={() => setOpen("esim")} aria-haspopup="dialog" className="hs-field">
-              <span className="hs-label"><Icon name="pin" className="hs-ico" />وجهة السفر</span>
-              <span className="hs-value">{sim.country ? <>{simDest && <span className={`fi fi-${simDest.code} rounded-sm`} />}{sim.country}</> : "اختر الوجهة"}</span>
-            </button>
+            <label className="hs-field"><span className="hs-label"><Icon name="pin" className="hs-ico" />وجهة السفر</span><PlaceInput required value={sim.country} onChange={(v) => setSim({ ...sim, country: v })} places={esimPlaces(esim)} placeholder="اكتب اسم الدولة" className="hs-input" /></label>
             <label className="hs-field hs-half"><span className="hs-label"><Icon name="clock" className="hs-ico" />مدة السفر</span><select value={sim.days} onChange={(e) => setSim({ ...sim, days: e.target.value })} className="hs-select">{TRIP_LENGTHS.map((d, i) => <option key={d} value={i}>{d}</option>)}</select></label>
             <label className="hs-field hs-half"><span className="hs-label"><Icon name="sim" className="hs-ico" />عدد الشرائح</span><select value={sim.qty} onChange={(e) => setSim({ ...sim, qty: e.target.value })} className="hs-select">{Array.from({ length: 10 }, (_, i) => <option key={i}>{i + 1}</option>)}</select></label>
           </div>
@@ -176,14 +172,6 @@ export default function HeroSearch() {
           title="أين تريد السفر؟" groups={GROUPS} onClose={close}
           items={countries.map((c) => ({ key: c.slug, name: c.name, en: c.en, code: c.code, group: c.group }))}
           onPick={(k) => { const c = countries.find((x) => x.slug === k); if (c) { setDest(c); setType(c.types[0] ?? "سياحية"); } close(); }}
-        />
-      )}
-      {open === "esim" && (
-        <Picker
-          title="شريحة eSIM لأي وجهة؟" onClose={close}
-          items={esim.map((x) => ({ key: x.name, name: x.name, en: x.en, code: x.code }))}
-          onPick={(name) => { setSim({ ...sim, country: name }); close(); }}
-          onFree={(name) => { setSim({ ...sim, country: name }); close(); }}
         />
       )}
     </div>

@@ -71,7 +71,7 @@ export default function Hero() {
   );
 
   return (
-    <section ref={ref} className="relative flex min-h-[100svh] items-center overflow-hidden pt-[84px]">
+    <section ref={ref} className="relative flex min-h-[100svh] items-center overflow-hidden pt-[84px] lg:min-h-0 lg:items-start lg:pb-20 lg:pt-[108px]">
       <BgImage src="/img/p05.jpg" priority kenburns overlay="bg-[linear-gradient(180deg,rgba(11,31,57,.76)_0%,rgba(11,31,57,.96)_30%,rgba(11,31,57,.985)_62%,#0b1f39_100%)]" />
       <div className="orb absolute left-[10%] top-[16%] h-72 w-72 rounded-full bg-sky/25 blur-[90px]" />
       <div className="orb absolute right-[8%] top-[52%] h-96 w-96 rounded-full bg-[#1d4f8f]/40 blur-[110px]" />
@@ -81,7 +81,7 @@ export default function Hero() {
         {[0, 1, 2].map((i) => <span key={i} className="ripple-ring" style={{ animationDelay: `${i * 2.8}s` }} />)}
       </div>
 
-      <div className="hero-content container-x relative flex flex-col items-center py-6 text-center md:py-6 lg:pb-24">
+      <div className="hero-content container-x relative flex flex-col items-center py-6 text-center md:py-6">
         <p data-h className="pill mb-4 hidden md:inline-flex"><i />{site.nameEn} · Visa Consulting</p>
 
         <div ref={symRef} className="relative mb-4 w-[min(22vw,84px)] md:mb-4 md:w-[96px]" style={{ perspective: 800 }}>
@@ -100,7 +100,7 @@ export default function Hero() {
         <p data-h className="mt-4 max-w-2xl text-[15px] leading-7 text-mist/85 md:mt-4 md:text-lg md:leading-8">
           استشارات تأشيرات السفر وتجهيز الطلبات باحترافية: نقيّم ملفك بصدق، نجهّز مستنداتك بدقة، ونرافقك خطوة بخطوة حتى تصل إلى مقصدك.
         </p>
-        <div data-h className="mt-7 w-full min-w-0 max-w-5xl md:mt-6"><HeroSearch /></div>
+        <div data-h className="mt-7 w-full min-w-0 max-w-5xl md:mt-6 xl:max-w-6xl"><HeroSearch /></div>
         <ul data-h className="mt-6 flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-mist/70">
           <li>✓ شركة استشارية مرخصة</li>
           <li>✓ رد خلال 24 ساعة</li>
