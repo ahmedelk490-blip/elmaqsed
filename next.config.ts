@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
     return [
       { source: "/visa/schengen", destination: "/visa/france", permanent: true },
       { source: "/apply", destination: "/booking", permanent: true },
-      ...["canada", "australia", "japan", "china", "india", "bosnia"].map((s) => ({ source: `/visa/${s}`, destination: "/destinations", permanent: false })),
+      ...["canada", "australia", "japan", "china", "india", "bosnia", "uae", "indonesia"].map((s) => ({ source: `/visa/${s}`, destination: "/destinations", permanent: false })),
     ];
   },
   images: { loader: "custom", loaderFile: "./src/lib/imgLoader.ts", deviceSizes: [640, 1080, 1920], imageSizes: [256, 384], remotePatterns: [{ protocol: "https", hostname: "upload.wikimedia.org" }, { protocol: "https", hostname: "thumb.wikimedia.org" }] },

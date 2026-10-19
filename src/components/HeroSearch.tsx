@@ -30,7 +30,7 @@ function Picker({ title, items, groups, onPick, onFree, onClose }: { title: stri
   const list = items.filter((c) => (!groups || inGroup(c, g)) && `${c.name} ${c.en ?? ""}`.toLowerCase().includes(term.toLowerCase()));
   return createPortal(
     <div className="picker" role="dialog" aria-modal="true" aria-label={title} onClick={onClose}>
-      <div className="picker-panel" onClick={(e) => e.stopPropagation()}>
+      <div className="picker-panel on-light" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between gap-4">
           <h2 className="text-xl font-bold md:text-2xl">{title}</h2>
           <button type="button" onClick={onClose} aria-label="إغلاق" className="grid h-10 w-10 place-items-center rounded-full border border-white/15 text-xl leading-none">×</button>

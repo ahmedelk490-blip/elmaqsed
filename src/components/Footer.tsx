@@ -64,7 +64,7 @@ export default async function Footer() {
 
       {/* bottom bar */}
       <div className="relative border-t border-white/10">
-        <div className="container-x flex flex-col items-center gap-4 py-7 text-center text-sm md:flex-row md:justify-between md:text-start">
+        <div className="container-x flex flex-col items-center gap-4 py-7 text-center text-sm max-lg:pb-24 md:flex-row md:justify-between md:text-start">
           <p className="text-mist/55">© {new Date().getFullYear()} · جميع الحقوق محفوظة</p>
           <BackToTop />
         </div>
