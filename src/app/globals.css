@@ -445,9 +445,6 @@ body:has(.admin)::after { display: none; }
 .drail { cursor: grab; touch-action: pan-y; user-select: none; } .drail:active { cursor: grabbing; } .drail img { -webkit-user-drag: none; }
 .drail-arrow { position: absolute; top: 50%; z-index: 20; display: grid; place-items: center; width: 3rem; height: 3rem; margin-top: -1.5rem; border-radius: 50%; color: #fff; background: rgba(11,31,57,.85); border: 1px solid rgba(99,182,234,.45); box-shadow: 0 12px 30px -12px rgba(0,0,0,.6); transition: background .25s, border-color .25s; }
 @media (hover: hover) { .drail-arrow:hover { background: #2e94d2; border-color: #2e94d2; } }
-.to-top { display: inline-flex; align-items: center; gap: .6rem; padding: .55rem 1.1rem .55rem .6rem; border-radius: 999px; font-weight: 600; font-size: .9rem; color: #fff; background: rgba(46,148,210,.14); border: 1px solid rgba(99,182,234,.45); transition: background .25s, border-color .25s; }
-.to-top-ico { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: linear-gradient(135deg, #63b6ea, #2e94d2); }
-@media (hover: hover) { .to-top:hover { background: rgba(46,148,210,.28); border-color: #63b6ea; } }
 /* header contact card: call / WhatsApp */
 .cc-pop { position: absolute; top: calc(100% + 14px); left: 0; z-index: 60; width: 270px; padding: .6rem; border-radius: 18px; background: #fff; color: #0b1f39; box-shadow: 0 24px 60px -20px rgba(4,12,26,.6); animation: pkfade .18s ease both; }
 .cc-pop::before { content: ""; position: absolute; top: -6px; left: 28px; width: 12px; height: 12px; background: #fff; transform: rotate(45deg); }

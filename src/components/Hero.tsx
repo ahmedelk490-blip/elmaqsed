@@ -4,38 +4,20 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
-import Symbol from "./Symbol";
 import BgImage from "./BgImage";
 import HeroSearch from "./HeroSearch";
-import { useContent } from "./ContentProvider";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
-/** Brand hero: the symbol's arrows converge on one point, then the visitor searches for a visa or a hotel. */
+/** Hero: the headline and the search box for a visa, a hotel, an eSIM or a package. */
 export default function Hero() {
-  const { site } = useContent();
   const ref = useRef<HTMLElement>(null);
-  const symRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        // Brand story: arrows arrive from different directions and converge on one destination point.
-        const svg = ref.current!.querySelector<SVGSVGElement>(".sym-svg")!;
-        const vb = svg.viewBox.baseVal;
-        const cx = vb.x + vb.width / 2, cy = vb.y + vb.height / 2;
-        const arrows = gsap.utils.toArray<SVGPathElement>(".sym-arrow", svg);
-        arrows.forEach((p) => {
-          const b = p.getBBox();
-          gsap.set(p, { x: (b.x + b.width / 2 - cx) * 1.3, y: (b.y + b.height / 2 - cy) * 1.3, opacity: 0, scale: 0.5, transformOrigin: "50% 50%" });
-        });
-        gsap.timeline({ defaults: { ease: "power4.out" } })
-          .to(arrows, { x: 0, y: 0, opacity: 1, scale: 1, duration: 1.4, stagger: { each: 0.08, from: "random" } }, 0.2)
-          .fromTo(".sym-core", { scale: 0, opacity: 0, transformOrigin: "50% 50%" }, { scale: 1, opacity: 1, duration: 0.7, ease: "back.out(3)" }, 1)
-          .fromTo(".ignite", { scale: 0, opacity: 0.9 }, { scale: 4, opacity: 0, duration: 1.3, ease: "power2.out" }, 1.05)
-          .fromTo(".sym-glow", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 1.2 }, 1.05)
-          .fromTo("[data-h]", { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.1 }, 0.9);
+        gsap.fromTo("[data-h]", { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.1, ease: "power4.out", delay: 0.5 });
 
         SplitText.create(".hero-title", {
           type: "words",
@@ -46,26 +28,11 @@ export default function Hero() {
           },
         });
 
-        // idle life
-        gsap.to(".sym-glow", { opacity: 0.6, scale: 1.15, duration: 2.6, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 2.5 });
-        gsap.to(symRef.current, { y: -10, duration: 3, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 2.5 });
-
-        // the symbol tilts in 3D toward the pointer
-        const rY = gsap.quickTo(".sym-tilt", "rotationY", { duration: 0.9, ease: "power3" });
-        const rX = gsap.quickTo(".sym-tilt", "rotationX", { duration: 0.9, ease: "power3" });
-        const el = ref.current!;
-        const move = (e: MouseEvent) => {
-          const r = el.getBoundingClientRect();
-          rY(((e.clientX - r.left) / r.width - 0.5) * 30);
-          rX(-((e.clientY - r.top) / r.height - 0.5) * 30);
-        };
-        el.addEventListener("mousemove", move);
-        return () => el.removeEventListener("mousemove", move);
       });
       mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
         gsap.to(".hero-content", { yPercent: -10, opacity: 0.2, ease: "none", scrollTrigger: { trigger: ref.current, start: "top top", end: "bottom top", scrub: true } });
       });
-      mm.add("(prefers-reduced-motion: reduce)", () => gsap.set(["[data-h]", ".sym-glow", ".hero-title"], { autoAlpha: 1 }));
+      mm.add("(prefers-reduced-motion: reduce)", () => gsap.set(["[data-h]", ".hero-title"], { autoAlpha: 1 }));
     },
     { scope: ref },
   );
@@ -82,17 +49,7 @@ export default function Hero() {
       </div>
 
       <div className="hero-content container-x relative flex flex-col items-center py-6 text-center md:py-6">
-        <p data-h className="pill mb-4 hidden md:inline-flex"><i />{site.nameEn} · Visa Consulting</p>
-
-        <div ref={symRef} className="relative mb-4 w-[min(22vw,84px)] md:mb-4 md:w-[96px]" style={{ perspective: 800 }}>
-          <div className="ignite absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,.95),rgba(46,148,210,.6)_35%,transparent_70%)]" />
-          <div className="sym-glow absolute inset-[-45%] rounded-full bg-[radial-gradient(circle,rgba(46,148,210,.5),transparent_65%)]" />
-          <div className="sym-tilt relative" style={{ transformStyle: "preserve-3d" }}>
-            <Symbol className="sym-svg w-full text-white" id="hero" />
-          </div>
-        </div>
-
-        <h1 className="hero-title max-w-4xl text-4xl font-bold leading-[1.3] sm:text-5xl lg:text-6xl">
+        <h1 className="hero-title max-w-3xl text-3xl font-semibold leading-[1.35] sm:text-4xl lg:text-5xl">
           مسار واضح
           <br />
           <span className="grad-text">لوجهتك الصحيحة</span>
