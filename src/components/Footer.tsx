@@ -43,27 +43,27 @@ export default async function Footer() {
 
       {/* link columns */}
       <div className="container-x relative py-14">
-        <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_minmax(0,1.3fr)] lg:gap-x-16">
           <div>
             <h3 className="foot-h"><span>PAGES</span>الصفحات</h3>
             <ul className="foot-list">{nav.map((n) => <li key={n.href}><Link href={n.href}>{n.label}</Link></li>)}</ul>
           </div>
-          <div className="md:order-last">
+          <div className="lg:order-last lg:self-start lg:rounded-3xl lg:border lg:border-white/10 lg:bg-white/[.03] lg:p-7">
             <h3 className="foot-h"><span>VISIT US</span>المقر وساعات العمل</h3>
             <p className="leading-8 text-mist/80">{site.city}</p>
             <p className="mt-1 text-sm leading-7 text-mist/55">{site.hours}</p>
             <a href={waLink(site.whatsapp)} target="_blank" rel="noopener" className="btn btn-ghost btn-sm mt-5">احجز استشارة</a>
           </div>
-          <div className="col-span-2">
+          <div className="col-span-2 lg:col-span-1">
             <h3 className="foot-h"><span>VISAS</span>التأشيرات</h3>
-            <ul className="foot-list grid-cols-2 gap-x-8">{countries.map((c) => <li key={c.slug}><Link href={`/visa/${c.slug}`}><span className={`fi fi-${c.code} rounded-sm`} />تأشيرة {c.name}</Link></li>)}</ul>
+            <ul className="foot-list grid-cols-2 gap-x-10 lg:grid-cols-[repeat(2,max-content)] lg:gap-x-16">{countries.map((c) => <li key={c.slug}><Link href={`/visa/${c.slug}`}><span className={`fi fi-${c.code} rounded-sm`} />تأشيرة {c.name}</Link></li>)}</ul>
           </div>
         </div>
       </div>
 
       {/* bottom bar */}
       <div className="relative border-t border-white/10">
-        <div className="container-x flex flex-col items-center gap-4 py-7 text-center text-sm max-lg:pb-24 md:flex-row md:justify-between md:text-start">
+        <div className="container-x flex flex-col items-center gap-4 py-7 text-center text-sm pb-56 lg:pb-7 md:flex-row md:justify-between md:text-start">
           <p className="text-mist/55">© {new Date().getFullYear()} · جميع الحقوق محفوظة</p>
 
         </div>

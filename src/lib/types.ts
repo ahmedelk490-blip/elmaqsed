@@ -1,6 +1,6 @@
 export type Site = {
   name: string; nameEn: string; tagline: string; description: string; url: string;
-  whatsapp: string; phone: string; email: string; city: string; cr: string; license: string; hours: string;
+  whatsapp: string; phone: string; phone2?: string; email: string; city: string; cr: string; license: string; hours: string;
   footerNote: string; disclaimer: string; priceIncludes?: string; priceExcludes?: string;
   social: { instagram: string; x: string; tiktok: string; snapchat: string };
 };

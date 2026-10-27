@@ -29,7 +29,7 @@ export default async function ContactsPage() {
       <p className="mt-1 text-sm text-slate-500">كل ضغطة على زر الاتصال أو أزرار واتساب في الموقع تُسجَّل هنا. نعرف أن الزائر بدأ الاتصال، لا مدة المكالمة.</p>
 
       <div className="a-card mt-6 flex flex-wrap items-center justify-between gap-4 p-5 text-sm">
-        <p>رقم الاتصال الحالي: <b dir="ltr">{site.phone}</b> · واتساب: <b dir="ltr">+{site.whatsapp}</b></p>
+        <p className="flex flex-wrap gap-x-6 gap-y-2"><span className="whitespace-nowrap">رقم الاتصال: <b dir="ltr" className="inline-block">{site.phone}</b></span>{site.phone2 && <span className="whitespace-nowrap">الرقم الثاني: <b dir="ltr" className="inline-block">{site.phone2}</b></span>}<span className="whitespace-nowrap">واتساب: <b dir="ltr" className="inline-block">+{site.whatsapp}</b></span></p>
         <Link href="/admin/single/site" className="a-btn">تغيير الأرقام</Link>
       </div>
 

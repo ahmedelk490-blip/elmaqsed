@@ -64,6 +64,8 @@ h1, h2, h3, .display { font-family: var(--font-display); }
 .wa-ring { position: absolute; inset: 0; border-radius: 999px; border: 2px solid rgba(99,182,234,.8); animation: waring 2.6s ease-out infinite; }
 @keyframes waring { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(1.9); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .board-dot, .wa-ring { animation: none; } }
+/* the booking form has its own send buttons at the bottom: keep the floating contact stack off them */
+body:has(#form) .contact-stack { display: none; }
 
 /* ---------- control panel (light) ---------- */
 .admin { color-scheme: light; font-family: var(--font-sans); }
