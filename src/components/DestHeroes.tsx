@@ -20,7 +20,7 @@ function Intro({ c, wa, tag, center = false }: { c: Country; wa: string; tag: st
         <span className="text-white">{c.name}</span>
       </nav>
       <p data-r className="eyebrow mb-4 text-[var(--accent)]">{tag}</p>
-      {c.group && <p data-r className="mb-4"><span className="badge badge-sky bg-sky/15">{c.group === "للمقيمين" ? "للمقيمين في السعودية" : `تأشيرة ${c.group}`}</span></p>}
+      {c.group && <p data-r className="mb-4"><span className="badge badge-sky bg-sky/15">{c.group === "للمقيمين" ? "للمقيمين في دول الخليج" : `تأشيرة ${c.group}`}</span></p>}
       <h1 data-r className="text-balance text-5xl font-bold leading-[1.15] md:text-7xl">تأشيرة {c.name}</h1>
       <p data-r className={`mt-6 max-w-xl text-lg leading-9 text-mist/85 ${center ? "mx-auto" : ""}`}>{c.note}</p>
       <div data-r className={`mt-9 flex flex-wrap gap-4 ${center ? "justify-center" : ""}`}>
@@ -32,9 +32,9 @@ function Intro({ c, wa, tag, center = false }: { c: Country; wa: string; tag: st
   );
 }
 
-/** Boarding pass from Riyadh to the destination airport; a plane crosses the dashed flight line. */
+/** Boarding pass from the visitor's city to the destination airport; a plane crosses the dashed flight line. */
 export function HeroBoarding({ c, t, wa }: P) {
-  const rows: [string, string][] = [["مدة الطيران", t.flight], ["نوع التقديم", c.kind]];
+  const rows: [string, string][] = [["نوع التقديم", c.kind]];
   return (
     <section className="relative flex min-h-[100svh] items-end overflow-hidden pt-[84px]">
       <BgImage src={c.img} priority kenburns overlay="bg-gradient-to-b from-navy/30 via-navy/65 to-navy" />
@@ -47,7 +47,7 @@ export function HeroBoarding({ c, t, wa }: P) {
               <span className={`fi fi-${c.code} h-6 w-9 rounded shadow`} />
             </div>
             <div dir="ltr" className="mt-6 flex items-center gap-4">
-              <div><p className="font-serif text-4xl font-semibold">RUH</p><p className="text-xs text-mist/60">الرياض</p></div>
+              <div><p className="font-serif text-4xl font-semibold">HOME</p><p className="text-xs text-mist/60">مدينتك</p></div>
               <div className="bp-line relative flex-1"><span className="bp-fly"><svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor" aria-hidden="true"><path d={PLANE} /></svg></span></div>
               <div className="text-right"><p className="font-serif text-4xl font-semibold text-[var(--accent)]">{t.iata}</p><p className="text-xs text-mist/60">{t.city}</p></div>
             </div>
@@ -80,7 +80,7 @@ export function HeroStamp({ c, t, wa }: P) {
           </div>
           <svg viewBox="0 0 200 200" style={{ direction: "ltr" }} className="stamp-ring absolute inset-0 h-full w-full" aria-hidden="true">
             <defs><path id={`ring-${c.slug}`} d="M100,100 m-93,0 a93,93 0 1,1 186,0 a93,93 0 1,1 -186,0" /></defs>
-            <text fontSize="8" fill="currentColor" direction="ltr" className="font-serif"><textPath href={`#ring-${c.slug}`} textLength="578" lengthAdjust="spacing">{`VISA APPROVED · ${c.en.toUpperCase()} · ELMAQSED · RIYADH · `}</textPath></text>
+            <text fontSize="8" fill="currentColor" direction="ltr" className="font-serif"><textPath href={`#ring-${c.slug}`} textLength="578" lengthAdjust="spacing">{`VISA APPROVED · ${c.en.toUpperCase()} · ELMAQSED · ARAB WORLD · `}</textPath></text>
           </svg>
           <div className="stamp-slam" aria-hidden="true">
             <span className="font-serif text-[10px] tracking-[.3em]">VISA · APPROVED</span>
@@ -110,7 +110,7 @@ export function HeroPostcard({ c, t, wa }: P) {
               <li><span>إلى</span>مسافر المقصد</li>
               <li><span>التقديم</span>{c.kind}</li>
             </ul>
-            <span className="pc-postmark" dir="ltr">RUH · {t.iata}</span>
+            <span className="pc-postmark" dir="ltr">HOME · {t.iata}</span>
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@ export function HeroRoute({ c, t, wa }: P) {
     <section className="relative overflow-hidden pt-[84px]">
       <div className="dots-bg absolute inset-0 opacity-70" aria-hidden="true" />
       <div className="container-x relative py-14 text-center md:py-20">
-        <Reveal className="mx-auto max-w-3xl"><Intro c={c} wa={wa} tag={`Route · RUH → ${t.iata}`} center /></Reveal>
+        <Reveal className="mx-auto max-w-3xl"><Intro c={c} wa={wa} tag={`Route · HOME → ${t.iata}`} center /></Reveal>
         <div className="relative mx-auto mt-12 max-w-5xl">
           <svg viewBox="0 0 1000 300" className="w-full overflow-visible" aria-hidden="true">
             <path d={d} fill="none" stroke="rgba(255,255,255,.22)" strokeWidth="2" strokeDasharray="6 10" />
@@ -137,9 +137,8 @@ export function HeroRoute({ c, t, wa }: P) {
               <animateMotion dur="3.2s" begin="0.2s" fill="freeze" rotate="auto" path={d} />
             </g>
           </svg>
-          <div className="absolute bottom-[2%] right-[8%] translate-x-1/2 translate-y-full pt-3 text-center"><p className="font-serif text-2xl font-semibold" dir="ltr">RUH</p><p className="text-xs text-mist/60">الرياض</p></div>
+          <div className="absolute bottom-[2%] right-[8%] translate-x-1/2 translate-y-full pt-3 text-center"><p className="font-serif text-2xl font-semibold" dir="ltr">HOME</p><p className="text-xs text-mist/60">مدينتك</p></div>
           <div className="absolute bottom-[2%] left-[8%] -translate-x-1/2 translate-y-full pt-3 text-center"><p className="font-serif text-2xl font-semibold text-[var(--accent)]" dir="ltr">{t.iata}</p><p className="text-xs text-mist/60">{t.city}</p></div>
-          <div className="absolute left-1/2 top-[6%] -translate-x-1/2 rounded-full border border-white/15 bg-navy-2/90 px-4 py-1.5 text-sm">{t.flight}</div>
           <div className="absolute bottom-[26%] left-[8%] h-12 w-12 -translate-x-1/2 overflow-hidden rounded-full border-2 border-[var(--accent)] shadow-lg sm:h-20 sm:w-20 md:h-28 md:w-28">
             <Image src={c.img} alt={c.name} fill priority sizes="112px" className="object-cover" />
           </div>
@@ -153,7 +152,7 @@ export function HeroRoute({ c, t, wa }: P) {
 /** Fallback for destinations added later from the admin: full-bleed photo with the visa card. */
 export function HeroClassic({ c, wa }: { c: Country; wa: string }) {
   const mrz1 = `V<${c.code.toUpperCase()}<ELMAQSED<<${c.en.toUpperCase().replace(/[^A-Z]/g, "<")}`.padEnd(44, "<").slice(0, 44);
-  const mrz2 = "ELMAQSED<<VISA<CONSULTING<<RIYADH<SA".padEnd(44, "<");
+  const mrz2 = "ELMAQSED<<VISA<CONSULTING<<ARAB<WORLD".padEnd(44, "<");
   const facts: [string, string][] = [["نوع التقديم", c.kind], ["أنواع التأشيرة", c.types.join(" · ")], ["المستندات", `${c.reqs.length} مستندات`]];
   return (
     <section className="relative flex min-h-[100svh] items-end overflow-hidden pt-[84px]">

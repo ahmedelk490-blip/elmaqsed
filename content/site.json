@@ -18,7 +18,7 @@
       "snapchat": "#"
     },
     "hours": "السبت – الخميس، 9 صباحاً – 11 مساءً",
-    "footerNote": "مسار واضح لوجهتك الصحيحة. استشارات تأشيرات السفر وتجهيز الطلبات باحترافية، من الرياض إلى العالم.",
+    "footerNote": "مسار واضح لوجهتك الصحيحة. استشارات تأشيرات السفر وتجهيز الطلبات باحترافية، من الوطن العربي إلى العالم.",
     "disclaimer": "المقصد شركة استشارية مستقلة ولا تمثل أي سفارة أو جهة حكومية، ولا تضمن قرار منح التأشيرة.",
     "priceIncludes": "رسوم الموعد والخدمة والترجمة والضريبة",
     "priceExcludes": "رسوم السفارة ورسوم توصيل الجواز من المركز الموحد للتأشيرات"
@@ -179,7 +179,7 @@
       "types": [
         "سياحية"
       ],
-      "note": "الوجهة الأولى لتأشيرة شنغن من السعودية. نرتّب موعدك ونجهّز ملفك كاملاً.",
+      "note": "الوجهة الأولى لتأشيرة شنغن من الوطن العربي. نرتّب موعدك ونجهّز ملفك كاملاً.",
       "reqs": [
         "جواز سفر ساري لأكثر من 6 أشهر وبه صفحات فارغة",
         "صور شخصية حديثة بخلفية بيضاء حسب مواصفات السفارة",
@@ -525,7 +525,7 @@
       "types": [
         "سياحية"
       ],
-      "note": "تأشيرة ماليزيا الإلكترونية للمقيمين في السعودية. نراجع أهلية جنسيتك ونقدّم الطلب عنك.",
+      "note": "تأشيرة ماليزيا الإلكترونية للمقيمين في دول الخليج. نراجع أهلية جنسيتك ونقدّم الطلب عنك.",
       "reqs": [
         "جواز سفر ساري لأكثر من 6 أشهر وبه صفحات فارغة",
         "صور شخصية حديثة بخلفية بيضاء حسب مواصفات السفارة",
@@ -547,7 +547,7 @@
       "types": [
         "سياحية"
       ],
-      "note": "تأشيرة تركيا للمقيمين في السعودية. نراجع أهلية جنسيتك ونقدّم الطلب عنك.",
+      "note": "تأشيرة تركيا للمقيمين في دول الخليج. نراجع أهلية جنسيتك ونقدّم الطلب عنك.",
       "reqs": [
         "جواز سفر ساري لأكثر من 6 أشهر وبه صفحات فارغة",
         "صور شخصية حديثة بخلفية بيضاء حسب مواصفات السفارة",
@@ -593,7 +593,7 @@
       "types": [
         "سياحية"
       ],
-      "note": "تأشيرة مصر للمقيمين في السعودية، بملف مرتب ومتابعة حتى الاستلام.",
+      "note": "تأشيرة مصر للمقيمين في دول الخليج، بملف مرتب ومتابعة حتى الاستلام.",
       "reqs": [
         "جواز سفر ساري لأكثر من 6 أشهر وبه صفحات فارغة",
         "صور شخصية حديثة بخلفية بيضاء حسب مواصفات السفارة",
@@ -640,7 +640,7 @@
       "types": [
         "سياحية"
       ],
-      "note": "تأشيرة البحرين الإلكترونية للمقيمين في السعودية، نقدّمها عنك خلال أيام.",
+      "note": "تأشيرة البحرين الإلكترونية للمقيمين في دول الخليج، نقدّمها عنك خلال أيام.",
       "reqs": [
         "جواز سفر ساري لأكثر من 6 أشهر وبه صفحات فارغة",
         "صور شخصية حديثة بخلفية بيضاء حسب مواصفات السفارة",
@@ -698,8 +698,8 @@
       "cat": "المستندات"
     },
     {
-      "q": "هل تقدمون الخدمة لغير السعوديين المقيمين في المملكة؟",
-      "a": "نعم، نخدم المواطنين والمقيمين، مع مراعاة اختلاف المتطلبات حسب الجنسية والإقامة.",
+      "q": "هل تخدمون العملاء من خارج السعودية؟",
+      "a": "نعم، نخدم العملاء من كل الدول العربية، مواطنين ومقيمين، مع مراعاة اختلاف المتطلبات حسب الجنسية وبلد الإقامة.",
       "cat": "عام"
     },
     {
@@ -762,9 +762,329 @@
   },
   "esim": [
     {
+      "name": "أفغانستان",
+      "en": "Afghanistan",
+      "code": ""
+    },
+    {
+      "name": "ألبانيا",
+      "en": "Albania",
+      "code": ""
+    },
+    {
+      "name": "الجزائر",
+      "en": "Algeria",
+      "code": ""
+    },
+    {
+      "name": "أندورا",
+      "en": "Andorra",
+      "code": ""
+    },
+    {
+      "name": "أنغولا",
+      "en": "Angola",
+      "code": ""
+    },
+    {
+      "name": "أنتيغوا وباربودا",
+      "en": "Antigua and Barbuda",
+      "code": ""
+    },
+    {
+      "name": "الأرجنتين",
+      "en": "Argentina",
+      "code": ""
+    },
+    {
+      "name": "أرمينيا",
+      "en": "Armenia",
+      "code": ""
+    },
+    {
+      "name": "أستراليا",
+      "en": "Australia",
+      "code": ""
+    },
+    {
+      "name": "النمسا",
+      "en": "Austria",
+      "code": "at"
+    },
+    {
+      "name": "أذربيجان",
+      "en": "Azerbaijan",
+      "code": ""
+    },
+    {
+      "name": "جزر البهاما",
+      "en": "Bahamas",
+      "code": ""
+    },
+    {
+      "name": "البحرين",
+      "en": "Bahrain",
+      "code": "bh"
+    },
+    {
+      "name": "بنغلاديش",
+      "en": "Bangladesh",
+      "code": ""
+    },
+    {
+      "name": "باربادوس",
+      "en": "Barbados",
+      "code": ""
+    },
+    {
+      "name": "بيلاروسيا",
+      "en": "Belarus",
+      "code": ""
+    },
+    {
+      "name": "بلجيكا",
+      "en": "Belgium",
+      "code": ""
+    },
+    {
+      "name": "بليز",
+      "en": "Belize",
+      "code": ""
+    },
+    {
+      "name": "بنين",
+      "en": "Benin",
+      "code": ""
+    },
+    {
+      "name": "بوتان",
+      "en": "Bhutan",
+      "code": ""
+    },
+    {
+      "name": "بوليفيا",
+      "en": "Bolivia",
+      "code": ""
+    },
+    {
+      "name": "البوسنة والهرسك",
+      "en": "Bosnia and Herzegovina",
+      "code": ""
+    },
+    {
+      "name": "بوتسوانا",
+      "en": "Botswana",
+      "code": ""
+    },
+    {
+      "name": "البرازيل",
+      "en": "Brazil",
+      "code": ""
+    },
+    {
+      "name": "بروناي",
+      "en": "Brunei",
+      "code": ""
+    },
+    {
+      "name": "بلغاريا",
+      "en": "Bulgaria",
+      "code": ""
+    },
+    {
+      "name": "بوركينا فاسو",
+      "en": "Burkina Faso",
+      "code": ""
+    },
+    {
+      "name": "بوروندي",
+      "en": "Burundi",
+      "code": ""
+    },
+    {
+      "name": "كابو فيردي",
+      "en": "Cabo Verde",
+      "code": ""
+    },
+    {
+      "name": "كمبوديا",
+      "en": "Cambodia",
+      "code": ""
+    },
+    {
+      "name": "الكاميرون",
+      "en": "Cameroon",
+      "code": ""
+    },
+    {
+      "name": "كندا",
+      "en": "Canada",
+      "code": ""
+    },
+    {
+      "name": "جمهورية أفريقيا الوسطى",
+      "en": "Central African Republic",
+      "code": ""
+    },
+    {
+      "name": "تشاد",
+      "en": "Chad",
+      "code": ""
+    },
+    {
+      "name": "تشيلي",
+      "en": "Chile",
+      "code": ""
+    },
+    {
+      "name": "الصين",
+      "en": "China",
+      "code": ""
+    },
+    {
+      "name": "كولومبيا",
+      "en": "Colombia",
+      "code": ""
+    },
+    {
+      "name": "جزر القمر",
+      "en": "Comoros",
+      "code": ""
+    },
+    {
+      "name": "جمهورية الكونغو",
+      "en": "Republic of the Congo",
+      "code": ""
+    },
+    {
+      "name": "كوستاريكا",
+      "en": "Costa Rica",
+      "code": ""
+    },
+    {
+      "name": "كوت ديفوار",
+      "en": "Côte d’Ivoire",
+      "code": ""
+    },
+    {
+      "name": "كرواتيا",
+      "en": "Croatia",
+      "code": ""
+    },
+    {
+      "name": "كوبا",
+      "en": "Cuba",
+      "code": ""
+    },
+    {
+      "name": "قبرص",
+      "en": "Cyprus",
+      "code": ""
+    },
+    {
+      "name": "التشيك",
+      "en": "Czechia",
+      "code": "cz"
+    },
+    {
+      "name": "كوريا الشمالية",
+      "en": "North Korea",
+      "code": ""
+    },
+    {
+      "name": "جمهورية الكونغو الديمقراطية",
+      "en": "Democratic Republic of the Congo",
+      "code": ""
+    },
+    {
+      "name": "الدنمارك",
+      "en": "Denmark",
+      "code": ""
+    },
+    {
+      "name": "جيبوتي",
+      "en": "Djibouti",
+      "code": ""
+    },
+    {
+      "name": "دومينيكا",
+      "en": "Dominica",
+      "code": ""
+    },
+    {
+      "name": "جمهورية الدومينيكان",
+      "en": "Dominican Republic",
+      "code": ""
+    },
+    {
+      "name": "الإكوادور",
+      "en": "Ecuador",
+      "code": ""
+    },
+    {
+      "name": "مصر",
+      "en": "Egypt",
+      "code": "eg"
+    },
+    {
+      "name": "السلفادور",
+      "en": "El Salvador",
+      "code": ""
+    },
+    {
+      "name": "غينيا الاستوائية",
+      "en": "Equatorial Guinea",
+      "code": ""
+    },
+    {
+      "name": "إريتريا",
+      "en": "Eritrea",
+      "code": ""
+    },
+    {
+      "name": "إستونيا",
+      "en": "Estonia",
+      "code": ""
+    },
+    {
+      "name": "إسواتيني",
+      "en": "Eswatini",
+      "code": ""
+    },
+    {
+      "name": "إثيوبيا",
+      "en": "Ethiopia",
+      "code": ""
+    },
+    {
+      "name": "فيجي",
+      "en": "Fiji",
+      "code": ""
+    },
+    {
+      "name": "فنلندا",
+      "en": "Finland",
+      "code": ""
+    },
+    {
       "name": "فرنسا",
       "en": "France",
       "code": "fr"
+    },
+    {
+      "name": "الغابون",
+      "en": "Gabon",
+      "code": ""
+    },
+    {
+      "name": "غامبيا",
+      "en": "Gambia",
+      "code": ""
+    },
+    {
+      "name": "جورجيا",
+      "en": "Georgia",
+      "code": ""
     },
     {
       "name": "ألمانيا",
@@ -772,9 +1092,274 @@
       "code": "de"
     },
     {
+      "name": "غانا",
+      "en": "Ghana",
+      "code": ""
+    },
+    {
+      "name": "اليونان",
+      "en": "Greece",
+      "code": "gr"
+    },
+    {
+      "name": "غرينادا",
+      "en": "Grenada",
+      "code": ""
+    },
+    {
+      "name": "غواتيمالا",
+      "en": "Guatemala",
+      "code": ""
+    },
+    {
+      "name": "غينيا",
+      "en": "Guinea",
+      "code": ""
+    },
+    {
+      "name": "غينيا بيساو",
+      "en": "Guinea-Bissau",
+      "code": ""
+    },
+    {
+      "name": "غيانا",
+      "en": "Guyana",
+      "code": ""
+    },
+    {
+      "name": "هايتي",
+      "en": "Haiti",
+      "code": ""
+    },
+    {
+      "name": "هندوراس",
+      "en": "Honduras",
+      "code": ""
+    },
+    {
+      "name": "المجر",
+      "en": "Hungary",
+      "code": "hu"
+    },
+    {
+      "name": "آيسلندا",
+      "en": "Iceland",
+      "code": ""
+    },
+    {
+      "name": "الهند",
+      "en": "India",
+      "code": ""
+    },
+    {
+      "name": "إندونيسيا",
+      "en": "Indonesia",
+      "code": "id"
+    },
+    {
+      "name": "إيران",
+      "en": "Iran",
+      "code": ""
+    },
+    {
+      "name": "العراق",
+      "en": "Iraq",
+      "code": ""
+    },
+    {
+      "name": "أيرلندا",
+      "en": "Ireland",
+      "code": ""
+    },
+    {
       "name": "إيطاليا",
       "en": "Italy",
       "code": "it"
+    },
+    {
+      "name": "جامايكا",
+      "en": "Jamaica",
+      "code": ""
+    },
+    {
+      "name": "اليابان",
+      "en": "Japan",
+      "code": ""
+    },
+    {
+      "name": "الأردن",
+      "en": "Jordan",
+      "code": ""
+    },
+    {
+      "name": "كازاخستان",
+      "en": "Kazakhstan",
+      "code": ""
+    },
+    {
+      "name": "كينيا",
+      "en": "Kenya",
+      "code": ""
+    },
+    {
+      "name": "كيريباتي",
+      "en": "Kiribati",
+      "code": ""
+    },
+    {
+      "name": "الكويت",
+      "en": "Kuwait",
+      "code": ""
+    },
+    {
+      "name": "قيرغيزستان",
+      "en": "Kyrgyzstan",
+      "code": ""
+    },
+    {
+      "name": "لاوس",
+      "en": "Laos",
+      "code": ""
+    },
+    {
+      "name": "لاتفيا",
+      "en": "Latvia",
+      "code": ""
+    },
+    {
+      "name": "لبنان",
+      "en": "Lebanon",
+      "code": ""
+    },
+    {
+      "name": "ليسوتو",
+      "en": "Lesotho",
+      "code": ""
+    },
+    {
+      "name": "ليبيريا",
+      "en": "Liberia",
+      "code": ""
+    },
+    {
+      "name": "ليبيا",
+      "en": "Libya",
+      "code": ""
+    },
+    {
+      "name": "ليختنشتاين",
+      "en": "Liechtenstein",
+      "code": ""
+    },
+    {
+      "name": "ليتوانيا",
+      "en": "Lithuania",
+      "code": ""
+    },
+    {
+      "name": "لوكسمبورغ",
+      "en": "Luxembourg",
+      "code": ""
+    },
+    {
+      "name": "مدغشقر",
+      "en": "Madagascar",
+      "code": ""
+    },
+    {
+      "name": "ملاوي",
+      "en": "Malawi",
+      "code": ""
+    },
+    {
+      "name": "ماليزيا",
+      "en": "Malaysia",
+      "code": "my"
+    },
+    {
+      "name": "جزر المالديف",
+      "en": "Maldives",
+      "code": ""
+    },
+    {
+      "name": "مالي",
+      "en": "Mali",
+      "code": ""
+    },
+    {
+      "name": "مالطا",
+      "en": "Malta",
+      "code": ""
+    },
+    {
+      "name": "جزر مارشال",
+      "en": "Marshall Islands",
+      "code": ""
+    },
+    {
+      "name": "موريتانيا",
+      "en": "Mauritania",
+      "code": ""
+    },
+    {
+      "name": "موريشيوس",
+      "en": "Mauritius",
+      "code": ""
+    },
+    {
+      "name": "المكسيك",
+      "en": "Mexico",
+      "code": ""
+    },
+    {
+      "name": "ميكرونيزيا",
+      "en": "Micronesia",
+      "code": ""
+    },
+    {
+      "name": "موناكو",
+      "en": "Monaco",
+      "code": ""
+    },
+    {
+      "name": "منغوليا",
+      "en": "Mongolia",
+      "code": ""
+    },
+    {
+      "name": "الجبل الأسود",
+      "en": "Montenegro",
+      "code": ""
+    },
+    {
+      "name": "المغرب",
+      "en": "Morocco",
+      "code": ""
+    },
+    {
+      "name": "موزمبيق",
+      "en": "Mozambique",
+      "code": ""
+    },
+    {
+      "name": "ميانمار",
+      "en": "Myanmar",
+      "code": ""
+    },
+    {
+      "name": "ناميبيا",
+      "en": "Namibia",
+      "code": ""
+    },
+    {
+      "name": "ناورو",
+      "en": "Nauru",
+      "code": ""
+    },
+    {
+      "name": "نيبال",
+      "en": "Nepal",
+      "code": ""
     },
     {
       "name": "هولندا",
@@ -782,9 +1367,224 @@
       "code": "nl"
     },
     {
+      "name": "نيوزيلندا",
+      "en": "New Zealand",
+      "code": ""
+    },
+    {
+      "name": "نيكاراغوا",
+      "en": "Nicaragua",
+      "code": ""
+    },
+    {
+      "name": "النيجر",
+      "en": "Niger",
+      "code": ""
+    },
+    {
+      "name": "نيجيريا",
+      "en": "Nigeria",
+      "code": ""
+    },
+    {
+      "name": "مقدونيا الشمالية",
+      "en": "North Macedonia",
+      "code": ""
+    },
+    {
+      "name": "النرويج",
+      "en": "Norway",
+      "code": ""
+    },
+    {
+      "name": "عُمان",
+      "en": "Oman",
+      "code": ""
+    },
+    {
+      "name": "باكستان",
+      "en": "Pakistan",
+      "code": ""
+    },
+    {
+      "name": "بالاو",
+      "en": "Palau",
+      "code": ""
+    },
+    {
+      "name": "بنما",
+      "en": "Panama",
+      "code": ""
+    },
+    {
+      "name": "بابوا غينيا الجديدة",
+      "en": "Papua New Guinea",
+      "code": ""
+    },
+    {
+      "name": "باراغواي",
+      "en": "Paraguay",
+      "code": ""
+    },
+    {
+      "name": "بيرو",
+      "en": "Peru",
+      "code": ""
+    },
+    {
+      "name": "الفلبين",
+      "en": "Philippines",
+      "code": ""
+    },
+    {
+      "name": "بولندا",
+      "en": "Poland",
+      "code": ""
+    },
+    {
+      "name": "البرتغال",
+      "en": "Portugal",
+      "code": "pt"
+    },
+    {
+      "name": "قطر",
+      "en": "Qatar",
+      "code": "qa"
+    },
+    {
+      "name": "كوريا الجنوبية",
+      "en": "South Korea",
+      "code": ""
+    },
+    {
+      "name": "مولدوفا",
+      "en": "Moldova",
+      "code": ""
+    },
+    {
+      "name": "رومانيا",
+      "en": "Romania",
+      "code": ""
+    },
+    {
+      "name": "روسيا",
+      "en": "Russia",
+      "code": ""
+    },
+    {
+      "name": "رواندا",
+      "en": "Rwanda",
+      "code": ""
+    },
+    {
+      "name": "سانت كيتس ونيفيس",
+      "en": "Saint Kitts and Nevis",
+      "code": ""
+    },
+    {
+      "name": "سانت لوسيا",
+      "en": "Saint Lucia",
+      "code": ""
+    },
+    {
+      "name": "سانت فنسنت والغرينادين",
+      "en": "Saint Vincent and the Grenadines",
+      "code": ""
+    },
+    {
+      "name": "ساموا",
+      "en": "Samoa",
+      "code": ""
+    },
+    {
+      "name": "سان مارينو",
+      "en": "San Marino",
+      "code": ""
+    },
+    {
+      "name": "ساو تومي وبرينسيب",
+      "en": "São Tomé and Príncipe",
+      "code": ""
+    },
+    {
+      "name": "السعودية",
+      "en": "Saudi Arabia",
+      "code": ""
+    },
+    {
+      "name": "السنغال",
+      "en": "Senegal",
+      "code": ""
+    },
+    {
+      "name": "صربيا",
+      "en": "Serbia",
+      "code": ""
+    },
+    {
+      "name": "سيشل",
+      "en": "Seychelles",
+      "code": "sc"
+    },
+    {
+      "name": "سيراليون",
+      "en": "Sierra Leone",
+      "code": ""
+    },
+    {
+      "name": "سنغافورة",
+      "en": "Singapore",
+      "code": ""
+    },
+    {
+      "name": "سلوفاكيا",
+      "en": "Slovakia",
+      "code": ""
+    },
+    {
+      "name": "سلوفينيا",
+      "en": "Slovenia",
+      "code": ""
+    },
+    {
+      "name": "جزر سليمان",
+      "en": "Solomon Islands",
+      "code": ""
+    },
+    {
+      "name": "الصومال",
+      "en": "Somalia",
+      "code": ""
+    },
+    {
+      "name": "جنوب أفريقيا",
+      "en": "South Africa",
+      "code": ""
+    },
+    {
+      "name": "جنوب السودان",
+      "en": "South Sudan",
+      "code": ""
+    },
+    {
       "name": "إسبانيا",
       "en": "Spain",
       "code": "es"
+    },
+    {
+      "name": "سريلانكا",
+      "en": "Sri Lanka",
+      "code": ""
+    },
+    {
+      "name": "السودان",
+      "en": "Sudan",
+      "code": ""
+    },
+    {
+      "name": "سورينام",
+      "en": "Suriname",
+      "code": ""
     },
     {
       "name": "السويد",
@@ -797,44 +1597,44 @@
       "code": "ch"
     },
     {
-      "name": "التشيك",
-      "en": "Czechia",
-      "code": "cz"
+      "name": "سوريا",
+      "en": "Syria",
+      "code": ""
     },
     {
-      "name": "النمسا",
-      "en": "Austria",
-      "code": "at"
+      "name": "طاجيكستان",
+      "en": "Tajikistan",
+      "code": ""
     },
     {
-      "name": "المجر",
-      "en": "Hungary",
-      "code": "hu"
+      "name": "تايلاند",
+      "en": "Thailand",
+      "code": ""
     },
     {
-      "name": "اليونان",
-      "en": "Greece",
-      "code": "gr"
+      "name": "تيمور الشرقية",
+      "en": "Timor-Leste",
+      "code": ""
     },
     {
-      "name": "البرتغال",
-      "en": "Portugal",
-      "code": "pt"
+      "name": "توغو",
+      "en": "Togo",
+      "code": ""
     },
     {
-      "name": "أمريكا",
-      "en": "United States",
-      "code": "us"
+      "name": "تونغا",
+      "en": "Tonga",
+      "code": ""
     },
     {
-      "name": "بريطانيا",
-      "en": "United Kingdom",
-      "code": "gb"
+      "name": "ترينيداد وتوباغو",
+      "en": "Trinidad and Tobago",
+      "code": ""
     },
     {
-      "name": "ماليزيا",
-      "en": "Malaysia",
-      "code": "my"
+      "name": "تونس",
+      "en": "Tunisia",
+      "code": ""
     },
     {
       "name": "تركيا",
@@ -842,34 +1642,89 @@
       "code": "tr"
     },
     {
-      "name": "سيشل",
-      "en": "Seychelles",
-      "code": "sc"
+      "name": "تركمانستان",
+      "en": "Turkmenistan",
+      "code": ""
     },
     {
-      "name": "مصر",
-      "en": "Egypt",
-      "code": "eg"
+      "name": "توفالو",
+      "en": "Tuvalu",
+      "code": ""
     },
     {
-      "name": "إندونيسيا",
-      "en": "Indonesia",
-      "code": "id"
+      "name": "أوغندا",
+      "en": "Uganda",
+      "code": ""
     },
     {
-      "name": "الإمارات",
-      "en": "UAE",
-      "code": "ae"
+      "name": "أوكرانيا",
+      "en": "Ukraine",
+      "code": ""
     },
     {
-      "name": "قطر",
-      "en": "Qatar",
-      "code": "qa"
+      "name": "الإمارات العربية المتحدة",
+      "en": "United Arab Emirates",
+      "code": ""
     },
     {
-      "name": "البحرين",
-      "en": "Bahrain",
-      "code": "bh"
+      "name": "المملكة المتحدة",
+      "en": "United Kingdom",
+      "code": ""
+    },
+    {
+      "name": "تنزانيا",
+      "en": "Tanzania",
+      "code": ""
+    },
+    {
+      "name": "الولايات المتحدة الأمريكية",
+      "en": "United States",
+      "code": ""
+    },
+    {
+      "name": "أوروغواي",
+      "en": "Uruguay",
+      "code": ""
+    },
+    {
+      "name": "أوزبكستان",
+      "en": "Uzbekistan",
+      "code": ""
+    },
+    {
+      "name": "فانواتو",
+      "en": "Vanuatu",
+      "code": ""
+    },
+    {
+      "name": "فنزويلا",
+      "en": "Venezuela",
+      "code": ""
+    },
+    {
+      "name": "فيتنام",
+      "en": "Vietnam",
+      "code": ""
+    },
+    {
+      "name": "اليمن",
+      "en": "Yemen",
+      "code": ""
+    },
+    {
+      "name": "زامبيا",
+      "en": "Zambia",
+      "code": ""
+    },
+    {
+      "name": "زيمبابوي",
+      "en": "Zimbabwe",
+      "code": ""
+    },
+    {
+      "name": "الفاتيكان",
+      "en": "Vatican City",
+      "code": ""
     }
   ]
 }

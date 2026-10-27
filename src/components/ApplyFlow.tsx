@@ -11,7 +11,6 @@ import DateInput from "./DateInput";
 import { esimPlaces } from "@/lib/places";
 import NationalitySelect from "./NationalitySelect";
 
-const CITIES = ["الرياض", "جدة", "الدمام"];
 const HOTEL_CITIES = ["الرياض", "جدة", "مكة المكرمة", "دبي", "باريس", "لندن", "إسطنبول", "القاهرة"];
 const STEPS = { visa: ["تفاصيل الرحلة", "تفاصيل المسافرين", "المراجعة والإرسال"], hotel: ["تفاصيل الإقامة", "بياناتك", "المراجعة والإرسال"], esim: ["تفاصيل الشريحة", "بياناتك", "المراجعة والإرسال"] };
 type Service = keyof typeof STEPS;
@@ -34,7 +33,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
   const [busy, setBusy] = useState(false);
   const [dest, setDest] = useState(first?.slug ?? "");
   const [date, setDate] = useState("");
-  const [city, setCity] = useState(CITIES[0]);
+  const [city, setCity] = useState("");
   const count = (k: string, fallback: number) => { const n = parseInt(sp.get(k) ?? "", 10); return Number.isFinite(n) ? Math.min(20, Math.max(0, n)) : fallback; };
   const [adults, setAdults] = useState(Math.max(1, count("adults", service === "hotel" ? 2 : 1)));
   const [kids, setKids] = useState(count("kids", 0));
@@ -42,7 +41,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
   const [names, setNames] = useState<string[]>([]);
   const [h, setH] = useState({ city: sp.get("city") ?? "", inn: sp.get("in") ?? "", out: sp.get("out") ?? "", rooms: 1, stars: "لا يهم" });
   const [sim, setSim] = useState({ country: sp.get("country") ?? "", start: "", days: TRIP_LENGTHS[Number(sp.get("days"))] ?? TRIP_LENGTHS[0], qty: Math.max(1, count("qty", 1)) });
-  const [p, setP] = useState({ name: "", phone: "", email: "", nationality: first?.group === "للمقيمين" ? "" : "المملكة العربية السعودية", status: first?.group === "للمقيمين" ? "مقيم في السعودية" : "مواطن سعودي", refused: "لا", notes: "" });
+  const [p, setP] = useState({ name: "", phone: "", email: "", nationality: "", status: first?.group === "للمقيمين" ? "مقيم" : "مواطن", refused: "لا", notes: "" });
   const [today] = useState(() => new Date().toISOString().slice(0, 10));
   const onP = (k: keyof typeof p) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setP((x) => ({ ...x, [k]: e.target.value }));
 
@@ -52,7 +51,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
   const total = adults + kids;
   const travellers = Array.from({ length: total }, (_, i) => names[i] ?? "");
   const steps = STEPS[service];
-  const ok0 = visa ? !!c && !!date : esim ? !!sim.country.trim() : !!(h.city.trim() && h.inn && h.out);
+  const ok0 = visa ? !!c && !!date && (!appointment || !!city.trim()) : esim ? !!sim.country.trim() : !!(h.city.trim() && h.inn && h.out);
   const ok1 = !!p.phone.trim() && (visa ? travellers.every((n) => n.trim()) : !!p.name.trim());
   const people = `${adults} بالغ${kids ? ` + ${kids} طفل` : ""}`;
 
@@ -132,9 +131,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
                 <>
                   <h3 className="mt-7 text-lg font-bold">أين تريد حجز موعدك؟</h3>
                   <p className="mt-1 text-sm leading-7 text-mist/75">الحضور الشخصي مطلوب لأخذ البصمة أو المقابلة.</p>
-                  <div className="mt-3 grid grid-cols-3 gap-2.5">
-                    {CITIES.map((x) => <button key={x} type="button" aria-pressed={city === x} onClick={() => setCity(x)} className={`bk-opt ${city === x ? "is-on" : ""}`}>{x}</button>)}
-                  </div>
+                  <PlaceInput className="field mt-3 sm:max-w-sm" value={city} onChange={setCity} placeholder="اكتب مدينتك، مثل: الرياض، دبي، القاهرة" />
                 </>
               ) : <p className="bk-info mt-7">تأشيرة {c.name} إلكترونية: لا تحتاج موعداً ولا زيارة سفارة.</p>)}
               <h3 className="mt-7 text-lg font-bold">كم عدد المسافرين؟</h3>
@@ -203,7 +200,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
             {!esim && (
               <>
                 <label className="fl"><span>الجنسية</span><NationalitySelect className="field" value={p.nationality} onChange={onP("nationality")} /></label>
-                <label className="fl"><span>الصفة</span><select className="field" value={p.status} onChange={onP("status")}>{["مواطن سعودي", "مقيم في السعودية", "زائر"].map((s) => <option key={s}>{s}</option>)}</select></label>
+                <label className="fl"><span>الصفة</span><select className="field" value={p.status} onChange={onP("status")}>{["مواطن", "مقيم", "زائر"].map((s) => <option key={s}>{s}</option>)}</select></label>
               </>
             )}
             {visa && (

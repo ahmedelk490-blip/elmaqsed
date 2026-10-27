@@ -20,13 +20,13 @@ export default async function Footer() {
         <div data-r className="relative mx-auto w-[min(80vw,460px)]">
           <div className="absolute inset-[-12%] rounded-full bg-sky/15 blur-[80px]" />
           <Globe className="relative" />
-          <p className="absolute inset-x-0 -bottom-2 text-center font-serif text-[11px] tracking-[.3em] text-mist/55">RIYADH → THE WORLD</p>
+          <p className="absolute inset-x-0 -bottom-2 text-center font-serif text-xs tracking-[.3em] text-mist/55">ARAB WORLD → THE WORLD</p>
         </div>
         {/* brand + contact */}
         <div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img data-r src="/brand/logo-navy.svg" alt="المقصد ELMAQSED" className="h-12 w-auto" />
-          <h2 data-r className="mt-8 text-3xl font-bold leading-[1.25] md:text-5xl">من الرياض… إلى {countries.length} وجهة حول العالم</h2>
+          <h2 data-r className="mt-8 text-3xl font-bold leading-[1.25] md:text-5xl">من الوطن العربي… إلى {countries.length} وجهة حول العالم</h2>
           <p data-r className="mt-5 max-w-lg text-lg leading-9 text-mist/75">{site.footerNote}</p>
           <div data-r className="mt-8 grid gap-3 sm:grid-cols-2">
             <a href={waLink(site.whatsapp)} target="_blank" rel="noopener" className={`${row} sm:col-span-2 border-sky/40 bg-sky/10`}>

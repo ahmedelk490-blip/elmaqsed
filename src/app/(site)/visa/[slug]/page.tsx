@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: PageProps<"/visa/[slug]">): P
   return pageMeta({
     path: `/visa/${c.slug}`,
     title: `تأشيرة ${c.name} — المتطلبات والمدة والخطوات`,
-    description: `استشارة وتجهيز طلب تأشيرة ${c.name} (${c.en}) من السعودية: المستندات المطلوبة وخطوات التقديم مع المقصد.`,
+    description: `استشارة وتجهيز طلب تأشيرة ${c.name} (${c.en}) من الدول العربية: المستندات المطلوبة وخطوات التقديم مع المقصد.`,
     image: og,
   });
 }

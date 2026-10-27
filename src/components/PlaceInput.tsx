@@ -50,7 +50,7 @@ export default function PlaceInput({ value, onChange, className, placeholder, re
           {list.map((p, i) => (
             <li key={`${p.n}-${p.k}`} role="option" aria-selected={i === hi}>
               <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => pick(p.n)} onMouseEnter={() => setHi(i)} className={i === hi ? "is-on" : ""}>
-                <b>{p.n}</b><span>{p.k}</span>
+                <b>{p.n}</b><span dir="auto">{p.k === "eSIM" ? p.e : p.k}</span>
               </button>
             </li>
           ))}

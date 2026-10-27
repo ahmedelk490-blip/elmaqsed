@@ -140,6 +140,12 @@
           ]
         },
         {
+          "fill": [
+            "#form input[placeholder^=\"اكتب مدينتك\"]",
+            "جدة"
+          ]
+        },
+        {
           "click": "#form button:has-text(\"حفظ واستمرار\")"
         }
       ]

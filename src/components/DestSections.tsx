@@ -5,21 +5,21 @@ import SectionHead from "./SectionHead";
 
 /** Five quick facts about the destination, each card topped with the flag accent. */
 export function Glance({ c, t }: { c: Country; t: DestTheme }) {
-  const items: [string, string][] = [[t.capLabel ?? "العاصمة", t.capital], ["العملة", t.currency], ["اللغة", t.language], ["التوقيت مقارنة بالرياض", t.tz], ["الطيران من الرياض", t.flight]];
+  const items: [string, string][] = [[t.capLabel ?? "العاصمة", t.capital], ["العملة", t.currency], ["اللغة", t.language]];
   return (
     <section className="relative py-14 md:py-20">
       <div className="container-x">
         <Reveal><SectionHead eyebrow="At a glance" title={`${c.name} في سطور`} /></Reveal>
-        <Reveal className="-mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
+        <Reveal className="-mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-3">
           {items.map(([k, v], i) => (
-            <div key={k} data-r className={`card p-5 ${i === 4 ? "col-span-2 md:col-span-1" : ""}`}>
+            <div key={k} data-r className={`card p-5 ${i === 2 ? "col-span-2 md:col-span-1" : ""}`}>
               <span className="mb-3 block h-1 w-8 rounded-full bg-[var(--accent)]" />
               <p className="text-xs text-mist/55">{k}</p>
               <p className="mt-1.5 font-bold leading-7">{v}</p>
             </div>
           ))}
         </Reveal>
-        <p className="mt-4 text-xs text-mist/45">معلومات عامة للاستئناس؛ مدة الطيران تقريبية وتختلف حسب شركة الطيران والموسم.</p>
+        <p className="mt-4 text-xs text-mist/45">معلومات عامة للاستئناس.</p>
       </div>
     </section>
   );
