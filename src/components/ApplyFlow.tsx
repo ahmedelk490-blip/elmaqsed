@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useContent } from "./ContentProvider";
-import { TRIP_LENGTHS, waLink } from "@/lib/types";
+import { TIMES, TRIP_LENGTHS, waLink } from "@/lib/types";
 import { submitBooking } from "@/lib/submit";
 import PriceNote from "./PriceNote";
 import Counter from "./Counter";
@@ -12,9 +12,12 @@ import { esimPlaces } from "@/lib/places";
 import NationalitySelect from "./NationalitySelect";
 
 const HOTEL_CITIES = ["الرياض", "جدة", "مكة المكرمة", "دبي", "باريس", "لندن", "إسطنبول", "القاهرة"];
-const STEPS = { visa: ["تفاصيل الرحلة", "تفاصيل المسافرين", "المراجعة والإرسال"], hotel: ["تفاصيل الإقامة", "بياناتك", "المراجعة والإرسال"], esim: ["تفاصيل الشريحة", "بياناتك", "المراجعة والإرسال"] };
+const STEPS = { visa: ["تفاصيل الرحلة", "تفاصيل المسافرين", "المراجعة والإرسال"], hotel: ["تفاصيل الإقامة", "بياناتك", "المراجعة والإرسال"], esim: ["تفاصيل الشريحة", "بياناتك", "المراجعة والإرسال"], transfer: ["تفاصيل الانتقال", "بياناتك", "المراجعة والإرسال"], car: ["تفاصيل السيارة", "بياناتك", "المراجعة والإرسال"], train: ["تفاصيل الرحلة", "بياناتك", "المراجعة والإرسال"] };
 type Service = keyof typeof STEPS;
 type Row = [string, string];
+const SERVICES: [Service, string][] = [["visa", "تأشيرة"], ["hotel", "فندق"], ["transfer", "انتقال"], ["car", "سيارة"], ["train", "قطار"], ["esim", "eSIM"]];
+const INTRO: Record<Service, string> = { visa: "أرغب في حجز تأشيرة.", hotel: "أرغب في حجز فندق.", esim: "أرغب في طلب شريحة eSIM.", transfer: "أرغب في حجز انتقال (توصيل).", car: "أرغب في استئجار سيارة.", train: "أرغب في حجز تذاكر قطار." };
+const TimeSelect = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => <select className="field" dir="ltr" value={value} onChange={(e) => onChange(e.target.value)}>{TIMES.map((x) => <option key={x}>{x}</option>)}</select>;
 
 /** Re-mounts the form when the query changes (e.g. another destination picked on the booking page). */
 export default function ApplyFlow() {
@@ -22,12 +25,12 @@ export default function ApplyFlow() {
   return <Flow key={sp.toString()} sp={sp} />;
 }
 
-/** Request in three steps. Visas: trip details, travellers, review. Hotels and eSIM: what is needed, contact, review. The last step saves the request and opens a ready WhatsApp message. */
+/** Request in three steps. Visas: trip details, travellers, review. Hotels, transfers, car rental, trains and eSIM: what is needed, contact, review. The last step saves the request and opens a ready WhatsApp message. */
 function Flow({ sp }: { sp: { get(name: string): string | null } }) {
   const { countries, site, esim: simDests = [] } = useContent();
   const first = countries.find((c) => c.slug === sp.get("dest"));
   const asked = sp.get("service");
-  const [service, setService] = useState<Service>(asked === "hotel" || asked === "esim" ? asked : "visa");
+  const [service, setService] = useState<Service>(asked && asked !== "visa" && asked in STEPS ? (asked as Service) : "visa");
   const [step, setStep] = useState(0);
   const [sent, setSent] = useState<false | "ok" | "fail">(false);
   const [busy, setBusy] = useState(false);
@@ -41,34 +44,44 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
   const [names, setNames] = useState<string[]>([]);
   const [h, setH] = useState({ city: sp.get("city") ?? "", inn: sp.get("in") ?? "", out: sp.get("out") ?? "", rooms: 1, stars: "لا يهم" });
   const [sim, setSim] = useState({ country: sp.get("country") ?? "", start: "", days: TRIP_LENGTHS[Number(sp.get("days"))] ?? TRIP_LENGTHS[0], qty: Math.max(1, count("qty", 1)) });
+  const [r, setR] = useState({ round: !!sp.get("rd"), from: sp.get("from") ?? "", to: sp.get("to") ?? "", d: sp.get("d") ?? "", t: sp.get("t") ?? "12:00", rd: sp.get("rd") ?? "", rt: sp.get("rt") ?? "12:00", pax: Math.max(1, count("pax", 1)) });
+  const [car, setCar] = useState({ from: sp.get("from") ?? "", to: sp.get("to") ?? "", d: sp.get("d") ?? "", t: sp.get("t") ?? "12:00", rd: sp.get("rd") ?? "", rt: sp.get("rt") ?? "12:00", age: !sp.get("age"), years: sp.get("age") ?? "25", res: sp.get("res") ?? "" });
   const [p, setP] = useState({ name: "", phone: "", email: "", nationality: "", status: first?.group === "للمقيمين" ? "مقيم" : "مواطن", refused: "لا", notes: "" });
   const [today] = useState(() => new Date().toISOString().slice(0, 10));
   const onP = (k: keyof typeof p) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setP((x) => ({ ...x, [k]: e.target.value }));
 
   const c = countries.find((x) => x.slug === dest);
-  const visa = service === "visa", esim = service === "esim";
+  const visa = service === "visa", esim = service === "esim", isRide = service === "transfer" || service === "train", isCar = service === "car";
+  const train = service === "train";
   const appointment = !!c && !c.kind.includes("إلكترون");
   const total = adults + kids;
   const travellers = Array.from({ length: total }, (_, i) => names[i] ?? "");
   const steps = STEPS[service];
-  const ok0 = visa ? !!c && !!date && (!appointment || !!city.trim()) : esim ? !!sim.country.trim() : !!(h.city.trim() && h.inn && h.out);
+  const ok0 = visa ? !!c && !!date && (!appointment || !!city.trim()) : esim ? !!sim.country.trim()
+    : isRide ? !!(r.from.trim() && r.to.trim() && r.d && (!r.round || r.rd))
+    : isCar ? !!(car.from.trim() && car.d && car.rd && (car.age || Number(car.years) >= 18)) : !!(h.city.trim() && h.inn && h.out);
   const ok1 = !!p.phone.trim() && (visa ? travellers.every((n) => n.trim()) : !!p.name.trim());
   const people = `${adults} بالغ${kids ? ` + ${kids} طفل` : ""}`;
 
-  const trip: Row[] = visa
+  const base: Row[] = visa
     ? [["الوجهة", c?.name ?? ""], ["نوع التأشيرة", c?.types[0] ?? "سياحية"], ["تاريخ السفر المتوقع", date], ...(appointment ? [["مدينة الموعد", city] as Row] : []), ["المسافرون", people]]
     : esim
       ? [["وجهة السفر", sim.country], ["تاريخ السفر", sim.start || "غير محدد"], ["مدة السفر", sim.days], ["عدد الشرائح", String(sim.qty)]]
       : [["مكان الإقامة", h.city], ["الوصول", h.inn], ["المغادرة", h.out], ["البالغون", String(adults)], ["الأطفال", String(kids)], ["الرضّع (أقل من سنتين)", String(infants)], ["الغرف", String(h.rooms)], ["تصنيف الفندق", h.stars]];
+  const trip: Row[] = isRide
+    ? [["نوع الرحلة", r.round ? "ذهاب وعودة" : "اتجاه واحد"], [train ? "من" : "نقطة الانطلاق", r.from], ["إلى", r.to], ["الذهاب", `${r.d} · ${r.t}`], ...(r.round ? [["العودة", `${r.rd} · ${r.rt}`] as Row] : []), ["الركاب", String(r.pax)]]
+    : isCar
+      ? [["مكان الاستلام", car.from], ["مكان التسليم", car.to.trim() || "نفس مكان الاستلام"], ["الاستلام", `${car.d} · ${car.t}`], ["التسليم", `${car.rd} · ${car.rt}`], ["عمر السائق", car.age ? "بين 26 و69 سنة" : `${car.years} سنة`], ["إقامة السائق", car.res || "غير محدد"]]
+      : base;
   const contact: Row[] = [...(visa ? [] : [["الاسم", p.name] as Row]), ["الجوال", p.phone], ...(p.email.trim() ? [["البريد", p.email.trim()] as Row] : []), ...(esim ? [] : [["الجنسية", p.nationality || "غير محدد"] as Row, ["الصفة", p.status] as Row]), ...(visa ? [["تأشيرة سابقة", p.refused] as Row] : []), ...(p.notes.trim() ? [["ملاحظات", p.notes.trim()] as Row] : [])];
-  const lines = [visa ? "السلام عليكم، أرغب في حجز تأشيرة." : esim ? "السلام عليكم، أرغب في طلب شريحة eSIM." : "السلام عليكم، أرغب في حجز فندق.", ...trip.map(([k, v]) => `${k}: ${v}`), ...(visa ? travellers.map((n, i) => `${i + 1}) ${n}${i >= adults ? " (طفل)" : ""}`) : []), ...contact.map(([k, v]) => `${k}: ${v}`)];
+  const lines = [`السلام عليكم، ${INTRO[service]}`, ...trip.map(([k, v]) => `${k}: ${v}`), ...(visa ? travellers.map((n, i) => `${i + 1}) ${n}${i >= adults ? " (طفل)" : ""}`) : []), ...contact.map(([k, v]) => `${k}: ${v}`)];
   const message = lines.join("\n");
   // WhatsApp opens at once (it must happen inside the click); the request is then saved for the dashboard and the visitor is told whether that worked
   const send = async () => {
     window.open(waLink(site.whatsapp, message), "_blank", "noopener");
     setBusy(true);
     const ok = await submitBooking({
-      service, name: visa ? travellers[0] : p.name, phone: p.phone, email: p.email, summary: visa ? `تأشيرة ${c?.name ?? ""}` : esim ? `eSIM: ${sim.country}` : `فندق: ${h.city}`,
+      service, name: visa ? travellers[0] : p.name, phone: p.phone, email: p.email, summary: isRide ? `${train ? "قطار" : "انتقال"}: ${r.from} إلى ${r.to}` : isCar ? `سيارة: ${car.from}` : visa ? `تأشيرة ${c?.name ?? ""}` : esim ? `eSIM: ${sim.country}` : `فندق: ${h.city}`,
       rows: [...trip, ...(visa ? travellers.map((n, i) => [`المسافر ${i + 1}`, `${n}${i >= adults ? " (طفل)" : ""}`] as Row) : []), ...contact],
     });
     setBusy(false);
@@ -105,9 +118,7 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
       {step === 0 && (
         <div>
           <div className="hs-tabs" role="tablist" aria-label="الخدمة">
-            <button type="button" role="tab" aria-selected={visa} onClick={() => setService("visa")} className={`hs-tab ${visa ? "is-on" : ""}`}>تأشيرة</button>
-            <button type="button" role="tab" aria-selected={service === "hotel"} onClick={() => setService("hotel")} className={`hs-tab ${service === "hotel" ? "is-on" : ""}`}>فندق</button>
-            <button type="button" role="tab" aria-selected={esim} onClick={() => setService("esim")} className={`hs-tab ${esim ? "is-on" : ""}`}>eSIM</button>
+            {SERVICES.map(([k, l]) => <button key={k} type="button" role="tab" aria-selected={service === k} onClick={() => setService(k)} className={`hs-tab ${service === k ? "is-on" : ""}`}>{l}</button>)}
           </div>
           {visa ? (
             <>
@@ -138,6 +149,37 @@ function Flow({ sp }: { sp: { get(name: string): string | null } }) {
               <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
                 <Counter label="بالغون" value={adults} min={1} onChange={setAdults} />
                 <Counter label="أطفال" value={kids} min={0} onChange={setKids} />
+              </div>
+            </>
+          ) : isRide ? (
+            <>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {([[false, "اتجاه واحد"], [true, "ذهاب وعودة"]] as const).map(([v, l]) => <button key={l} type="button" onClick={() => setR({ ...r, round: v })} aria-pressed={r.round === v} className={`badge ${r.round === v ? "badge-sky bg-sky/15" : ""}`}>{l}</button>)}
+              </div>
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                <label className="fl"><span>{train ? "من" : "نقطة الانطلاق"}</span><PlaceInput className="field" value={r.from} onChange={(v) => setR({ ...r, from: v })} placeholder={train ? "المدينة أو محطة القطار" : "مطار أو فندق أو عنوان"} /></label>
+                <label className="fl"><span>إلى</span><PlaceInput className="field" value={r.to} onChange={(v) => setR({ ...r, to: v })} placeholder={train ? "المدينة أو محطة القطار" : "مطار أو فندق أو عنوان"} /></label>
+                <label className="fl"><span>تاريخ الذهاب</span><DateInput min={today} value={r.d} onChange={(v) => setR({ ...r, d: v })} ariaLabel="تاريخ الذهاب" /></label>
+                <label className="fl"><span>الوقت</span><TimeSelect value={r.t} onChange={(v) => setR({ ...r, t: v })} /></label>
+                {r.round && <label className="fl"><span>تاريخ العودة</span><DateInput min={r.d || today} value={r.rd} onChange={(v) => setR({ ...r, rd: v })} ariaLabel="تاريخ العودة" /></label>}
+                {r.round && <label className="fl"><span>وقت العودة</span><TimeSelect value={r.rt} onChange={(v) => setR({ ...r, rt: v })} /></label>}
+                <div className="self-end"><Counter label="الركاب" value={r.pax} min={1} onChange={(n) => setR({ ...r, pax: n })} /></div>
+              </div>
+            </>
+          ) : isCar ? (
+            <>
+              <div className="mt-2 grid gap-4 sm:grid-cols-2">
+                <label className="fl"><span>مكان الاستلام</span><PlaceInput className="field" value={car.from} onChange={(v) => setCar({ ...car, from: v })} placeholder="المطار أو محطة القطار أو المدينة" /></label>
+                <label className="fl"><span>مكان التسليم (اختياري)</span><PlaceInput className="field" value={car.to} onChange={(v) => setCar({ ...car, to: v })} placeholder="نفس مكان الاستلام" /></label>
+                <label className="fl"><span>تاريخ الاستلام</span><DateInput min={today} value={car.d} onChange={(v) => setCar({ ...car, d: v })} ariaLabel="تاريخ الاستلام" /></label>
+                <label className="fl"><span>وقت الاستلام</span><TimeSelect value={car.t} onChange={(v) => setCar({ ...car, t: v })} /></label>
+                <label className="fl"><span>تاريخ التسليم</span><DateInput min={car.d || today} value={car.rd} onChange={(v) => setCar({ ...car, rd: v })} ariaLabel="تاريخ التسليم" /></label>
+                <label className="fl"><span>وقت التسليم</span><TimeSelect value={car.rt} onChange={(v) => setCar({ ...car, rt: v })} /></label>
+              </div>
+              <label className="mt-5 flex cursor-pointer items-center gap-2.5 font-semibold"><input type="checkbox" className="h-[1.1rem] w-[1.1rem]" style={{ accentColor: "#2e94d2" }} checked={car.age} onChange={(e) => setCar({ ...car, age: e.target.checked })} />عمر السائق بين 26 و69 سنة</label>
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                {!car.age && <label className="fl"><span>عمر السائق</span><input className="field" type="number" inputMode="numeric" min={18} max={99} value={car.years} onChange={(e) => setCar({ ...car, years: e.target.value })} /></label>}
+                <label className="fl"><span>بلد إقامة السائق</span><NationalitySelect className="field" prompt="اختر الدولة" value={car.res} onChange={(e) => setCar({ ...car, res: e.target.value })} /></label>
               </div>
             </>
           ) : esim ? (

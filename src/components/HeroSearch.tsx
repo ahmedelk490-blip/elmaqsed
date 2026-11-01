@@ -5,14 +5,18 @@ import { useRouter } from "next/navigation";
 import { useLenis } from "lenis/react";
 import { useContent } from "./ContentProvider";
 import { Icon } from "./Icons";
-import { TRIP_LENGTHS, waLink, type Country } from "@/lib/types";
+import { TIMES, TRIP_LENGTHS, waLink, type Country } from "@/lib/types";
 import Counter from "./Counter";
 import PlaceInput from "./PlaceInput";
 import { esimPlaces } from "@/lib/places";
+import NationalitySelect from "./NationalitySelect";
 
 const GROUPS = ["الكل", "شنغن", "للمقيمين", "وجهات أخرى"];
 export const inGroup = (c: { group?: string }, g: string) => g === "الكل" || (g === "وجهات أخرى" ? !c.group : c.group === g);
-const TABS = [["visa", "تأشيرات"], ["hotel", "فنادق"], ["esim", "eSIM"], ["pack", "بكجات"]] as const;
+const TABS = [["visa", "تأشيرات"], ["hotel", "فنادق"], ["transfer", "انتقالات"], ["car", "تأجير سيارات"], ["train", "تذاكر قطار"], ["esim", "eSIM"], ["pack", "بكجات"]] as const;
+const paxLabel = (n: number) => `${n} ${n === 1 ? "راكب" : n === 2 ? "راكبان" : n <= 10 ? "ركاب" : "راكباً"}`;
+type Ride = { round: boolean; from: string; to: string; d: string; t: string; rd: string; rt: string; pax: number };
+const RIDE: Ride = { round: false, from: "", to: "", d: "", t: "12:00", rd: "", rt: "12:00", pax: 1 };
 
 type PickItem = { key: string; name: string; en?: string; code?: string; group?: string };
 
@@ -67,9 +71,9 @@ function Picker({ title, items, groups, onPick, onFree, onClose }: { title: stri
 const dayMonth = new Intl.DateTimeFormat("ar-SA-u-ca-gregory-nu-latn", { day: "numeric", month: "long" });
 
 /** A date field that reads as text ("اختر التاريخ", then "12 ديسمبر"); the real date input lies invisibly on top, so a tap still opens the native picker. */
-function DateField({ label, value, min, onChange }: { label: string; value: string; min?: string; onChange: (v: string) => void }) {
+function DateField({ label, value, min, onChange, className = "" }: { label: string; value: string; min?: string; onChange: (v: string) => void; className?: string }) {
   return (
-    <label className="hs-field hs-half hs-date">
+    <label className={`hs-field hs-half hs-date ${className}`}>
       <span className="hs-label"><Icon name="calendar" className="hs-ico" />{label}</span>
       <span className={`hs-value ${value ? "" : "is-empty"}`}>{value ? dayMonth.format(new Date(`${value}T00:00:00`)) : "اختر التاريخ"}</span>
       <input
@@ -81,7 +85,39 @@ function DateField({ label, value, min, onChange }: { label: string; value: stri
   );
 }
 
-/** Hero search: pick the service (visa, hotel, eSIM, packages), fill the few fields that matter, and land on the request form with them. */
+/** A time of day from a short list (every half hour), read like the other fields. */
+function TimeField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  return (
+    <label className="hs-field hs-half">
+      <span className="hs-label"><Icon name="clock" className="hs-ico" />{label}</span>
+      <select value={value} onChange={(e) => onChange(e.target.value)} className="hs-select" dir="ltr">{TIMES.map((t) => <option key={t}>{t}</option>)}</select>
+    </label>
+  );
+}
+
+/** One way or there and back. */
+function TripType({ round, onChange }: { round: boolean; onChange: (round: boolean) => void }) {
+  return (
+    <div className="hs-trip" role="radiogroup" aria-label="نوع الرحلة">
+      {([[false, "اتجاه واحد"], [true, "ذهاب وعودة"]] as const).map(([v, l]) => (
+        <button key={l} type="button" role="radio" aria-checked={round === v} onClick={() => onChange(v)} className={`hs-radio ${round === v ? "is-on" : ""}`}>{l}</button>
+      ))}
+    </div>
+  );
+}
+
+/** From and to side by side, with a button that swaps them (car rental: no swap, the drop-off may stay empty). */
+function Route({ from, to, labels, placeholder, onChange, swap = true }: { from: string; to: string; labels: [string, string]; placeholder: [string, string]; onChange: (from: string, to: string) => void; swap?: boolean }) {
+  return (
+    <div className="hs-route">
+      <label className="hs-field"><span className="hs-label"><Icon name="pin" className="hs-ico" />{labels[0]}</span><PlaceInput required value={from} onChange={(v) => onChange(v, to)} placeholder={placeholder[0]} className="hs-input" /></label>
+      {swap && <button type="button" onClick={() => onChange(to, from)} aria-label="تبديل الاتجاه" className="hs-swap"><Icon name="swap" className="h-4 w-4" /></button>}
+      <label className="hs-field"><span className="hs-label"><Icon name="pin" className="hs-ico" />{labels[1]}</span><PlaceInput required={swap} value={to} onChange={(v) => onChange(from, v)} placeholder={placeholder[1]} className="hs-input" /></label>
+    </div>
+  );
+}
+
+/** Hero search: pick the service (visa, hotel, transfer, car rental, train, eSIM, packages), fill the few fields that matter, and land on the request form with them. */
 export default function HeroSearch() {
   const router = useRouter();
   const { site, countries, esim = [] } = useContent();
@@ -93,6 +129,9 @@ export default function HeroSearch() {
   const [h, setH] = useState({ city: "", inn: "", out: "", adults: 2, kids: 0, infants: 0 });
   const [guests, setGuests] = useState(false); // the guests panel under the hotel fields
   const [sim, setSim] = useState({ country: "", days: "0", qty: "1" });
+  const [tr, setTr] = useState<Ride>(RIDE);
+  const [rail, setRail] = useState<Ride>(RIDE);
+  const [car, setCar] = useState({ from: "", to: "", d: "", t: "12:00", rd: "", rt: "12:00", age: true, years: "25", res: "" });
   const types = dest?.types.length ? dest.types : ["سياحية"]; // tourist visas only, so the field is never empty
   const people = `${h.adults} بالغ${h.kids ? ` · ${h.kids} طفل` : ""}${h.infants ? ` · ${h.infants} رضيع` : ""}`;
   const book = (params: Record<string, string>) => router.push(`/booking?${new URLSearchParams(params)}`);
@@ -108,6 +147,31 @@ export default function HeroSearch() {
     e.preventDefault();
     book({ service: "esim", country: sim.country, days: sim.days, qty: sim.qty });
   };
+  const goRide = (service: string, r: Ride) => (e: React.FormEvent) => {
+    e.preventDefault();
+    book({ service, from: r.from, to: r.to, d: r.d, t: r.t, ...(r.round ? { rd: r.rd, rt: r.rt } : {}), pax: String(r.pax) });
+  };
+  const goCar = (e: React.FormEvent) => {
+    e.preventDefault();
+    book({ service: "car", from: car.from, to: car.to, d: car.d, t: car.t, rd: car.rd, rt: car.rt, ...(car.age ? {} : { age: car.years }), res: car.res });
+  };
+  const ride = (service: string, r: Ride, set: (r: Ride) => void, labels: [string, string], placeholder: [string, string], go: string) => (
+    <form onSubmit={goRide(service, r)} className="hs-bar hs-x">
+      <TripType round={r.round} onChange={(round) => set({ ...r, round })} />
+      <div className="hs-group">
+        <Route from={r.from} to={r.to} labels={labels} placeholder={placeholder} onChange={(from, to) => set({ ...r, from, to })} />
+        <DateField label="تاريخ الذهاب" value={r.d} onChange={(d) => set({ ...r, d })} className="hs-d" />
+        <TimeField label="الوقت" value={r.t} onChange={(t) => set({ ...r, t })} />
+        {r.round && <DateField label="تاريخ العودة" value={r.rd} min={r.d} onChange={(rd) => set({ ...r, rd })} className="hs-d" />}
+        {r.round && <TimeField label="الوقت" value={r.rt} onChange={(rt) => set({ ...r, rt })} />}
+        <label className="hs-field">
+          <span className="hs-label"><Icon name="users" className="hs-ico" />الركاب</span>
+          <select value={r.pax} onChange={(e) => set({ ...r, pax: Number(e.target.value) })} className="hs-select">{Array.from({ length: 20 }, (_, i) => <option key={i} value={i + 1}>{paxLabel(i + 1)}</option>)}</select>
+        </label>
+      </div>
+      <button type="submit" className="btn btn-primary hs-go">{go} <Icon name="arrow" className="h-5 w-5" /></button>
+    </form>
+  );
   return (
     <div className="hs on-light beam">
       <div className="hs-tabs" role="tablist" aria-label="الخدمة">
@@ -149,6 +213,25 @@ export default function HeroSearch() {
               <Counter label="رضّع" hint="دون سنتين" value={h.infants} min={0} onChange={(n) => setH({ ...h, infants: n })} />
             </div>
           )}
+        </form>
+      )}
+      {tab === "transfer" && ride("transfer", tr, setTr, ["نقطة الانطلاق", "إلى"], ["مطار أو فندق أو عنوان", "مطار أو فندق أو عنوان"], "اطلب الانتقال")}
+      {tab === "train" && ride("train", rail, setRail, ["من", "إلى"], ["المدينة أو محطة القطار", "المدينة أو محطة القطار"], "اطلب التذاكر")}
+      {tab === "car" && (
+        <form onSubmit={goCar} className="hs-bar hs-x">
+          <div className="hs-group">
+            <Route swap={false} from={car.from} to={car.to} labels={["مكان الاستلام", "مكان التسليم"]} placeholder={["المطار أو محطة القطار أو المدينة", "نفس مكان الاستلام"]} onChange={(from, to) => setCar({ ...car, from, to })} />
+            <DateField label="تاريخ الاستلام" value={car.d} onChange={(d) => setCar({ ...car, d })} className="hs-d" />
+            <TimeField label="الوقت" value={car.t} onChange={(t) => setCar({ ...car, t })} />
+            <DateField label="تاريخ التسليم" value={car.rd} min={car.d} onChange={(rd) => setCar({ ...car, rd })} className="hs-d" />
+            <TimeField label="الوقت" value={car.rt} onChange={(rt) => setCar({ ...car, rt })} />
+          </div>
+          <div className="hs-extra">
+            <label className="hs-check"><input type="checkbox" checked={car.age} onChange={(e) => setCar({ ...car, age: e.target.checked })} />عمر السائق بين 26 و69 سنة</label>
+            {!car.age && <label className="hs-mini">عمر السائق<input type="number" inputMode="numeric" min={18} max={99} required value={car.years} onChange={(e) => setCar({ ...car, years: e.target.value })} /></label>}
+            <label className="hs-mini">إقامة السائق<NationalitySelect prompt="اختر الدولة" value={car.res} onChange={(e) => setCar({ ...car, res: e.target.value })} /></label>
+          </div>
+          <button type="submit" className="btn btn-primary hs-go">اطلب سيارتك <Icon name="arrow" className="h-5 w-5" /></button>
         </form>
       )}
       {tab === "esim" && (

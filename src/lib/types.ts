@@ -23,4 +23,6 @@ export const waLink = (whatsapp: string, msg = "السلام عليكم، أرغ
   `https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`;
 
 // eSIM requests ask how long the trip is; the hero passes the index, the booking form shows the text
+// pick-up / departure times offered in the search box and the request form, every half hour
+export const TIMES = Array.from({ length: 48 }, (_, i) => `${String(Math.floor(i / 2)).padStart(2, "0")}:${i % 2 ? "30" : "00"}`);
 export const TRIP_LENGTHS = ["حتى 7 أيام", "8 – 15 يوماً", "16 – 30 يوماً", "أكثر من شهر"];

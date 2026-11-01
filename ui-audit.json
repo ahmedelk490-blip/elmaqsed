@@ -95,7 +95,7 @@
       "page": "/",
       "steps": [
         {
-          "click": ".hs-tab >> nth=2"
+          "click": ".hs-tab:has-text(\"eSIM\")"
         },
         {
           "click": ".hs-esim .hs-field >> nth=0"
@@ -107,7 +107,53 @@
       "page": "/",
       "steps": [
         {
-          "click": ".hs-tab >> nth=3"
+          "click": ".hs-tab:has-text(\"بكجات\")"
+        }
+      ]
+    },
+    {
+      "name": "transfer-round",
+      "page": "/",
+      "steps": [
+        {
+          "click": ".hs-tab:has-text(\"انتقالات\")"
+        },
+        {
+          "click": ".hs-radio:has-text(\"ذهاب وعودة\")"
+        }
+      ]
+    },
+    {
+      "name": "car-rental",
+      "page": "/",
+      "steps": [
+        {
+          "click": ".hs-tab:has-text(\"تأجير سيارات\")"
+        },
+        {
+          "click": ".hs-check input"
+        }
+      ]
+    },
+    {
+      "name": "train",
+      "page": "/",
+      "steps": [
+        {
+          "click": ".hs-tab:has-text(\"تذاكر قطار\")"
+        }
+      ]
+    },
+    {
+      "name": "booking-transfer",
+      "page": "/booking?service=transfer&from=%D8%AC%D8%AF%D8%A9&to=%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6&d=2027-01-20&t=12:00&rd=2027-01-25&rt=13:00&pax=2"
+    },
+    {
+      "name": "booking-car",
+      "page": "/booking?service=car",
+      "steps": [
+        {
+          "click": "#form input[type=checkbox]"
         }
       ]
     },
