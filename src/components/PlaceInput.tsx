@@ -66,7 +66,7 @@ export default function PlaceInput({ value, onChange, className, placeholder, re
         }}
       />
       {show && box && createPortal(
-        <ul className="place-list" role="listbox" style={{ left: box.left, top: box.top, width: box.width }}>
+        <ul className="place-list" role="listbox" data-lenis-prevent style={{ left: box.left, top: box.top, width: box.width }}>
           {list.map((p, i) => (
             <li key={`${p.n}-${p.k}`} role="option" aria-selected={i === hi}>
               <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => pick(p.n)} onMouseEnter={() => setHi(i)} className={i === hi ? "is-on" : ""}>

@@ -61,7 +61,7 @@ export default function Header() {
         </div>
       </div>
 
-      <div className={`hdr-menu lg:hidden ${open ? "is-open" : ""}`} aria-hidden={!open}>
+      <div className={`hdr-menu lg:hidden ${open ? "is-open" : ""}`} aria-hidden={!open} data-lenis-prevent>
         <nav className="flex flex-col px-6 pt-2">{links("hdr-mlink")}</nav>
         <div className="mt-8 flex flex-col gap-3 px-6">
           <Link href="/booking" onClick={() => setOpen(false)} className="btn btn-primary justify-center">{t("احجز الآن", "Book now")}</Link>

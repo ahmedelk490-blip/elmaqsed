@@ -568,3 +568,18 @@ html[dir="ltr"] [data-icon="arrow"] { transform: scaleX(-1); }
 .cc-country .fi { border-radius: 2px; }
 /* 1024–1279px: the nav, language switch and Book button share one row; English labels are longer */
 @media (min-width: 1024px) and (max-width: 1279px) { .hdr-link { padding: .55rem .6rem; font-size: .875rem; } }
+/* service rows: pin every part to its column (auto-placement put the arrow first and pushed the title sideways in English) */
+.svc-row .idx { grid-column: 1; grid-row: 1; }
+.svc-row h3 { grid-column: 2; grid-row: 1; }
+.svc-row p { grid-row: 2; }
+.svc-row .go { grid-column: 3; }
+.svc-thumb { grid-column: 1; }
+/* English (ltr): mirror the motions that were written for right-to-left */
+html[dir="ltr"] .svc-row::before, html[dir="ltr"] .dot-fill, html[dir="ltr"] .faq-prog { transform-origin: left; }
+html[dir="ltr"] .svc-row.is-active h3 { transform: translateX(8px); }
+html[dir="ltr"] .svc-row .go { transform: translateX(12px); }
+html[dir="ltr"] .svc-row.is-active .go { transform: translateX(0); }
+html[dir="ltr"] .cc-pop { left: auto; right: 0; }
+html[dir="ltr"] .cc-pop::before { left: auto; right: 28px; }
+html[dir="ltr"] .progress, html[dir="ltr"] .foot-list a::after { transform-origin: left; }
+html[dir="ltr"] .foot-list a::after { right: auto; left: 0; background: linear-gradient(270deg, transparent, #63b6ea); }
