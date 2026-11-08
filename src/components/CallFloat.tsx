@@ -1,26 +1,65 @@
-import { waLink } from "@/lib/types";
-import { getContent } from "@/lib/content";
+"use client";
+import { useEffect, useRef, useState } from "react";
+import { contactLines, waLink, type Line } from "@/lib/types";
+import { useContent, useT } from "./ContentProvider";
+import { WA_PATH } from "./ContactChoice";
 import { Icon } from "./Icons";
 
-const WA = "M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z";
+const btn = "relative grid h-14 w-14 place-items-center rounded-full border shadow-[0_10px_40px_rgba(46,148,210,.4)] transition-transform hover:scale-105";
+const waIcon = (cls: string) => <svg viewBox="0 0 24 24" className={`relative ${cls}`} fill="currentColor" aria-hidden="true"><path d={WA_PATH} /></svg>;
 
-/** Floating contact stack on every screen: WhatsApp on top, then one call button per number (the second is optional), all from the numbers set in the dashboard. */
-export default async function CallFloat() {
-  const { site } = await getContent();
-  const numbers = [site.phone, site.phone2].filter((p): p is string => !!p?.trim()).map((p) => ({ shown: p, dial: p.replace(/[^\d+]/g, "") }));
-  const btn = "relative grid h-14 w-14 place-items-center rounded-full border shadow-[0_10px_40px_rgba(46,148,210,.4)] transition-transform hover:scale-105";
+/**
+ * Floating contact buttons on every screen: WhatsApp on top, call below, numbers from the dashboard.
+ * With two numbers (e.g. Saudi Arabia and the UAE) a tap opens them side by side, each with its country flag.
+ */
+export default function CallFloat() {
+  const { site } = useContent();
+  const t = useT();
+  const { calls, chats } = contactLines(site);
+  const [open, setOpen] = useState<"wa" | "call" | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const away = (e: Event) => { if (!ref.current?.contains(e.target as Node)) setOpen(null); };
+    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(null); };
+    document.addEventListener("pointerdown", away);
+    document.addEventListener("keydown", esc);
+    return () => { document.removeEventListener("pointerdown", away); document.removeEventListener("keydown", esc); };
+  }, [open]);
+
+  const msg = t("السلام عليكم، أرغب في استشارة بخصوص تأشيرة السفر", "Hello, I would like advice about a travel visa");
+  const groups = [
+    { key: "wa" as const, list: chats, href: (l: Line) => waLink(l.dial, msg), ext: true, label: t("واتساب", "WhatsApp"), cls: "border-sky/40 bg-gradient-to-br from-sky-2 to-sky text-white", icon: waIcon("h-7 w-7"), small: waIcon("h-6 w-6") },
+    { key: "call" as const, list: calls, href: (l: Line) => `tel:${l.tel}`, ext: false, label: t("اتصل بنا", "Call us"), cls: "border-sky/50 bg-navy/95 text-sky-2", icon: <Icon name="phone" className="h-6 w-6" />, small: <Icon name="phone" className="h-5 w-5" /> },
+  ];
+  const ext = (on: boolean) => (on ? { target: "_blank", rel: "noopener" } : {});
+
   return (
-    <div className="contact-stack fixed bottom-5 left-5 z-50 flex flex-col gap-3">
-      {site.whatsapp && (
-        <a href={waLink(site.whatsapp)} target="_blank" rel="noopener" aria-label="تواصل عبر واتساب" className={`${btn} border-sky/40 bg-gradient-to-br from-sky-2 to-sky text-white`}>
-          <span className="wa-ring" />
-          <svg viewBox="0 0 24 24" className="relative h-7 w-7" fill="currentColor" aria-hidden="true"><path d={WA} /></svg>
-        </a>
-      )}
-      {numbers.map((n) => (
-        <a key={n.dial} href={`tel:${n.dial}`} aria-label={`اتصل بنا ${n.shown}`} className={`${btn} border-sky/50 bg-navy/95 text-sky-2`}>
-          <Icon name="phone" className="h-6 w-6" />
-        </a>
+    <div ref={ref} dir="ltr" className="contact-stack fixed bottom-5 left-5 z-50 flex flex-col gap-3">
+      {groups.map((g) => g.list.length > 0 && (
+        <div key={g.key} className="flex items-center gap-3">
+          {g.list.length === 1 ? (
+            <a href={g.href(g.list[0])} {...ext(g.ext)} aria-label={`${g.label} ${g.list[0].shown}`} className={`${btn} ${g.cls}`}>
+              {g.key === "wa" && <span className="wa-ring" />}{g.icon}
+            </a>
+          ) : (
+            <button type="button" onClick={() => setOpen(open === g.key ? null : g.key)} aria-expanded={open === g.key} aria-label={g.label} className={`${btn} ${g.cls}`}>
+              {g.key === "wa" && open !== g.key && <span className="wa-ring" />}
+              {open === g.key ? <Icon name="close" className="h-6 w-6" /> : g.icon}
+            </button>
+          )}
+          {open === g.key && (
+            <div className="flex gap-2.5">
+              {g.list.map((l, i) => (
+                <a key={l.dial} href={g.href(l)} {...ext(g.ext)} onClick={() => setOpen(null)} aria-label={`${g.label} — ${t(l.ar, l.en)} ${l.shown}`} title={`${t(l.ar, l.en)} ${l.shown}`}
+                  className={`cf-opt ${g.cls}`} style={{ animationDelay: `${i * 70}ms` }}>
+                  {g.small}
+                  {l.flag && <span className={`fi fi-${l.flag} cf-flag`} />}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
       ))}
     </div>
   );

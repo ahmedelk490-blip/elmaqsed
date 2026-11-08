@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useContent } from "./ContentProvider";
+import { useContent, useT } from "./ContentProvider";
 import SectionHead from "./SectionHead";
 import Reveal from "./Reveal";
 import { Icon } from "./Icons";
@@ -16,6 +16,7 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 /** Theatrical list: hover (or scroll past) a service and the floating preview crossfades, the ghost number slides in and the row opens. */
 export default function Services() {
   const { services } = useContent();
+  const t = useT();
   const root = useRef<HTMLElement>(null);
   const noRef = useRef<HTMLSpanElement>(null);
   const [active, setActive] = useState(0);
@@ -54,7 +55,7 @@ export default function Services() {
       <span className="ghost left-[-3%] top-8" data-t="SERVICES" aria-hidden="true" />
       <div className="container-x relative">
         <Reveal>
-          <SectionHead eyebrow="Services" title="خدماتنا الاستشارية" text="من أول سؤال حتى استلام الجواز، نتولى التفاصيل التي تصنع الفرق بين القبول والرفض." link={{ href: "/services", label: "كل الخدمات بالتفصيل" }} />
+          <SectionHead eyebrow="Services" title={t("خدماتنا الاستشارية", "Our consulting services")} text={t("من أول سؤال حتى استلام الجواز، نتولى التفاصيل التي تصنع الفرق بين القبول والرفض.", "From the first question to collecting your passport, we handle the details that make the difference between approval and refusal.")} link={{ href: "/services", label: t("كل الخدمات بالتفصيل", "All services in detail") }} />
         </Reveal>
         <div className="lg:hidden"><ServiceDeck /></div>
         <div className="svc-stage hidden items-start gap-10 lg:grid lg:grid-cols-[1fr_.85fr] lg:gap-16">

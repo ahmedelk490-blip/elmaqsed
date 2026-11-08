@@ -1,18 +1,27 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { suggest, type Place } from "@/lib/places";
+import { PLACES, suggest, type Place } from "@/lib/places";
+import { useLang } from "./ContentProvider";
+
+// English country names for the Arabic country shown under each city
+const COUNTRY_EN = new Map(PLACES.filter((p) => p.k === "دولة").map((p) => [p.n, p.e ?? p.n]));
+let airportCache: Place[][] | null = null;
 
 /**
  * Text input that suggests cities and countries as soon as part of a name is typed. The list is drawn in a fixed layer,
  * so sections with overflow:hidden never clip it. Free text is still accepted.
+ * With `airports`, the international airports list (IATA code, name, city) is loaded on first focus and suggested first.
  */
-export default function PlaceInput({ value, onChange, className, placeholder, required, places }: { value: string; onChange: (v: string) => void; className?: string; placeholder?: string; required?: boolean; places?: Place[] }) {
+export default function PlaceInput({ value, onChange, className, placeholder, required, places, airports }: { value: string; onChange: (v: string) => void; className?: string; placeholder?: string; required?: boolean; places?: Place[]; airports?: boolean }) {
   const ref = useRef<HTMLInputElement>(null);
+  const en = useLang() === "en";
+  const [air, setAir] = useState<Place[]>([]);
   const [open, setOpen] = useState(false);
   const [hi, setHi] = useState(0);
   const [box, setBox] = useState<{ left: number; top: number; width: number } | null>(null);
-  const list = open ? suggest(value, 7, places) : [];
+  const base = places ? (en ? places.map((p) => (p.k === "eSIM" ? { n: p.e ?? p.n, k: p.k, e: p.n } : p)) : places) : (en ? PLACES.map((p) => ({ n: p.e ?? p.n, k: p.k === "دولة" ? "Country" : COUNTRY_EN.get(p.k) ?? p.k, e: p.n })) : PLACES);
+  const list = open ? suggest(value, 7, air.length ? [...air, ...base] : base) : [];
   const show = list.length > 0 && !(list.length === 1 && list[0].n === value.trim());
 
   useLayoutEffect(() => {
@@ -27,6 +36,17 @@ export default function PlaceInput({ value, onChange, className, placeholder, re
     return () => { window.removeEventListener("scroll", place, true); window.removeEventListener("resize", place); };
   }, [show, value]);
   useEffect(() => setHi(0), [value]);
+  const loadAirports = () => {
+    if (!airports || air.length) return;
+    if (airportCache) return setAir(airportCache[en ? 1 : 0]);
+    void import("@/lib/airports").then(({ AIRPORTS }) => {
+      airportCache = [
+        AIRPORTS.map(([c, n, city, country, nEn, cityEn, countryEn]) => ({ n: `${n} (${c})`, k: `${city}، ${country}`, e: `${c} ${nEn ?? ""} ${cityEn ?? ""}` })),
+        AIRPORTS.map(([c, n, city, country, nEn, cityEn, countryEn]) => ({ n: `${nEn || n} (${c})`, k: `${cityEn || city}, ${countryEn || country}`, e: `${c} ${n} ${city}` })),
+      ];
+      setAir(airportCache[en ? 1 : 0]);
+    });
+  };
 
   const pick = (n: string) => { onChange(n); setOpen(false); };
   return (
@@ -35,7 +55,7 @@ export default function PlaceInput({ value, onChange, className, placeholder, re
         ref={ref} value={value} required={required} placeholder={placeholder} className={className}
         autoComplete="off" role="combobox" aria-expanded={show} aria-autocomplete="list"
         onChange={(e) => { onChange(e.target.value); setOpen(true); }}
-        onFocus={() => setOpen(true)}
+        onFocus={() => { setOpen(true); loadAirports(); }}
         onBlur={() => setTimeout(() => setOpen(false), 120)}
         onKeyDown={(e) => {
           if (!show) return;
@@ -50,7 +70,7 @@ export default function PlaceInput({ value, onChange, className, placeholder, re
           {list.map((p, i) => (
             <li key={`${p.n}-${p.k}`} role="option" aria-selected={i === hi}>
               <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => pick(p.n)} onMouseEnter={() => setHi(i)} className={i === hi ? "is-on" : ""}>
-                <b>{p.n}</b><span dir="auto">{p.k === "eSIM" ? p.e : p.k}</span>
+                <b>{p.n}</b><span dir="auto">{p.k === "eSIM" ? (en ? "eSIM" : p.e) : p.k}</span>
               </button>
             </li>
           ))}

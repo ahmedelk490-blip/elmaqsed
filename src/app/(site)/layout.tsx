@@ -5,12 +5,13 @@ import AfterScroll from "@/components/AfterScroll";
 import CallFloat from "@/components/CallFloat";
 import ContactTracker from "@/components/ContactTracker";
 import { ContentProvider } from "@/components/ContentProvider";
-import { getContent } from "@/lib/content";
+import { getLocalContent } from "@/lib/content";
+import { getLang } from "@/lib/i18n";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
-  const content = await getContent();
+  const [content, lang] = await Promise.all([getLocalContent(), getLang()]);
   return (
-    <ContentProvider value={content}>
+    <ContentProvider value={content} lang={lang}>
       <Providers>
         <Header />
         <main className="flex-1">{children}</main>

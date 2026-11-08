@@ -1,23 +1,25 @@
 "use client";
 import { useState } from "react";
-import { useContent } from "./ContentProvider";
+import { useContent, useT } from "./ContentProvider";
 import { waLink } from "@/lib/types";
 
 /** Help-center style FAQ: live search, category tabs, numbered accordion and a sticky "ask us" panel. */
 export default function FaqExplorer() {
   const { faq, site } = useContent();
+  const t = useT();
   const [q, setQ] = useState("");
-  const [cat, setCat] = useState("الكل");
+  const ALL = "__all";
+  const [cat, setCat] = useState(ALL);
   const [open, setOpen] = useState<number | null>(0);
-  const cats = ["الكل", ...Array.from(new Set(faq.map((f) => f.cat)))];
-  const list = faq.filter((f) => (cat === "الكل" || f.cat === cat) && (f.q + f.a).includes(q.trim()));
+  const cats = [ALL, ...Array.from(new Set(faq.map((f) => f.cat)))];
+  const list = faq.filter((f) => (cat === ALL || f.cat === cat) && (f.q + f.a).toLowerCase().includes(q.trim().toLowerCase()));
 
   return (
     <div className="grid gap-10 lg:grid-cols-[1fr_320px]">
       <div>
-        <input className="field mb-5" placeholder="اكتب سؤالك أو كلمة للبحث…" value={q} onChange={(e) => { setQ(e.target.value); setOpen(0); }} aria-label="بحث في الأسئلة" />
+        <input className="field mb-5" placeholder={t("اكتب سؤالك أو كلمة للبحث…", "Type your question or a word to search…")} value={q} onChange={(e) => { setQ(e.target.value); setOpen(0); }} aria-label={t("بحث في الأسئلة", "Search the questions")} />
         <div className="mb-8 flex flex-wrap gap-2">
-          {cats.map((c) => <button key={c} onClick={() => { setCat(c); setOpen(0); }} className={`badge ${cat === c ? "badge-sky bg-sky/15" : ""}`}>{c}</button>)}
+          {cats.map((c) => <button key={c} onClick={() => { setCat(c); setOpen(0); }} className={`badge ${cat === c ? "badge-sky bg-sky/15" : ""}`}>{c === ALL ? t("الكل", "All") : c}</button>)}
         </div>
         <div className="space-y-3">
           {list.map((f, i) => (
@@ -28,17 +30,17 @@ export default function FaqExplorer() {
                 <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-full border border-white/20 text-sky-2 transition-transform duration-300 ${open === i ? "rotate-45" : ""}`}>+</span>
               </button>
               <div className="acc" data-open={open === i}>
-                <div><p className="px-5 pb-5 leading-8 text-mist/80 md:pr-14">{f.a}</p></div>
+                <div><p className="px-5 pb-5 leading-8 text-mist/80 md:pe-14">{f.a}</p></div>
               </div>
             </div>
           ))}
-          {!list.length && <p className="card p-8 text-center text-mist/70">لا توجد نتيجة لهذا البحث. اسألنا مباشرة على واتساب.</p>}
+          {!list.length && <p className="card p-8 text-center text-mist/70">{t("لا توجد نتيجة لهذا البحث. اسألنا مباشرة على واتساب.", "No results for this search. Ask us directly on WhatsApp.")}</p>}
         </div>
       </div>
       <aside className="card glow h-fit p-7 lg:sticky lg:top-28">
-        <h3 className="text-xl font-bold">لم تجد إجابتك؟</h3>
-        <p className="mt-3 leading-8 text-mist/75">اكتب لنا سؤالك على واتساب ونرد خلال ساعات العمل.</p>
-        <a href={waLink(site.whatsapp, "السلام عليكم، لدي سؤال: ")} target="_blank" rel="noopener" className="btn btn-primary mt-6 w-full justify-center">اسأل على واتساب</a>
+        <h3 className="text-xl font-bold">{t("لم تجد إجابتك؟", "Didn't find your answer?")}</h3>
+        <p className="mt-3 leading-8 text-mist/75">{t("اكتب لنا سؤالك على واتساب ونرد خلال ساعات العمل.", "Send us your question on WhatsApp and we will reply during working hours.")}</p>
+        <a href={waLink(site.whatsapp, t("السلام عليكم، لدي سؤال: ", "Hello, I have a question: "))} target="_blank" rel="noopener" className="btn btn-primary mt-6 w-full justify-center">{t("اسأل على واتساب", "Ask on WhatsApp")}</a>
         <p className="mt-5 text-xs text-mist/50">{site.hours}</p>
       </aside>
     </div>

@@ -5,7 +5,8 @@ import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getContent } from "@/lib/content";
+import { getContent, getLocalContent } from "@/lib/content";
+import { getT, getLang } from "@/lib/i18n";
 import { waLink } from "@/lib/types";
 import Reveal from "@/components/Reveal";
 import FAQ from "@/components/FAQ";
@@ -14,7 +15,7 @@ import VisaChecklist from "@/components/VisaChecklist";
 import PriceNote from "@/components/PriceNote";
 import StepsStrip from "@/components/StepsStrip";
 import { Fragment, type CSSProperties, type ReactNode } from "react";
-import { THEMES, ORDER } from "@/lib/destinations";
+import { getTheme, ORDER } from "@/lib/destinations";
 import { HeroBoarding, HeroStamp, HeroPostcard, HeroRoute, HeroClassic } from "@/components/DestHeroes";
 import { Glance, EVisaFlow, EmbassyDay, CenterDay } from "@/components/DestSections";
 
@@ -25,26 +26,29 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/visa/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const { countries } = await getContent();
+  const { countries } = await getLocalContent();
+  const t = await getT();
   const c = countries.find((x) => x.slug === slug);
   if (!c) return {};
   const og = fs.existsSync(path.join(process.cwd(), "public", "og", `${c.slug}.jpg`)) ? `/og/${c.slug}.jpg` : undefined;
   return pageMeta({
     path: `/visa/${c.slug}`,
-    title: `تأشيرة ${c.name} — المتطلبات والمدة والخطوات`,
-    description: `استشارة وتجهيز طلب تأشيرة ${c.name} (${c.en}) من الدول العربية: المستندات المطلوبة وخطوات التقديم مع المقصد.`,
+    title: t(`تأشيرة ${c.name} — المتطلبات والمدة والخطوات`, `${c.name} visa: requirements, timing and steps`),
+    description: t(`استشارة وتجهيز طلب تأشيرة ${c.name} (${c.en}) من الدول العربية: المستندات المطلوبة وخطوات التقديم مع المقصد.`, `Consultation and application preparation for the ${c.name} visa from the Arab world: required documents and application steps with ELMAQSED.`),
     image: og,
   });
 }
 
 export default async function CountryPage({ params }: PageProps<"/visa/[slug]">) {
   const { slug } = await params;
-  const { countries, site } = await getContent();
+  const { countries, site } = await getLocalContent();
+  const tr = await getT();
+  const lang = await getLang();
   const c = countries.find((x) => x.slug === slug);
   if (!c) notFound();
   const others = countries.filter((x) => x.slug !== slug);
-  const wa = waLink(site.whatsapp, `السلام عليكم، أرغب في استشارة بخصوص تأشيرة ${c.name}`);
-  const t = THEMES[c.slug];
+  const wa = waLink(site.whatsapp, tr(`السلام عليكم، أرغب في استشارة بخصوص تأشيرة ${c.name}`, `Hello, I would like a consultation about the ${c.name} visa`));
+  const t = getTheme(c.slug, lang);
   const HERO = { boarding: HeroBoarding, stamp: HeroStamp, postcard: HeroPostcard, route: HeroRoute };
   const Hero = t ? HERO[t.concept] : null;
   const sig = c.kind.includes("إلكترون") ? <EVisaFlow c={c} /> : c.kind.includes("سفارة") ? <EmbassyDay c={c} /> : c.kind.includes("مركز") ? <CenterDay c={c} /> : null;
@@ -54,11 +58,11 @@ export default async function CountryPage({ params }: PageProps<"/visa/[slug]">)
     docs: (
       <section id="docs" className="relative scroll-mt-24 py-20 md:py-28">
         <div className="container-x">
-          <Reveal><SectionHead eyebrow="Documents" title="جهّز ملفك خطوة بخطوة" text="علّم المستندات المتوفرة لديك وأرسل القائمة لنراجع الناقص معك. القائمة النهائية تصلك بعد الاستشارة حسب جنسيتك وغرض السفر." /></Reveal>
+          <Reveal><SectionHead eyebrow="Documents" title={tr("جهّز ملفك خطوة بخطوة", "Prepare your file step by step")} text={tr("علّم المستندات المتوفرة لديك وأرسل القائمة لنراجع الناقص معك. القائمة النهائية تصلك بعد الاستشارة حسب جنسيتك وغرض السفر.", "Tick the documents you have and send the list so we can review what is missing. You receive the final list after the consultation, based on your nationality and purpose of travel.")} /></Reveal>
           <VisaChecklist reqs={c.reqs} country={c.name} whatsapp={site.whatsapp} />
           <div className="mt-8 grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
             <PriceNote price={c.price} includes={site.priceIncludes} excludes={site.priceExcludes} />
-            <Link href={`/booking?dest=${c.slug}`} className="btn btn-primary btn-lg justify-center">قدّم على تأشيرة {c.name}</Link>
+            <Link href={`/booking?dest=${c.slug}`} className="btn btn-primary btn-lg justify-center">{tr(`قدّم على تأشيرة ${c.name}`, `Apply for the ${c.name} visa`)}</Link>
           </div>
         </div>
       </section>
@@ -66,14 +70,14 @@ export default async function CountryPage({ params }: PageProps<"/visa/[slug]">)
     steps: (
       <section className="relative overflow-hidden bg-ink/70 py-20 md:py-28">
         <div className="container-x">
-          <Reveal><SectionHead eyebrow="Your journey" title={`طريقك إلى تأشيرة ${c.name}`} /></Reveal>
+          <Reveal><SectionHead eyebrow="Your journey" title={tr(`طريقك إلى تأشيرة ${c.name}`, `Your way to the ${c.name} visa`)} /></Reveal>
           <StepsStrip />
         </div>
       </section>
     ),
     others: (
       <section className="py-20 md:py-28">
-        <div className="container-x"><Reveal><SectionHead eyebrow="More destinations" title="وجهات أخرى" link={{ href: "/destinations", label: "كل الوجهات" }} /></Reveal></div>
+        <div className="container-x"><Reveal><SectionHead eyebrow="More destinations" title={tr("وجهات أخرى", "More destinations")} link={{ href: "/destinations", label: tr("كل الوجهات", "All destinations") }} /></Reveal></div>
         <div className="rail flex gap-5 overflow-x-auto px-[max(1rem,calc((100vw-76rem)/2))] pb-4">
           {others.map((o) => (
             <Link key={o.slug} href={`/visa/${o.slug}`} className="rail-card group relative aspect-[3/4] w-[220px] shrink-0 overflow-hidden rounded-3xl md:w-[250px]">
@@ -97,11 +101,11 @@ export default async function CountryPage({ params }: PageProps<"/visa/[slug]">)
       {(t ? ORDER[t.concept] : ["docs", "steps", "others"]).map((k) => <Fragment key={k}>{blocks[k]}</Fragment>)}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@graph": [
         { "@type": "BreadcrumbList", itemListElement: [
-          { "@type": "ListItem", position: 1, name: "الرئيسية", item: site.url },
-          { "@type": "ListItem", position: 2, name: "الوجهات", item: `${site.url}/destinations` },
-          { "@type": "ListItem", position: 3, name: `تأشيرة ${c.name}`, item: `${site.url}/visa/${c.slug}` },
+          { "@type": "ListItem", position: 1, name: tr("الرئيسية", "Home"), item: site.url },
+          { "@type": "ListItem", position: 2, name: tr("الوجهات", "Destinations"), item: `${site.url}/destinations` },
+          { "@type": "ListItem", position: 3, name: tr(`تأشيرة ${c.name}`, `${c.name} visa`), item: `${site.url}/visa/${c.slug}` },
         ] },
-        { "@type": "Service", name: `استشارات تأشيرة ${c.name}`, serviceType: "Visa consulting", description: c.note, areaServed: "SA", provider: { "@type": "TravelAgency", name: site.name, url: site.url } },
+        { "@type": "Service", name: tr(`استشارات تأشيرة ${c.name}`, `${c.name} visa consulting`), serviceType: "Visa consulting", description: c.note, areaServed: "SA", provider: { "@type": "TravelAgency", name: site.name, url: site.url } },
       ] }) }} />
       <FAQ compact />
     </div>

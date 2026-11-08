@@ -1,3 +1,5 @@
+import type { Lang } from "./lang";
+
 export type Concept = "boarding" | "stamp" | "postcard" | "route";
 export type DestTheme = {
   concept: Concept;
@@ -45,3 +47,40 @@ export const ORDER: Record<Concept, ("glance" | "sig" | "docs" | "others")[]> = 
   postcard: ["glance", "docs", "sig", "others"],
   route: ["sig", "docs", "glance", "others"],
 };
+
+type EnFields = Pick<DestTheme, "city" | "capital" | "currency" | "language" | "tz" | "flight">;
+const EU_EN = "1 to 2 hours behind";
+const e = (city: string, capital: string, currency: string, language: string, flight: string, tz = EU_EN): EnFields => ({ city, capital, currency, language, tz, flight });
+
+/** English text for each destination's facts (the accent, airport code and concept are shared with THEMES). */
+const THEMES_EN: Record<string, EnFields> = {
+  france: e("Paris", "Paris", "Euro", "French", "About 6.5 hours"),
+  germany: e("Frankfurt", "Berlin", "Euro", "German", "About 6 hours"),
+  italy: e("Rome", "Rome", "Euro", "Italian", "About 5 hours"),
+  netherlands: e("Amsterdam", "Amsterdam", "Euro", "Dutch", "About 6.5 hours"),
+  spain: e("Madrid", "Madrid", "Euro", "Spanish", "About 7 hours"),
+  sweden: e("Stockholm", "Stockholm", "Swedish krona", "Swedish", "About 7 hours"),
+  switzerland: e("Zurich", "Bern", "Swiss franc", "German, French and Italian", "About 6 hours"),
+  czech: e("Prague", "Prague", "Czech koruna", "Czech", "About 5.5 hours"),
+  austria: e("Vienna", "Vienna", "Euro", "German", "About 5.5 hours"),
+  hungary: e("Budapest", "Budapest", "Hungarian forint", "Hungarian", "About 5 hours"),
+  greece: e("Athens", "Athens", "Euro", "Greek", "About 4 hours", "Same in summer, 1 hour behind in winter"),
+  portugal: e("Lisbon", "Lisbon", "Euro", "Portuguese", "About 8 hours", "2 to 3 hours behind"),
+  usa: e("New York", "Washington, D.C.", "US dollar", "English", "About 13 hours", "7 to 11 hours behind"),
+  uk: e("London", "London", "Pound sterling", "English", "About 7 hours", "2 to 3 hours behind"),
+  malaysia: e("Kuala Lumpur", "Kuala Lumpur", "Malaysian ringgit", "Malay", "About 8.5 hours", "5 hours ahead"),
+  turkey: e("Istanbul", "Ankara", "Turkish lira", "Turkish", "About 4 hours", "Same time"),
+  seychelles: e("Mahé", "Victoria", "Seychellois rupee", "Creole, English and French", "About 5 hours", "1 hour ahead"),
+  egypt: e("Cairo", "Cairo", "Egyptian pound", "Arabic", "About 2.5 hours", "Same in summer, 1 hour behind in winter"),
+  indonesia: e("Jakarta", "Jakarta", "Indonesian rupiah", "Indonesian", "About 9.5 hours", "4 hours ahead"),
+  uae: e("Dubai", "Abu Dhabi", "UAE dirham", "Arabic", "About 2 hours", "1 hour ahead"),
+  qatar: e("Doha", "Doha", "Qatari riyal", "Arabic", "About 1.5 hours", "Same time"),
+  bahrain: e("Manama", "Manama", "Bahraini dinar", "Arabic", "About 1 hour", "Same time"),
+};
+
+/** The theme of a destination in the visitor's language (undefined for destinations added later from the admin). */
+export function getTheme(slug: string, lang: Lang = "ar"): DestTheme | undefined {
+  const t = THEMES[slug];
+  if (!t || lang !== "en") return t;
+  return { ...t, ...THEMES_EN[slug], capLabel: t.capLabel ? "Capital" : undefined };
+}

@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { waLink } from "@/lib/types";
-import { useContent } from "./ContentProvider";
+import { useContent, useT } from "./ContentProvider";
 import Symbol from "./Symbol";
 import SectionHead from "./SectionHead";
 import Reveal from "./Reveal";
@@ -13,6 +13,8 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export default function Process() {
   const { steps, site } = useContent();
+  const t = useT();
+  const wa = waLink(site.whatsapp, t("السلام عليكم، أرغب في استشارة بخصوص تأشيرة السفر", "Hello, I would like a consultation about a travel visa"));
   const ref = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -22,10 +24,11 @@ export default function Process() {
       mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
         const track = ref.current!.querySelector<HTMLElement>(".p-track")!;
         const wrap = track.parentElement!;
+        const rtl = getComputedStyle(document.documentElement).direction === "rtl";
         const dist = () => Math.max(0, track.scrollWidth - wrap.clientWidth);
         const tl = gsap.timeline({ scrollTrigger: { trigger: ref.current, start: "top top", end: () => "+=" + (dist() + window.innerHeight * 0.4), pin: true, scrub: 0.8, anticipatePin: 1, invalidateOnRefresh: true } });
-        tl.to(track, { x: () => dist(), ease: "none", duration: 1 }, 0)
-          .fromTo(".p-line", { scaleX: 0 }, { scaleX: 1, ease: "none", duration: 1 }, 0)
+        tl.to(track, { x: () => (rtl ? dist() : -dist()), ease: "none", duration: 1 }, 0)
+          .fromTo(".p-line", { scaleX: 0, transformOrigin: rtl ? "100% 50%" : "0% 50%" }, { scaleX: 1, ease: "none", duration: 1 }, 0)
           .to(".p-dot", { backgroundColor: "#2e94d2", borderColor: "#2e94d2", boxShadow: "0 0 18px rgba(46,148,210,.9)", stagger: 0.18, duration: 0.05 }, 0.02)
           .fromTo(".p-dest", { opacity: 0.3, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.15 }, 0.8)
           .fromTo(".p-dest-glow", { opacity: 0 }, { opacity: 1, duration: 0.15 }, 0.8);
@@ -46,12 +49,12 @@ export default function Process() {
       <span className="ghost right-[-2%] top-6" data-t="JOURNEY" aria-hidden="true" />
       <div className="container-x relative">
         <Reveal>
-          <SectionHead eyebrow="How it works" title="رحلتك معنا… خطوة بخطوة" text="خمس خطوات واضحة، ومستشار واحد يعرف ملفك من البداية حتى الوصول." link={{ href: "/process", label: "تفاصيل الرحلة كاملة" }} />
+          <SectionHead eyebrow="How it works" title={t("رحلتك معنا… خطوة بخطوة", "Your journey with us… step by step")} text={t("خمس خطوات واضحة، ومستشار واحد يعرف ملفك من البداية حتى الوصول.", "Five clear steps, and one advisor who knows your file from the start until you arrive.")} link={{ href: "/process", label: t("تفاصيل الرحلة كاملة", "The full journey in detail") }} />
         </Reveal>
         <div className="relative">
           <ol className="p-track relative hidden lg:flex lg:w-max lg:flex-row lg:gap-6">
             <span className="absolute bottom-2 right-[7px] top-2 w-px bg-white/10 lg:inset-x-0 lg:bottom-auto lg:right-auto lg:top-[7px] lg:h-px lg:w-auto" />
-            <span className="p-line absolute bottom-2 right-[7px] top-2 w-px origin-top bg-gradient-to-b from-sky-2 to-sky lg:inset-x-0 lg:bottom-auto lg:right-auto lg:top-[7px] lg:h-px lg:w-auto lg:origin-right lg:bg-gradient-to-l" />
+            <span className="p-line absolute bottom-2 right-[7px] top-2 w-px origin-top bg-gradient-to-b from-sky-2 to-sky lg:inset-x-0 lg:bottom-auto lg:right-auto lg:top-[7px] lg:h-px lg:w-auto lg:rtl:bg-gradient-to-l lg:ltr:bg-gradient-to-r" />
             {steps.map((s) => (
               <li key={s.n} className="p-card relative pr-10 lg:w-[340px] lg:shrink-0 lg:pr-0 lg:pt-12">
                 <span className="p-dot absolute right-0 top-2 h-[15px] w-[15px] rounded-full border border-white/30 bg-navy lg:left-0 lg:right-auto lg:top-0" />
@@ -66,9 +69,9 @@ export default function Process() {
                 <Symbol className="h-8 w-8 text-white" id="dest" />
               </span>
               <Symbol className="h-14 w-14 text-white drop-shadow-[0_0_24px_rgba(46,148,210,.7)]" id="dest-big" />
-              <h3 className="mt-4 text-3xl font-bold">وصلت إلى مقصدك</h3>
-              <p className="mt-3 max-w-sm leading-8 text-mist/70">تأشيرة في الجواز، وخطة سفر واضحة. وحين تفكر في وجهتك التالية، ملفك جاهز عندنا.</p>
-              <a href={waLink(site.whatsapp)} target="_blank" rel="noopener" className="btn btn-primary mt-6">ابدأ رحلتك الآن</a>
+              <h3 className="mt-4 text-3xl font-bold">{t("وصلت إلى مقصدك", "You have reached your destination")}</h3>
+              <p className="mt-3 max-w-sm leading-8 text-mist/70">{t("تأشيرة في الجواز، وخطة سفر واضحة. وحين تفكر في وجهتك التالية، ملفك جاهز عندنا.", "A visa in your passport and a clear travel plan. And when you think of your next destination, your file is ready with us.")}</p>
+              <a href={wa} target="_blank" rel="noopener" className="btn btn-primary mt-6">{t("ابدأ رحلتك الآن", "Start your journey now")}</a>
             </li>
           </ol>
           {/* mobile: step cards that stack as you scroll */}
@@ -76,7 +79,7 @@ export default function Process() {
             {steps.map((s, k) => (
               <div key={s.n} className="sticky pb-4" style={{ top: `${96 + k * 14}px` }}>
                 <div className="card p-6 shadow-[0_-24px_40px_-24px_rgba(0,0,0,.85)]">
-                  <div className="flex items-center justify-between"><span className="num-outline font-serif text-5xl">{s.n}</span><span className="badge text-xs">الخطوة {k + 1} من {steps.length}</span></div>
+                  <div className="flex items-center justify-between"><span className="num-outline font-serif text-5xl">{s.n}</span><span className="badge text-xs">{t(`الخطوة ${k + 1} من ${steps.length}`, `Step ${k + 1} of ${steps.length}`)}</span></div>
                   <h3 className="mt-4 text-xl font-bold">{s.title}</h3>
                   <p className="mt-2 leading-8 text-mist/75">{s.text}</p>
                 </div>
@@ -84,8 +87,8 @@ export default function Process() {
             ))}
             <div className="card glow mt-2 p-6 text-center">
               <Symbol className="mx-auto h-12 w-12 text-white" id="dest-m" />
-              <h3 className="mt-3 text-2xl font-bold">وصلت إلى مقصدك</h3>
-              <a href={waLink(site.whatsapp)} target="_blank" rel="noopener" className="btn btn-primary mt-5">ابدأ رحلتك الآن</a>
+              <h3 className="mt-3 text-2xl font-bold">{t("وصلت إلى مقصدك", "You have reached your destination")}</h3>
+              <a href={wa} target="_blank" rel="noopener" className="btn btn-primary mt-5">{t("ابدأ رحلتك الآن", "Start your journey now")}</a>
             </div>
           </div>
         </div>

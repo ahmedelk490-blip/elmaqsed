@@ -1,0 +1,825 @@
+{
+  "site": {
+    "url": "https://elmaqsed.com",
+    "name": "ELMAQSED",
+    "nameEn": "ELMAQSED",
+    "tagline": "A clear path to the right destination",
+    "description": "ELMAQSED — professional travel visa consulting and application preparation. We review your case, prepare your documents, and stay with you until you arrive.",
+    "whatsapp": "966500000000",
+    "phone": "+966 50 000 0000",
+    "phone2": "+971 50 000 0000",
+    "whatsapp2": "971500000000",
+    "email": "info@elmaqsed.com",
+    "city": "Riyadh, Saudi Arabia",
+    "cr": "0000000000",
+    "license": "00000000",
+    "social": {
+      "instagram": "#",
+      "x": "#",
+      "tiktok": "#",
+      "snapchat": "#"
+    },
+    "hours": "Saturday – Thursday, 9 AM – 11 PM",
+    "footerNote": "A clear path to the right destination. Professional visa consulting and application preparation, from the Arab world to the world.",
+    "disclaimer": "ELMAQSED is an independent consultancy. It does not represent any embassy or government body and does not guarantee a visa decision.",
+    "priceIncludes": "Appointment fee, service fee, translation and VAT",
+    "priceExcludes": "Embassy fees and passport delivery fees from the unified visa centre"
+  },
+  "nav": [
+    {
+      "href": "/services",
+      "label": "Services",
+      "_ar": "/services"
+    },
+    {
+      "href": "/destinations",
+      "label": "Destinations",
+      "_ar": "/destinations"
+    },
+    {
+      "href": "/process",
+      "label": "Process",
+      "_ar": "/process"
+    },
+    {
+      "href": "/about",
+      "label": "About",
+      "_ar": "/about"
+    },
+    {
+      "href": "/faq",
+      "label": "FAQ",
+      "_ar": "/faq"
+    },
+    {
+      "href": "/contact",
+      "label": "Contact",
+      "_ar": "/contact"
+    }
+  ],
+  "stats": [
+    {
+      "value": 10,
+      "suffix": "+",
+      "label": "Years of experience",
+      "_ar": "سنوات خبرة"
+    },
+    {
+      "value": 2500,
+      "suffix": "+",
+      "label": "Successful visa applications",
+      "_ar": "طلب تأشيرة ناجح"
+    },
+    {
+      "value": 25,
+      "suffix": "+",
+      "label": "Destinations worldwide",
+      "_ar": "وجهة حول العالم"
+    },
+    {
+      "value": 4.9,
+      "suffix": "",
+      "label": "Client rating",
+      "decimals": 1,
+      "_ar": "تقييم عملائنا"
+    }
+  ],
+  "services": [
+    {
+      "icon": "compass",
+      "title": "Consultation & Case Assessment",
+      "text": "We listen to your travel goal, assess your file honestly, and identify the most suitable visa type and your chances of approval before you pay a single riyal.",
+      "bullets": [
+        "Honest assessment of approval chances before you pay",
+        "The most suitable visa type and embassy",
+        "A clear timeline up to your travel date"
+      ],
+      "img": "/img/p03.jpg",
+      "_ar": "استشارة وتقييم الحالة"
+    },
+    {
+      "icon": "docs",
+      "title": "Document Review & Preparation",
+      "text": "A document checklist tailored to your case, a careful review of every page, and early warning of any weak point that could lead to refusal.",
+      "bullets": [
+        "Document checklist tailored to your case",
+        "Every page reviewed before submission",
+        "Early warning of any weak point"
+      ],
+      "img": "/img/p14.jpg",
+      "_ar": "مراجعة وتجهيز المستندات"
+    },
+    {
+      "icon": "form",
+      "title": "Form Filling & Submission",
+      "text": "We fill in embassy online forms with great precision (DS-160, Schengen, UK…) and submit them on your behalf.",
+      "bullets": [
+        "Online forms completed accurately",
+        "Double check before sending",
+        "A full copy of your application kept for you"
+      ],
+      "img": "/img/p10.jpg",
+      "_ar": "تعبئة النماذج والتقديم"
+    },
+    {
+      "icon": "calendar",
+      "title": "Appointment & Biometrics Booking",
+      "text": "We monitor embassy and visa centre appointments and book the earliest available slot that fits your travel plan.",
+      "bullets": [
+        "Daily monitoring of appointment availability",
+        "Earliest slot that suits your plan booked",
+        "Reminder one day before your appointment"
+      ],
+      "img": "/img/p08.jpg",
+      "_ar": "حجز المواعيد والبصمة"
+    },
+    {
+      "icon": "letter",
+      "title": "Cover Letters & Translation",
+      "text": "A professional cover letter that presents your story clearly, and certified translation of all required documents.",
+      "bullets": [
+        "A cover letter that presents your story clearly",
+        "Certified translation of documents",
+        "Invitation and introduction letters drafted"
+      ],
+      "img": "/img/p11.jpg",
+      "_ar": "خطابات التغطية والترجمة"
+    },
+    {
+      "icon": "shield",
+      "title": "Interview Preparation & Follow-up",
+      "text": "An interview preparation session with the expected questions, and continuous follow-up on your application until your passport is returned.",
+      "bullets": [
+        "Preparation session with real interview questions",
+        "Application tracking until the decision",
+        "A backup plan in case of refusal"
+      ],
+      "img": "/img/p12.jpg",
+      "_ar": "التحضير للمقابلة والمتابعة"
+    }
+  ],
+  "steps": [
+    {
+      "n": "01",
+      "title": "Choose your destination",
+      "text": "Search for the country and visa type at the top of the page, or choose a hotel booking.",
+      "_ar": "اختر وجهتك"
+    },
+    {
+      "n": "02",
+      "title": "Fill in the request",
+      "text": "A short three-step form: trip details, your information, then review and submit.",
+      "_ar": "املأ الطلب"
+    },
+    {
+      "n": "03",
+      "title": "We review and reply",
+      "text": "Your request reaches us on WhatsApp, and we reply within 24 hours with the requirements and the final price.",
+      "_ar": "نراجع ونرد عليك"
+    },
+    {
+      "n": "04",
+      "title": "Preparation & appointment",
+      "text": "We prepare your file, book your appointment and review every page before submission.",
+      "_ar": "التجهيز والموعد"
+    },
+    {
+      "n": "05",
+      "title": "Follow-up until collection",
+      "text": "We track your application every step of the way until you receive your visa or booking confirmation.",
+      "_ar": "المتابعة حتى الاستلام"
+    }
+  ],
+  "countries": [
+    {
+      "slug": "france",
+      "name": "France",
+      "en": "France",
+      "code": "fr",
+      "group": "Schengen",
+      "kind": "Visa centre",
+      "time": "15 – 30 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "The top Schengen destination for travellers from the Arab world. We arrange your appointment and prepare your complete file.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay",
+        "Identification of the main country of stay",
+        "Detailed trip itinerary"
+      ],
+      "img": "/img/dest/france.jpg",
+      "price": "",
+      "_ar": "france"
+    },
+    {
+      "slug": "germany",
+      "name": "Germany",
+      "en": "Germany",
+      "code": "de",
+      "group": "Schengen",
+      "kind": "Visa centre",
+      "time": "15 – 30 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "A well-organised, accurate file is the key to approval at the German embassy. We review every page before submission.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay",
+        "Identification of the main country of stay",
+        "Detailed trip itinerary"
+      ],
+      "img": "/img/dest/germany.jpg",
+      "price": "",
+      "_ar": "germany"
+    },
+    {
+      "slug": "italy",
+      "name": "Italy",
+      "en": "Italy",
+      "code": "it",
+      "group": "Schengen",
+      "kind": "Visa centre",
+      "time": "15 – 30 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "From Rome to Milan and Venice. We prepare your file and book your appointment at the visa centre.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay",
+        "Identification of the main country of stay",
+        "Detailed trip itinerary"
+      ],
+      "img": "/img/dest/italy.jpg",
+      "price": "",
+      "_ar": "italy"
+    },
+    {
+      "slug": "netherlands",
+      "name": "Netherlands",
+      "en": "Netherlands",
+      "code": "nl",
+      "group": "Schengen",
+      "kind": "Visa centre",
+      "time": "15 – 30 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "A Schengen visa via the Netherlands, with a clear file and a convincing travel plan.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay",
+        "Identification of the main country of stay",
+        "Detailed trip itinerary"
+      ],
+      "img": "/img/dest/netherlands.jpg",
+      "price": "",
+      "_ar": "netherlands"
+    },
+    {
+      "slug": "spain",
+      "name": "Spain",
+      "en": "Spain",
+      "code": "es",
+      "group": "Schengen",
+      "kind": "Visa centre",
+      "time": "15 – 30 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "Madrid, Barcelona and Andalusia. We handle your appointment and file from start to finish.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay",
+        "Identification of the main country of stay",
+        "Detailed trip itinerary"
+      ],
+      "img": "/img/dest/spain.jpg",
+      "price": "",
+      "_ar": "spain"
+    },
+    {
+      "slug": "sweden",
+      "name": "Sweden",
+      "en": "Sweden",
+      "code": "se",
+      "group": "Schengen",
+      "kind": "Visa centre",
+      "time": "15 – 30 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "A Schengen visa via Sweden to visit Stockholm and Northern Europe.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay",
+        "Identification of the main country of stay",
+        "Detailed trip itinerary"
+      ],
+      "img": "/img/dest/sweden.jpg",
+      "price": "",
+      "_ar": "sweden"
+    },
+    {
+      "slug": "switzerland",
+      "name": "Switzerland",
+      "en": "Switzerland",
+      "code": "ch",
+      "group": "Schengen",
+      "kind": "Visa centre",
+      "time": "15 – 30 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "The Swiss Alps and lakes. We prepare your application and follow up on your appointment.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay",
+        "Identification of the main country of stay",
+        "Detailed trip itinerary"
+      ],
+      "img": "/img/dest/switzerland.jpg",
+      "price": "",
+      "_ar": "switzerland"
+    },
+    {
+      "slug": "czech",
+      "name": "Czechia",
+      "en": "Czechia",
+      "code": "cz",
+      "group": "Schengen",
+      "kind": "Visa centre",
+      "time": "15 – 30 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "Prague and the historic cities of Czechia on a single Schengen visa.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay",
+        "Identification of the main country of stay",
+        "Detailed trip itinerary"
+      ],
+      "img": "/img/dest/czech.jpg",
+      "price": "",
+      "_ar": "czech"
+    },
+    {
+      "slug": "austria",
+      "name": "Austria",
+      "en": "Austria",
+      "code": "at",
+      "group": "Schengen",
+      "kind": "Visa centre",
+      "time": "15 – 30 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "Vienna, Salzburg and Hallstatt. A complete file and an appointment at the earliest available date.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay",
+        "Identification of the main country of stay",
+        "Detailed trip itinerary"
+      ],
+      "img": "/img/dest/austria.jpg",
+      "price": "",
+      "_ar": "austria"
+    },
+    {
+      "slug": "hungary",
+      "name": "Hungary",
+      "en": "Hungary",
+      "code": "hu",
+      "group": "Schengen",
+      "kind": "Visa centre",
+      "time": "15 – 30 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "Budapest on the Danube. We help you with the appointment and file step by step.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay",
+        "Identification of the main country of stay",
+        "Detailed trip itinerary"
+      ],
+      "img": "/img/dest/hungary.jpg",
+      "price": "",
+      "_ar": "hungary"
+    },
+    {
+      "slug": "greece",
+      "name": "Greece",
+      "en": "Greece",
+      "code": "gr",
+      "group": "Schengen",
+      "kind": "Visa centre",
+      "time": "15 – 30 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "Athens and the Greek islands. We prepare your application ahead of the travel season.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay",
+        "Identification of the main country of stay",
+        "Detailed trip itinerary"
+      ],
+      "img": "/img/dest/greece.jpg",
+      "price": "",
+      "_ar": "greece"
+    },
+    {
+      "slug": "portugal",
+      "name": "Portugal",
+      "en": "Portugal",
+      "code": "pt",
+      "group": "Schengen",
+      "kind": "Visa centre",
+      "time": "15 – 30 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "Lisbon, Porto and the Atlantic coast on a Schengen visa.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay",
+        "Identification of the main country of stay",
+        "Detailed trip itinerary"
+      ],
+      "img": "/img/dest/portugal.jpg",
+      "price": "",
+      "_ar": "portugal"
+    },
+    {
+      "slug": "usa",
+      "name": "United States",
+      "en": "United States",
+      "code": "us",
+      "kind": "Embassy",
+      "time": "Depends on appointment availability",
+      "types": [
+        "Tourist"
+      ],
+      "note": "The interview is everything. We prepare you for it with real questions and honest answers.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay",
+        "DS-160 form",
+        "In-person interview at the embassy"
+      ],
+      "img": "/img/dest/usa.jpg",
+      "group": "",
+      "price": "",
+      "_ar": "usa"
+    },
+    {
+      "slug": "uk",
+      "name": "United Kingdom (ETA)",
+      "en": "United Kingdom",
+      "code": "gb",
+      "group": "",
+      "kind": "Electronic",
+      "time": "Up to 3 working days",
+      "types": [
+        "Tourist (ETA)"
+      ],
+      "note": "The UK Electronic Travel Authorisation (ETA). We submit the application for you and verify your details before sending.",
+      "reqs": [
+        "Valid passport",
+        "Recent passport photo on a light background",
+        "Active email address to receive the authorisation",
+        "Trip details and accommodation address"
+      ],
+      "img": "/img/dest/uk.jpg",
+      "price": "",
+      "_ar": "uk"
+    },
+    {
+      "slug": "malaysia",
+      "name": "Malaysia",
+      "en": "Malaysia",
+      "code": "my",
+      "group": "For residents",
+      "kind": "Electronic",
+      "time": "3 – 5 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "Malaysia e-visa for residents of the Gulf countries. We check your nationality's eligibility and apply on your behalf.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay"
+      ],
+      "img": "/img/dest/malaysia.jpg",
+      "price": "",
+      "_ar": "malaysia"
+    },
+    {
+      "slug": "turkey",
+      "name": "Türkiye",
+      "en": "Türkiye",
+      "code": "tr",
+      "kind": "Electronic",
+      "time": "1 – 3 days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "Türkiye visa for residents of the Gulf countries. We check your nationality's eligibility and apply on your behalf.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay"
+      ],
+      "img": "/img/dest/turkey.jpg",
+      "group": "For residents",
+      "price": "",
+      "_ar": "turkey"
+    },
+    {
+      "slug": "seychelles",
+      "name": "Seychelles",
+      "en": "Seychelles",
+      "code": "sc",
+      "group": "For residents",
+      "kind": "Electronic",
+      "time": "1 – 3 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "Seychelles requires an electronic travel authorisation before arrival. We prepare it for you together with your bookings.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay"
+      ],
+      "img": "/img/dest/seychelles.jpg",
+      "price": "",
+      "_ar": "seychelles"
+    },
+    {
+      "slug": "egypt",
+      "name": "Egypt",
+      "en": "Egypt",
+      "code": "eg",
+      "kind": "Embassy",
+      "time": "3 – 7 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "Egypt visa for residents of the Gulf countries, with an organised file and follow-up until collection.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay"
+      ],
+      "img": "/img/dest/egypt.jpg",
+      "group": "For residents",
+      "price": "",
+      "_ar": "egypt"
+    },
+    {
+      "slug": "qatar",
+      "name": "Qatar",
+      "en": "Qatar",
+      "code": "qa",
+      "group": "",
+      "kind": "Electronic",
+      "time": "2 – 5 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "Qatar e-visa for tourism and visits. We apply on your behalf and follow it up.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay"
+      ],
+      "img": "/img/dest/qatar.jpg",
+      "price": "",
+      "_ar": "qatar"
+    },
+    {
+      "slug": "bahrain",
+      "name": "Bahrain",
+      "en": "Bahrain",
+      "code": "bh",
+      "group": "For residents",
+      "kind": "Electronic",
+      "time": "1 – 3 working days",
+      "types": [
+        "Tourist"
+      ],
+      "note": "Bahrain e-visa for residents of the Gulf countries. We apply on your behalf within days.",
+      "reqs": [
+        "Passport valid for more than 6 months with blank pages",
+        "Recent passport photos on a white background per embassy specifications",
+        "Stamped bank statement for the last 3–6 months",
+        "Salary certificate, or commercial registration for the self-employed",
+        "Provisional flight and hotel booking (we provide it for you)",
+        "Travel insurance covering the stay"
+      ],
+      "img": "/img/dest/bahrain.jpg",
+      "price": "",
+      "_ar": "bahrain"
+    }
+  ],
+  "why": [
+    {
+      "title": "Honesty before promises",
+      "text": "We don't guarantee the embassy's decision because no one can. We guarantee a complete file, free of errors.",
+      "_ar": "صدق قبل الوعود"
+    },
+    {
+      "title": "One consultant for your file",
+      "text": "One person who knows your story from start to finish, so questions aren't repeated and details aren't lost.",
+      "_ar": "مستشار واحد لملفك"
+    },
+    {
+      "title": "Full transparency",
+      "text": "Embassy fees are separate from service fees, and every step is known to you in advance.",
+      "_ar": "شفافية كاملة"
+    },
+    {
+      "title": "Expertise in the details",
+      "text": "We know what each embassy looks for, and we prepare your file the way it prefers.",
+      "_ar": "خبرة بالتفاصيل"
+    }
+  ],
+  "faq": [
+    {
+      "q": "Do you guarantee that I will get the visa?",
+      "a": "No one can guarantee an embassy's decision, and anyone who promises otherwise is not telling the truth. What we guarantee is a complete, well-organised file, free of the errors behind most refusals.",
+      "cat": "General",
+      "_ar": "هل تضمنون الحصول على التأشيرة؟"
+    },
+    {
+      "q": "How long is the first consultation, and is it free?",
+      "a": "Yes, the initial assessment is free and usually takes 15 minutes over WhatsApp or phone. We tell you honestly which visa type suits you and what your chances are.",
+      "cat": "General",
+      "_ar": "كم تستغرق الاستشارة الأولى وهل هي مجانية؟"
+    },
+    {
+      "q": "What is the difference between embassy fees and service fees?",
+      "a": "Embassy fees are paid to the official authority, vary by country, and are outside our control. Our service fee covers consultation, preparation and follow-up, and is confirmed with you before we start.",
+      "cat": "Fees",
+      "_ar": "ما الفرق بين رسوم السفارة ورسوم الخدمة؟"
+    },
+    {
+      "q": "My visa was refused before. Can you help?",
+      "a": "Yes. We start by analysing the reason for the previous refusal, fix the weak points in your file, and reapply with a different plan.",
+      "cat": "After refusal",
+      "_ar": "سبق أن رُفضت تأشيرتي، هل يمكنكم المساعدة؟"
+    },
+    {
+      "q": "Do I need to book flights and a hotel before applying?",
+      "a": "Most embassies only ask for a provisional booking. We provide suitable provisional bookings for your visa file without you paying the full ticket price.",
+      "cat": "Documents",
+      "_ar": "هل أحتاج لحجز طيران وفندق قبل التقديم؟"
+    },
+    {
+      "q": "Do you serve clients outside Saudi Arabia?",
+      "a": "Yes, we serve clients from all Arab countries, citizens and residents alike, taking into account that requirements vary by nationality and country of residence.",
+      "cat": "General",
+      "_ar": "هل تخدمون العملاء من خارج السعودية؟"
+    },
+    {
+      "q": "How do I track my application?",
+      "a": "Your consultant stays in touch with you on WhatsApp at every stage, from submission until you receive your passport.",
+      "cat": "General",
+      "_ar": "كيف أتابع حالة طلبي؟"
+    },
+    {
+      "q": "Are you a government body or an embassy?",
+      "a": "No. ELMAQSED is a licensed independent consultancy and does not represent any embassy or government body.",
+      "cat": "General",
+      "_ar": "هل أنتم جهة حكومية أو سفارة؟"
+    }
+  ],
+  "testimonials": [
+    {
+      "name": "Ahmed S.",
+      "city": "Riyadh",
+      "visa": "Schengen visa",
+      "text": "I had been refused twice before. ELMAQSED reviewed my file frankly and told me exactly where the mistake was. After the third application, I got a one-year visa.",
+      "_ar": "أحمد س."
+    },
+    {
+      "name": "Noura A.",
+      "city": "Jeddah",
+      "visa": "UK visa",
+      "text": "What reassured me most was having one person follow my case from start to finish on WhatsApp. I never felt I was repeating myself or getting passed between staff.",
+      "_ar": "نورة ع."
+    },
+    {
+      "name": "Khalid M.",
+      "city": "Dammam",
+      "visa": "US visa",
+      "text": "The interview preparation session made the real difference. I walked into the embassy knowing every question that could be asked, and I came out approved.",
+      "_ar": "خالد م."
+    }
+  ],
+  "about": {
+    "title": "Every road is different… the destination is one",
+    "intro": "ELMAQSED is a Saudi company specialising in travel visa consulting. We began with a simple observation: most refusals are not the applicant's fault, but the result of an incomplete file or an unclear story.",
+    "story": [
+      "The name ELMAQSED means the destination we are heading to. That is why our logo is built from arrows coming from different directions and converging on a single point: the point of arrival.",
+      "Every client has a different path and circumstances, and our role is to help them reach the right destination through a clear, well-planned route, free of exaggerated promises.",
+      "We chose to be a calm, precise and responsible brand: no overused symbols, no false guarantees, and full transparency about fees and steps."
+    ],
+    "values": [
+      {
+        "title": "Honesty",
+        "text": "We tell you your real chances, even if you don't like them.",
+        "_ar": "صدق"
+      },
+      {
+        "title": "Precision",
+        "text": "Every page is checked twice before it reaches the embassy.",
+        "_ar": "دقة"
+      },
+      {
+        "title": "Responsibility",
+        "text": "One consultant carries your file from start to decision.",
+        "_ar": "مسؤولية"
+      },
+      {
+        "title": "Clarity",
+        "text": "Fees announced and steps known before we begin.",
+        "_ar": "وضوح"
+      }
+    ]
+  }
+}

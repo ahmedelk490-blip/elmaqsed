@@ -1,6 +1,7 @@
 "use client";
 import createGlobe from "cobe";
 import { useEffect, useRef, useState } from "react";
+import { useT } from "./ContentProvider";
 
 const RIYADH: [number, number] = [24.71, 46.68];
 const dests: [number, number][] = [
@@ -17,6 +18,7 @@ const HOME = { phi: 4.01, theta: 0.33 };
  * globe is shown instead and the canvas is retried twice.
  */
 export default function Globe({ className = "" }: { className?: string }) {
+  const t = useT();
   const ref = useRef<HTMLCanvasElement>(null);
   const [gen, setGen] = useState(0); // bump = mount a fresh canvas
   const [dead, setDead] = useState(false);
@@ -94,7 +96,7 @@ export default function Globe({ className = "" }: { className?: string }) {
     <div className={`relative aspect-square w-full ${className}`}>
       {dead
         ? <div className="globe-fallback" aria-hidden="true" />
-        : <canvas key={gen} ref={ref} className="h-full w-full cursor-grab" style={{ contain: "layout paint size", touchAction: "pan-y" }} aria-label="اسحب الكرة لتدويرها" />}
+        : <canvas key={gen} ref={ref} className="h-full w-full cursor-grab" style={{ contain: "layout paint size", touchAction: "pan-y" }} aria-label={t("اسحب الكرة لتدويرها", "Drag the globe to rotate it")} />}
     </div>
   );
 }

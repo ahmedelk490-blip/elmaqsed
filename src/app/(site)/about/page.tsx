@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
-import { getContent } from "@/lib/content";
+import { getLocalContent } from "@/lib/content";
+import { getT, getLang } from "@/lib/i18n";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import SectionHead from "@/components/SectionHead";
 import SymbolConverge from "@/components/SymbolConverge";
 
-export const metadata: Metadata = pageMeta({ path: "/about", title: "من نحن", description: "قصة المقصد: شركة سعودية مرخصة لاستشارات تأشيرات السفر، وفلسفة الاتجاه والوصول التي بُنيت عليها العلامة." });
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return pageMeta({ lang: await getLang(), path: "/about", title: t("من نحن", "About us"), description: t("قصة المقصد: شركة سعودية مرخصة لاستشارات تأشيرات السفر، وفلسفة الاتجاه والوصول التي بُنيت عليها العلامة.", "The story of ELMAQSED: a licensed Saudi visa consulting company, and the idea of direction and arrival the brand is built on.") });
+}
 
 export default async function AboutPage() {
-  const { about, site, why } = await getContent();
+  const t = await getT();
+  const { about, site, why } = await getLocalContent();
   return (
     <>
       <PageHero image="/img/p07.jpg" eyebrow="About Elmaqsed" title={about.title} text={about.intro} />
@@ -26,7 +31,7 @@ export default async function AboutPage() {
       </section>
       <section className="bg-ink/60 py-16 md:py-24">
         <Reveal className="container-x">
-          <SectionHead eyebrow="Values" title="ما نؤمن به" center />
+          <SectionHead eyebrow="Values" title={t("ما نؤمن به", "What we believe")} center />
           <div className="grid gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
             {about.values.map((v, i) => (
               <div key={v.title} data-r className="card p-5 text-center sm:p-7">
@@ -42,10 +47,10 @@ export default async function AboutPage() {
         <Reveal className="container-x grid gap-6 md:grid-cols-2">
           <div data-r className="card p-8">
             <p className="eyebrow mb-4">Licensed</p>
-            <h2 className="text-2xl font-bold">شركة مرخصة ومستقلة</h2>
+            <h2 className="text-2xl font-bold">{t("شركة مرخصة ومستقلة", "Licensed and independent")}</h2>
             <ul className="mt-5 space-y-2 text-mist/80">
-              <li>السجل التجاري: <span dir="ltr">{site.cr}</span></li>
-              <li>ترخيص وزارة السياحة: <span dir="ltr">{site.license}</span></li>
+              <li>{t("السجل التجاري", "Commercial register")}: <span dir="ltr">{site.cr}</span></li>
+              <li>{t("ترخيص وزارة السياحة", "Ministry of Tourism licence")}: <span dir="ltr">{site.license}</span></li>
               <li>{site.city}</li>
             </ul>
             <p className="mt-5 text-sm leading-7 text-mist/50">{site.disclaimer}</p>

@@ -5,12 +5,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useContent } from "./ContentProvider";
+import { useContent, useLang, useT } from "./ContentProvider";
 import SectionHead from "./SectionHead";
 import Reveal from "./Reveal";
 import { Icon } from "./Icons";
 import { inGroup } from "./HeroSearch";
-import type { Country } from "@/lib/types";
+import { CODE_EN, type Country } from "@/lib/types";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -20,6 +20,9 @@ const fill = (a: Country[], min: number) => { const out = [...a]; while (a.lengt
 /** "Find your visa": group filter, then an endless row of landmark cards that glides on its own (two opposite rows on phones). */
 export default function Destinations() {
   const { countries } = useContent();
+  const t = useT();
+  const lang = useLang();
+  const gd = (x: string) => (lang === "en" ? CODE_EN[x] ?? x : x);
   const ref = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
   // glide direction chosen by the visitor (arrows / drag), a short push after an arrow, and the drag state
@@ -127,30 +130,30 @@ export default function Destinations() {
       <span className="ghost right-[-3%] top-10" data-t="DESTINATIONS" aria-hidden="true" />
       <div className="container-x relative">
         <Reveal>
-          <SectionHead eyebrow="Destinations" title="ابحث عن تأشيرتك" text={`${countries.length} وجهة: دول شنغن، أمريكا وبريطانيا والخليج، وتأشيرات المقيمين. اختر وجهتك لتعرف المتطلبات والمدة وتقدّم طلبك.`} link={{ href: "/destinations", label: "كل الوجهات والبحث" }} />
+          <SectionHead eyebrow="Destinations" title={t("ابحث عن تأشيرتك", "Find your visa")} text={t(`${countries.length} وجهة: دول شنغن، أمريكا وبريطانيا والخليج، وتأشيرات المقيمين. اختر وجهتك لتعرف المتطلبات والمدة وتقدّم طلبك.`, `${countries.length} destinations: Schengen countries, the USA, the UK, the Gulf and resident visas. Pick yours to see the requirements, timing and apply.`)} link={{ href: "/destinations", label: t("كل الوجهات والبحث", "All destinations and search") }} />
           <div data-r className="rail -mt-6 mb-8 flex gap-2 overflow-x-auto pb-1">
-            {GROUPS.map((x) => <button key={x} type="button" onClick={() => setG(x)} aria-pressed={g === x} className={`badge shrink-0 px-4 py-2 text-sm transition-colors ${g === x ? "badge-sky bg-sky/15" : "hover:border-sky/50"}`}>{x}</button>)}
+            {GROUPS.map((x) => <button key={x} type="button" onClick={() => setG(x)} aria-pressed={g === x} className={`badge shrink-0 px-4 py-2 text-sm transition-colors ${g === x ? "badge-sky bg-sky/15" : "hover:border-sky/50"}`}>{gd(x)}</button>)}
           </div>
         </Reveal>
       </div>
       <div className="drail relative hidden pb-6 lg:block" dir="ltr">
-        <button type="button" onClick={() => nudge(-1)} aria-label="الوجهة السابقة" className="drail-arrow left-6"><Icon name="arrow" className="h-5 w-5" /></button>
-        <button type="button" onClick={() => nudge(1)} aria-label="الوجهة التالية" className="drail-arrow right-6"><Icon name="arrow" className="h-5 w-5 rotate-180" /></button>
+        <button type="button" onClick={() => nudge(-1)} aria-label={t("الوجهة السابقة", "Previous destination")} className="drail-arrow left-6"><Icon name="arrow" className="h-5 w-5" /></button>
+        <button type="button" onClick={() => nudge(1)} aria-label={t("الوجهة التالية", "Next destination")} className="drail-arrow right-6"><Icon name="arrow" className="h-5 w-5 rotate-180" /></button>
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-28 bg-gradient-to-r from-ink to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-28 bg-gradient-to-l from-ink to-transparent" />
         <div key={g} ref={track} className="dtrack flex w-max" style={{ animationDuration: `${list.length * 3.5}s` }}>
           {[...list, ...list].map((c, k) => {
             const dup = k >= list.length;
             return (
-              <Link key={`${c.slug}-${k}`} href={`/visa/${c.slug}`} dir="rtl" aria-hidden={dup || undefined} tabIndex={dup ? -1 : undefined} className="dest-card group relative mr-5 aspect-[3/4] w-[300px] shrink-0 overflow-hidden rounded-3xl bg-navy-2 shadow-[0_30px_60px_-30px_rgba(0,0,0,.8)]" data-cursor>
+              <Link key={`${c.slug}-${k}`} href={`/visa/${c.slug}`} dir={lang === "en" ? "ltr" : "rtl"} aria-hidden={dup || undefined} tabIndex={dup ? -1 : undefined} className="dest-card group relative mr-5 aspect-[3/4] w-[300px] shrink-0 overflow-hidden rounded-3xl bg-navy-2 shadow-[0_30px_60px_-30px_rgba(0,0,0,.8)]">
                 <Image src={c.img} alt={dup ? "" : c.name} fill sizes="300px" className="object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/20 to-transparent" />
                 <span className="absolute left-4 top-3 grid h-10 w-10 -translate-y-2 place-items-center rounded-full bg-sky text-white opacity-0 shadow-lg shadow-sky/40 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"><Icon name="arrow" className="h-5 w-5" /></span>
                 <div className="absolute inset-x-0 bottom-0 p-5">
-                  <p className="font-serif text-[11px] tracking-[.25em] text-sky-2">{c.en.toUpperCase()}</p>
+                  <p className="font-serif text-xs tracking-[.25em] rtl:tracking-normal text-sky-2">{c.en.toUpperCase()}</p>
                   <h3 className="mt-1 text-2xl font-bold">{c.name}</h3>
                   <div className="mt-3 flex items-center gap-2 text-xs text-mist/85">
-                    <span className="badge">{c.group || c.kind}</span>
+                    <span className="badge">{gd(c.group || c.kind)}</span>
                   </div>
                 </div>
               </Link>
@@ -165,12 +168,12 @@ export default function Destinations() {
               {[...row, ...row].map((c, k) => {
                 const dup = k >= row.length;
                 return (
-                  <Link key={`${c.slug}-${k}`} href={`/visa/${c.slug}`} dir="rtl" aria-hidden={dup || undefined} tabIndex={dup ? -1 : undefined} className="mcard relative mr-3 block h-[230px] w-[170px] shrink-0 overflow-hidden rounded-2xl border border-white/10 shadow-[0_20px_40px_-20px_rgba(0,0,0,.8)] active:scale-[.97] md:h-[300px] md:w-[225px]">
+                  <Link key={`${c.slug}-${k}`} href={`/visa/${c.slug}`} dir={lang === "en" ? "ltr" : "rtl"} aria-hidden={dup || undefined} tabIndex={dup ? -1 : undefined} className="mcard relative mr-3 block h-[230px] w-[170px] shrink-0 overflow-hidden rounded-2xl border border-white/10 shadow-[0_20px_40px_-20px_rgba(0,0,0,.8)] active:scale-[.97] md:h-[300px] md:w-[225px]">
                     <Image src={c.img} alt={dup ? "" : c.name} fill sizes="225px" className="object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/20 to-transparent" />
-                    {c.group && <span className="absolute right-2 top-2 rounded-full bg-navy/85 px-2.5 py-1 text-[10px] font-semibold text-sky-2">{c.group}</span>}
+                    {c.group && <span className="absolute right-2 top-2 rounded-full bg-navy/85 px-2.5 py-1 text-xs font-semibold text-sky-2">{gd(c.group)}</span>}
                     <div className="absolute inset-x-0 bottom-0 p-3">
-                      <p className="font-serif text-[10px] tracking-[.22em] text-sky-2">{c.en.toUpperCase()}</p>
+                      <p className="font-serif text-xs tracking-[.22em] rtl:tracking-normal text-sky-2">{c.en.toUpperCase()}</p>
                       <h3 className="mt-0.5 text-lg font-bold md:text-xl">{c.name}</h3>
                     </div>
                   </Link>

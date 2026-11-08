@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { getContent } from "@/lib/content";
-import { waLink } from "@/lib/types";
+import { getLocalContent } from "@/lib/content";
+import { getT } from "@/lib/i18n";
+import { waLink, contactLines } from "@/lib/types";
 import Reveal from "./Reveal";
 import Globe from "./Globe";
 import { Icon } from "./Icons";
@@ -9,7 +10,9 @@ const WA = "M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.
 
 /** Globe footer: the spinning world with our flight routes on one side, brand, contact and links on the other. */
 export default async function Footer() {
-  const { site, nav, countries } = await getContent();
+  const t = await getT();
+  const { site, nav, countries } = await getLocalContent();
+  const { calls, chats } = contactLines(site);
   const row = "flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[.03] px-4 py-3 transition-colors hover:border-sky/50 hover:bg-sky/10";
   return (
     <footer className="font-alex relative overflow-hidden bg-[linear-gradient(180deg,#0b1f39_0%,#06132a_45%,#050f22_100%)]">
@@ -25,15 +28,19 @@ export default async function Footer() {
         {/* brand + contact */}
         <div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img data-r src="/brand/logo-navy.svg" alt="المقصد ELMAQSED" className="h-12 w-auto" />
-          <h2 data-r className="mt-8 text-3xl font-bold leading-[1.25] md:text-5xl">من الوطن العربي… إلى {countries.length} وجهة حول العالم</h2>
+          <img data-r src="/brand/logo-navy.svg" alt={t("المقصد ELMAQSED", "ELMAQSED")} className="h-12 w-auto" />
+          <h2 data-r className="mt-8 text-3xl font-bold leading-[1.25] md:text-5xl">{t("من الوطن العربي… إلى", "From the Arab world… to")} {countries.length} {t("وجهة حول العالم", "destinations around the world")}</h2>
           <p data-r className="mt-5 max-w-lg text-lg leading-9 text-mist/75">{site.footerNote}</p>
           <div data-r className="mt-8 grid gap-3 sm:grid-cols-2">
-            <a href={waLink(site.whatsapp)} target="_blank" rel="noopener" className={`${row} sm:col-span-2 border-sky/40 bg-sky/10`}>
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-sky text-white"><svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor"><path d={WA} /></svg></span>
-              <span><span className="block text-sm text-mist/60">استشارة مجانية عبر واتساب</span><span className="font-semibold" dir="ltr">+{site.whatsapp}</span></span>
-            </a>
-            <a href={`tel:${site.phone.replace(/\s/g, "")}`} className={row}><span className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-sky-2"><Icon name="phone" className="h-5 w-5" /></span><span className="font-semibold" dir="ltr">{site.phone}</span></a>
+            {chats.map((l) => (
+              <a key={`w${l.dial}`} href={waLink(l.dial, t("السلام عليكم، أرغب في استشارة بخصوص تأشيرة السفر", "Hello, I would like a consultation about a travel visa"))} target="_blank" rel="noopener" className={`${row} ${chats.length === 1 ? "sm:col-span-2 " : ""}border-sky/40 bg-sky/10`}>
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-sky text-white"><svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor"><path d={WA} /></svg></span>
+                <span><span className="block text-sm text-mist/60">{t("استشارة مجانية عبر واتساب", "Free consultation on WhatsApp")}{l.flag && <> · {t(l.ar, l.en)}</>}</span><span className="flex items-center gap-2 font-semibold" dir="ltr">{l.flag && <span className={`fi fi-${l.flag} rounded-sm`} />}{l.shown}</span></span>
+              </a>
+            ))}
+            {calls.map((l) => (
+              <a key={`c${l.dial}`} href={`tel:+${l.dial}`} className={row}><span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/10 text-sky-2"><Icon name="phone" className="h-5 w-5" /></span><span><span className="block text-sm text-mist/60">{t("اتصال", "Call")}{l.flag && <> · {t(l.ar, l.en)}</>}</span><span className="flex items-center gap-2 font-semibold" dir="ltr">{l.flag && <span className={`fi fi-${l.flag} rounded-sm`} />}{l.shown}</span></span></a>
+            ))}
             <a href={`mailto:${site.email}`} className={row}><span className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-sky-2"><Icon name="letter" className="h-5 w-5" /></span><span className="font-semibold">{site.email}</span></a>
           </div>
           <p data-r className="mt-4 text-sm text-mist/50">{site.city}<br className="sm:hidden" /><span className="hidden sm:inline"> · </span>{site.hours}</p>
@@ -45,18 +52,18 @@ export default async function Footer() {
       <div className="container-x relative py-14">
         <div className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_minmax(0,1.3fr)] lg:gap-x-16">
           <div>
-            <h3 className="foot-h"><span>PAGES</span>الصفحات</h3>
+            <h3 className="foot-h"><span>PAGES</span>{t("الصفحات", "Pages")}</h3>
             <ul className="foot-list">{nav.map((n) => <li key={n.href}><Link href={n.href}>{n.label}</Link></li>)}</ul>
           </div>
           <div className="lg:order-last lg:self-start lg:rounded-3xl lg:border lg:border-white/10 lg:bg-white/[.03] lg:p-7">
-            <h3 className="foot-h"><span>VISIT US</span>المقر وساعات العمل</h3>
+            <h3 className="foot-h"><span>VISIT US</span>{t("المقر وساعات العمل", "Office and opening hours")}</h3>
             <p className="leading-8 text-mist/80">{site.city}</p>
             <p className="mt-1 text-sm leading-7 text-mist/55">{site.hours}</p>
-            <a href={waLink(site.whatsapp)} target="_blank" rel="noopener" className="btn btn-ghost btn-sm mt-5">احجز استشارة</a>
+            <a href={waLink(site.whatsapp, t("السلام عليكم، أرغب في استشارة بخصوص تأشيرة السفر", "Hello, I would like a consultation about a travel visa"))} target="_blank" rel="noopener" className="btn btn-ghost btn-sm mt-5">{t("احجز استشارة", "Book a consultation")}</a>
           </div>
           <div className="col-span-2 lg:col-span-1">
-            <h3 className="foot-h"><span>VISAS</span>التأشيرات</h3>
-            <ul className="foot-list grid-cols-2 gap-x-10 lg:grid-cols-[repeat(2,max-content)] lg:gap-x-16">{countries.map((c) => <li key={c.slug}><Link href={`/visa/${c.slug}`}><span className={`fi fi-${c.code} rounded-sm`} />تأشيرة {c.name}</Link></li>)}</ul>
+            <h3 className="foot-h"><span>VISAS</span>{t("التأشيرات", "Visas")}</h3>
+            <ul className="foot-list grid-cols-2 gap-x-10 lg:grid-cols-[repeat(2,max-content)] lg:gap-x-16">{countries.map((c) => <li key={c.slug}><Link href={`/visa/${c.slug}`}><span className={`fi fi-${c.code} rounded-sm`} />{t("تأشيرة", "Visa:")} {c.name}</Link></li>)}</ul>
           </div>
         </div>
       </div>
@@ -64,7 +71,7 @@ export default async function Footer() {
       {/* bottom bar */}
       <div className="relative border-t border-white/10">
         <div className="container-x flex flex-col items-center gap-4 py-7 text-center text-sm pb-56 lg:pb-7 md:flex-row md:justify-between md:text-start">
-          <p className="text-mist/55">© {new Date().getFullYear()} · جميع الحقوق محفوظة</p>
+          <p className="text-mist/55">© {new Date().getFullYear()} · {t("جميع الحقوق محفوظة", "All rights reserved")}</p>
 
         </div>
       </div>

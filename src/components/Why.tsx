@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
-import { useContent } from "./ContentProvider";
+import { useContent, useT } from "./ContentProvider";
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
 import SpotlightGrid from "./SpotlightGrid";
@@ -20,6 +20,7 @@ const PERSP = 1000;
 /** The symbol lies flat in its orbit like a turning disc; destinations circle around it and always face the reader. */
 export default function Why() {
   const { why, countries } = useContent();
+  const t = useT();
   const ref = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
 
@@ -82,8 +83,8 @@ export default function Why() {
         <SectionHead
           center
           eyebrow="Why Elmaqsed"
-          title="كل عميل له مسار مختلف… ووجهة واحدة"
-          text="بُنيت علامة المقصد على فكرة بسيطة: أسهم قادمة من اتجاهات مختلفة تتوحد نحو نقطة واحدة. دورنا أن نأخذ ظروفك كما هي، ونرسم لك المسار الأوضح نحو الوصول."
+          title={t("كل عميل له مسار مختلف… ووجهة واحدة", "Every client has a different path… and one destination")}
+          text={t("بُنيت علامة المقصد على فكرة بسيطة: أسهم قادمة من اتجاهات مختلفة تتوحد نحو نقطة واحدة. دورنا أن نأخذ ظروفك كما هي، ونرسم لك المسار الأوضح نحو الوصول.", "The ELMAQSED brand is built on a simple idea: arrows coming from different directions converge on a single point. Our role is to take your circumstances as they are and draw the clearest route to arrival.")}
         />
         <div ref={stage} className="orbit-stage relative mx-auto mb-20 mt-6 w-[min(40vw,270px)] md:mb-24" style={{ perspective: 1000 }}>
           <div className="orb-rings absolute inset-0" style={{ perspective: 1000 }}>

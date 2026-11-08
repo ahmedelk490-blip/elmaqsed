@@ -6,35 +6,40 @@ import Reveal from "./Reveal";
 import BgImage from "./BgImage";
 import Symbol from "./Symbol";
 import { Icon } from "./Icons";
+import { getT } from "@/lib/i18n";
+import { CODE_EN } from "@/lib/types";
 
 type P = { c: Country; t: DestTheme; wa: string };
 
 const PLANE = "M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z";
 
-function Intro({ c, wa, tag, center = false }: { c: Country; wa: string; tag: string; center?: boolean }) {
+async function Intro({ c, wa, tag, center = false }: { c: Country; wa: string; tag: string; center?: boolean }) {
+  const tr = await getT();
   return (
     <>
       <nav data-r className={`mb-7 flex items-center gap-2 text-sm text-mist/70 ${center ? "justify-center" : ""}`}>
-        <Link href="/" className="hover:text-white">الرئيسية</Link><span>/</span>
-        <Link href="/destinations" className="hover:text-white">الوجهات</Link><span>/</span>
+        <Link href="/" className="hover:text-white">{tr("الرئيسية", "Home")}</Link><span>/</span>
+        <Link href="/destinations" className="hover:text-white">{tr("الوجهات", "Destinations")}</Link><span>/</span>
         <span className="text-white">{c.name}</span>
       </nav>
       <p data-r className="eyebrow mb-4 text-[var(--accent)]">{tag}</p>
-      {c.group && <p data-r className="mb-4"><span className="badge badge-sky bg-sky/15">{c.group === "للمقيمين" ? "للمقيمين في دول الخليج" : `تأشيرة ${c.group}`}</span></p>}
-      <h1 data-r className="text-balance text-5xl font-bold leading-[1.15] md:text-7xl">تأشيرة {c.name}</h1>
+      {c.group && <p data-r className="mb-4"><span className="badge badge-sky bg-sky/15">{c.group === "للمقيمين" ? tr("للمقيمين في دول الخليج", "For Gulf residents") : tr(`تأشيرة ${c.group}`, `${CODE_EN[c.group] ?? c.group} visa`)}</span></p>}
+      <h1 data-r className="text-balance text-5xl font-bold leading-[1.15] rtl:leading-[1.3] md:text-7xl">{tr(`تأشيرة ${c.name}`, `${c.name} visa`)}</h1>
       <p data-r className={`mt-6 max-w-xl text-lg leading-9 text-mist/85 ${center ? "mx-auto" : ""}`}>{c.note}</p>
       <div data-r className={`mt-9 flex flex-wrap gap-4 ${center ? "justify-center" : ""}`}>
-        <Link href={`/booking?dest=${c.slug}`} className="btn btn-primary btn-lg">قدّم الآن <Icon name="arrow" className="h-5 w-5" /></Link>
-        <a href="#docs" className="btn btn-ghost btn-lg">المستندات المطلوبة</a>
+        <Link href={`/booking?dest=${c.slug}`} className="btn btn-primary btn-lg">{tr("قدّم الآن", "Apply now")} <Icon name="arrow" className="h-5 w-5" /></Link>
+        <a href="#docs" className="btn btn-ghost btn-lg">{tr("المستندات المطلوبة", "Required documents")}</a>
       </div>
-      <p data-r className="mt-4 text-sm"><a href={wa} target="_blank" rel="noopener" className="text-sky-2 underline-offset-4 hover:underline">أو اسألنا على واتساب</a></p>
+      <p data-r className="mt-4 text-sm"><a href={wa} target="_blank" rel="noopener" className="text-sky-2 underline-offset-4 hover:underline">{tr("أو اسألنا على واتساب", "Or ask us on WhatsApp")}</a></p>
     </>
   );
 }
 
 /** Boarding pass from the visitor's city to the destination airport; a plane crosses the dashed flight line. */
-export function HeroBoarding({ c, t, wa }: P) {
-  const rows: [string, string][] = [["نوع التقديم", c.kind]];
+export async function HeroBoarding({ c, t, wa }: P) {
+  const tr = await getT();
+  const kd = (x: string) => tr(x, CODE_EN[x] ?? x);
+  const rows: [string, string][] = [[tr("نوع التقديم", "Application type"), kd(c.kind)]];
   return (
     <section className="relative flex min-h-[100svh] items-end overflow-hidden pt-[84px]">
       <BgImage src={c.img} priority kenburns overlay="bg-gradient-to-b from-navy/30 via-navy/65 to-navy" />
@@ -47,7 +52,7 @@ export function HeroBoarding({ c, t, wa }: P) {
               <span className={`fi fi-${c.code} h-6 w-9 rounded shadow`} />
             </div>
             <div dir="ltr" className="mt-6 flex items-center gap-4">
-              <div><p className="font-serif text-4xl font-semibold">HOME</p><p className="text-xs text-mist/60">مدينتك</p></div>
+              <div><p className="font-serif text-4xl font-semibold">HOME</p><p className="text-xs text-mist/60">{tr("مدينتك", "Your city")}</p></div>
               <div className="bp-line relative flex-1"><span className="bp-fly"><svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor" aria-hidden="true"><path d={PLANE} /></svg></span></div>
               <div className="text-right"><p className="font-serif text-4xl font-semibold text-[var(--accent)]">{t.iata}</p><p className="text-xs text-mist/60">{t.city}</p></div>
             </div>
@@ -67,7 +72,9 @@ export function HeroBoarding({ c, t, wa }: P) {
 }
 
 /** Passport page: the landmark in a round frame, a ring of text slowly turning, and an APPROVED stamp that lands on it. */
-export function HeroStamp({ c, t, wa }: P) {
+export async function HeroStamp({ c, t, wa }: P) {
+  const tr = await getT();
+  const kd = (x: string) => tr(x, CODE_EN[x] ?? x);
   return (
     <section className="relative overflow-hidden pt-[84px]">
       <div className="guilloche absolute inset-0" aria-hidden="true" />
@@ -94,7 +101,9 @@ export function HeroStamp({ c, t, wa }: P) {
 }
 
 /** A cream postcard: landmark on one side, greetings, route and a flag stamp on the other. */
-export function HeroPostcard({ c, t, wa }: P) {
+export async function HeroPostcard({ c, t, wa }: P) {
+  const tr = await getT();
+  const kd = (x: string) => tr(x, CODE_EN[x] ?? x);
   return (
     <section className="relative overflow-hidden pt-[84px]">
       <div className="pointer-events-none absolute -top-40 left-0 h-[30rem] w-[40rem] rounded-full bg-[var(--accent)] opacity-[.12] blur-[130px]" />
@@ -107,8 +116,8 @@ export function HeroPostcard({ c, t, wa }: P) {
             <p dir="ltr" className="text-right font-serif text-lg italic text-navy/55">Greetings from</p>
             <p dir="ltr" className="text-right font-serif text-4xl font-semibold leading-none text-[var(--accent)]">{c.en}</p>
             <ul className="pc-lines">
-              <li><span>إلى</span>مسافر المقصد</li>
-              <li><span>التقديم</span>{c.kind}</li>
+              <li><span>{tr("إلى", "To")}</span>{tr("مسافر المقصد", "An ELMAQSED traveller")}</li>
+              <li><span>{tr("التقديم", "Type")}</span>{kd(c.kind)}</li>
             </ul>
             <span className="pc-postmark" dir="ltr">HOME · {t.iata}</span>
           </div>
@@ -119,7 +128,9 @@ export function HeroPostcard({ c, t, wa }: P) {
 }
 
 /** Flight route: the arc from Riyadh draws itself once and a plane lands on the destination. */
-export function HeroRoute({ c, t, wa }: P) {
+export async function HeroRoute({ c, t, wa }: P) {
+  const tr = await getT();
+  const kd = (x: string) => tr(x, CODE_EN[x] ?? x);
   const d = "M920,250 C700,20 300,20 80,250";
   return (
     <section className="relative overflow-hidden pt-[84px]">
@@ -137,7 +148,7 @@ export function HeroRoute({ c, t, wa }: P) {
               <animateMotion dur="3.2s" begin="0.2s" fill="freeze" rotate="auto" path={d} />
             </g>
           </svg>
-          <div className="absolute bottom-[2%] right-[8%] translate-x-1/2 translate-y-full pt-3 text-center"><p className="font-serif text-2xl font-semibold" dir="ltr">HOME</p><p className="text-xs text-mist/60">مدينتك</p></div>
+          <div className="absolute bottom-[2%] right-[8%] translate-x-1/2 translate-y-full pt-3 text-center"><p className="font-serif text-2xl font-semibold" dir="ltr">HOME</p><p className="text-xs text-mist/60">{tr("مدينتك", "Your city")}</p></div>
           <div className="absolute bottom-[2%] left-[8%] -translate-x-1/2 translate-y-full pt-3 text-center"><p className="font-serif text-2xl font-semibold text-[var(--accent)]" dir="ltr">{t.iata}</p><p className="text-xs text-mist/60">{t.city}</p></div>
           <div className="absolute bottom-[26%] left-[8%] h-12 w-12 -translate-x-1/2 overflow-hidden rounded-full border-2 border-[var(--accent)] shadow-lg sm:h-20 sm:w-20 md:h-28 md:w-28">
             <Image src={c.img} alt={c.name} fill priority sizes="112px" className="object-cover" />
@@ -150,10 +161,12 @@ export function HeroRoute({ c, t, wa }: P) {
 }
 
 /** Fallback for destinations added later from the admin: full-bleed photo with the visa card. */
-export function HeroClassic({ c, wa }: { c: Country; wa: string }) {
+export async function HeroClassic({ c, wa }: { c: Country; wa: string }) {
+  const tr = await getT();
+  const kd = (x: string) => tr(x, CODE_EN[x] ?? x);
   const mrz1 = `V<${c.code.toUpperCase()}<ELMAQSED<<${c.en.toUpperCase().replace(/[^A-Z]/g, "<")}`.padEnd(44, "<").slice(0, 44);
   const mrz2 = "ELMAQSED<<VISA<CONSULTING<<ARAB<WORLD".padEnd(44, "<");
-  const facts: [string, string][] = [["نوع التقديم", c.kind], ["أنواع التأشيرة", c.types.join(" · ")], ["المستندات", `${c.reqs.length} مستندات`]];
+  const facts: [string, string][] = [[tr("نوع التقديم", "Application type"), kd(c.kind)], [tr("أنواع التأشيرة", "Visa types"), c.types.join(" · ")], [tr("المستندات", "Documents"), tr(`${c.reqs.length} مستندات`, `${c.reqs.length} documents`)]];
   return (
     <section className="relative flex min-h-[100svh] items-end overflow-hidden pt-[84px]">
       <BgImage src={c.img} priority kenburns overlay="bg-gradient-to-b from-navy/35 via-navy/65 to-navy" />

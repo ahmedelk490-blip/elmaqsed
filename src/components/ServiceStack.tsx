@@ -4,7 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useContent } from "./ContentProvider";
+import { useContent, useT } from "./ContentProvider";
 import { waLink } from "@/lib/types";
 import DrawIcon from "./DrawIcon";
 import { Icon } from "./Icons";
@@ -14,6 +14,7 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 /** Services as sticky cards that stack: each new card slides over the previous one, which recedes; photos drift inside. */
 export default function ServiceStack() {
   const { services, site } = useContent();
+  const t = useT();
   const ref = useRef<HTMLDivElement>(null);
   useGSAP(
     () => {
@@ -42,11 +43,11 @@ export default function ServiceStack() {
                   <li key={b} className="flex items-start gap-3"><span className="mt-1 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-sky/15 text-sky-2"><Icon name="check" className="h-3.5 w-3.5" /></span><span className="leading-8 text-mist/90">{b}</span></li>
                 ))}
               </ul>
-              <a href={waLink(site.whatsapp, `السلام عليكم، أرغب في خدمة: ${s.title}`)} target="_blank" rel="noopener" className="btn btn-primary mt-8 w-fit">اطلب هذه الخدمة <Icon name="arrow" className="h-5 w-5" /></a>
+              <a href={waLink(site.whatsapp, t(`السلام عليكم، أرغب في خدمة: ${s.title}`, `Hello, I would like the service: ${s.title}`))} target="_blank" rel="noopener" className="btn btn-primary mt-8 w-fit">{t("اطلب هذه الخدمة", "Request this service")} <Icon name="arrow" className="h-5 w-5" /></a>
             </div>
             <div className="stack-img relative min-h-[240px] overflow-hidden lg:min-h-0">
               <Image src={s.img} alt="" fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover brightness-[1.2] saturate-[1.1]" />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy/50 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-navy/70" />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy/50 to-transparent lg:rtl:bg-gradient-to-r lg:ltr:bg-gradient-to-l lg:from-transparent lg:via-transparent lg:to-navy/70" />
             </div>
           </div>
         </article>

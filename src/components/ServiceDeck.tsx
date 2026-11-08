@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { useContent } from "./ContentProvider";
+import { useContent, useT } from "./ContentProvider";
 import { waLink } from "@/lib/types";
 import { Icon } from "./Icons";
 
@@ -20,6 +20,7 @@ function flyOut(el: HTMLElement, dir: number, done: () => void) {
 /** Phones & tablets: services as a card deck. The deck pins while you scroll and each scroll step deals the next card; the page moves on after the last one. Cards can also be swiped. */
 export default function ServiceDeck() {
   const { services, site } = useContent();
+  const t = useT();
   const n = services.length;
   const [order, setOrder] = useState(() => rot(n, 0));
   const root = useRef<HTMLDivElement>(null);
@@ -116,14 +117,14 @@ export default function ServiceDeck() {
                   <span className="num-outline font-serif text-6xl">{String(idx + 1).padStart(2, "0")}</span>
                   <h3 className="mt-3 text-2xl font-bold">{s.title}</h3>
                   <p className="mt-2 line-clamp-3 leading-7 text-mist/80">{s.text}</p>
-                  <a href={waLink(site.whatsapp, `السلام عليكم، أرغب في خدمة: ${s.title}`)} target="_blank" rel="noopener" className="btn btn-primary btn-sm mt-5">اطلب الخدمة <Icon name="arrow" className="h-4 w-4" /></a>
+                  <a href={waLink(site.whatsapp, t(`السلام عليكم، أرغب في خدمة: ${s.title}`, `Hello, I would like the service: ${s.title}`))} target="_blank" rel="noopener" className="btn btn-primary btn-sm mt-5">{t("اطلب الخدمة", "Request this service")} <Icon name="arrow" className="h-4 w-4" /></a>
                 </div>
               </article>
             </div>
           );
         })}
       </div>
-      <p className="mt-10 flex items-center justify-center gap-3 text-sm text-mist/60"><Icon name="arrow" className="h-4 w-4 -rotate-90" />مرّر لتقليب البطاقات، أو اسحبها بنفسك</p>
+      <p className="mt-10 flex items-center justify-center gap-3 text-sm text-mist/60"><Icon name="arrow" className="h-4 w-4 -rotate-90" />{t("مرّر لتقليب البطاقات، أو اسحبها بنفسك", "Scroll to flip the cards, or swipe them yourself")}</p>
       <div className="mt-4 flex justify-center gap-2">
         {services.map((_, i) => (
           <span key={i} className={`h-1.5 rounded-full transition-all duration-500 ${order[0] === i ? "w-8 bg-sky" : "w-1.5 bg-white/25"}`} />

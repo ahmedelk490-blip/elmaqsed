@@ -2,15 +2,18 @@
 import { useState } from "react";
 import { waLink } from "@/lib/types";
 import { Icon } from "./Icons";
+import { useT } from "./ContentProvider";
 
 /** Tickable document list with a live readiness ring; sends the missing items to WhatsApp. */
 export default function VisaChecklist({ reqs, country, whatsapp }: { reqs: string[]; country: string; whatsapp: string }) {
+  const t = useT();
   const [done, setDone] = useState<boolean[]>(() => reqs.map(() => false));
   const n = done.filter(Boolean).length;
   const pct = reqs.length ? n / reqs.length : 0;
   const R = 52, C = 2 * Math.PI * R;
   const missing = reqs.filter((_, i) => !done[i]);
-  const msg = `السلام عليكم، أجهّز ملف تأشيرة ${country}.\nجاهز: ${n}/${reqs.length}\nينقصني:\n${missing.length ? missing.map((m) => "- " + m).join("\n") : "- لا شيء، الملف مكتمل"}`;
+  const msg = t(`السلام عليكم، أجهّز ملف تأشيرة ${country}.\nجاهز: ${n}/${reqs.length}\nينقصني:\n${missing.length ? missing.map((m) => "- " + m).join("\n") : "- لا شيء، الملف مكتمل"}`,
+    `Hello, I am preparing my ${country} visa file.\nReady: ${n}/${reqs.length}\nMissing:\n${missing.length ? missing.map((m) => "- " + m).join("\n") : "- Nothing, the file is complete"}`);
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
       <ul className="grid gap-3 sm:grid-cols-2">
@@ -32,9 +35,9 @@ export default function VisaChecklist({ reqs, country, whatsapp }: { reqs: strin
           </svg>
           <span className="absolute inset-0 grid place-items-center"><span><b className="font-serif text-4xl">{n}</b><span className="text-mist/50">/{reqs.length}</span></span></span>
         </div>
-        <p className="mt-4 font-bold">{pct === 1 ? "ملفك مكتمل ✓" : "جاهزية ملفك"}</p>
-        <p className="mt-1 text-sm leading-7 text-mist/60">علّم ما لديك من مستندات، ونراجع الباقي معك.</p>
-        <a href={waLink(whatsapp, msg)} target="_blank" rel="noopener" className="btn btn-primary mt-5 w-full justify-center">أرسل قائمتي عبر واتساب</a>
+        <p className="mt-4 font-bold">{pct === 1 ? t("ملفك مكتمل ✓", "Your file is complete ✓") : t("جاهزية ملفك", "File readiness")}</p>
+        <p className="mt-1 text-sm leading-7 text-mist/60">{t("علّم ما لديك من مستندات، ونراجع الباقي معك.", "Tick the documents you have and we will go through the rest with you.")}</p>
+        <a href={waLink(whatsapp, msg)} target="_blank" rel="noopener" className="btn btn-primary mt-5 w-full justify-center">{t("أرسل قائمتي عبر واتساب", "Send my list on WhatsApp")}</a>
       </aside>
     </div>
   );

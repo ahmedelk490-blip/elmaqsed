@@ -290,6 +290,22 @@
     {
       "name": "admin-esim",
       "page": "/admin/esim"
+    },
+    {
+      "name": "en-home",
+      "page": "/?lang=en"
+    },
+    {
+      "name": "en-car",
+      "page": "/booking?service=car&lang=en"
+    },
+    {
+      "name": "en-contact",
+      "page": "/contact?lang=en"
+    },
+    {
+      "name": "back-ar",
+      "page": "/?lang=ar"
     }
   ],
   "allow": [

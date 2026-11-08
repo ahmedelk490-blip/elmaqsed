@@ -6,11 +6,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import BgImage from "./BgImage";
 import HeroSearch from "./HeroSearch";
+import { useT } from "./ContentProvider";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
 /** Hero: the headline and the search box for a visa, a hotel, an eSIM or a package. */
 export default function Hero() {
+  const t = useT();
   const ref = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -50,18 +52,18 @@ export default function Hero() {
 
       <div className="hero-content container-x relative flex flex-col items-center py-6 text-center md:py-6">
         <h1 className="hero-title max-w-3xl text-3xl font-semibold leading-[1.35] sm:text-4xl lg:text-5xl">
-          مسار واضح
+          {t("مسار واضح", "A clear path")}
           <br />
-          <span className="grad-text">لوجهتك الصحيحة</span>
+          <span className="grad-text">{t("لوجهتك الصحيحة", "to the right destination")}</span>
         </h1>
         <p data-h className="mt-4 max-w-2xl text-[15px] leading-7 text-mist/85 md:mt-4 md:text-lg md:leading-8">
-          استشارات تأشيرات السفر وتجهيز الطلبات باحترافية: نقيّم ملفك بصدق، نجهّز مستنداتك بدقة، ونرافقك خطوة بخطوة حتى تصل إلى مقصدك.
+          {t("استشارات تأشيرات السفر وتجهيز الطلبات باحترافية: نقيّم ملفك بصدق، نجهّز مستنداتك بدقة، ونرافقك خطوة بخطوة حتى تصل إلى مقصدك.", "Professional visa consulting and application preparation: we assess your file honestly, prepare your documents with care, and stay with you step by step until you reach your destination.")}
         </p>
         <div data-h className="mt-7 w-full min-w-0 max-w-5xl md:mt-6 xl:max-w-6xl"><HeroSearch /></div>
         <ul data-h className="mt-6 flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-mist/70">
-          <li>✓ شركة استشارية مرخصة</li>
-          <li>✓ رد خلال 24 ساعة</li>
-          <li>✓ رسوم واضحة قبل البدء</li>
+          <li>{t("✓ شركة استشارية مرخصة", "✓ Licensed consultancy")}</li>
+          <li>{t("✓ رد خلال 24 ساعة", "✓ Reply within 24 hours")}</li>
+          <li>{t("✓ رسوم واضحة قبل البدء", "✓ Clear fees before you start")}</li>
         </ul>
       </div>
     </section>

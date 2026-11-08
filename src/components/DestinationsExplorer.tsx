@@ -4,13 +4,16 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useContent } from "./ContentProvider";
-import { waLink } from "@/lib/types";
+import { useContent, useLang, useT } from "./ContentProvider";
+import { waLink, CODE_EN } from "@/lib/types";
 import { Icon } from "./Icons";
 
 /** Searchable, filterable destinations rendered as boarding-pass cards. */
 export default function DestinationsExplorer() {
   const { countries, site } = useContent();
+  const t = useT();
+  const lang = useLang();
+  const kd = (x: string) => (lang === "en" ? CODE_EN[x] ?? x : x);
   const [q, setQ] = useState("");
   const [kind, setKind] = useState("الكل");
   const ref = useRef<HTMLDivElement>(null);
@@ -27,14 +30,14 @@ export default function DestinationsExplorer() {
   return (
     <div ref={ref}>
       <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <input className="field md:max-w-sm" placeholder="ابحث عن وجهة…" value={q} onChange={(e) => setQ(e.target.value)} aria-label="بحث" />
+        <input className="field md:max-w-sm" placeholder={t("ابحث عن وجهة…", "Search for a destination…")} value={q} onChange={(e) => setQ(e.target.value)} aria-label={t("بحث", "Search")} />
         <div className="flex flex-wrap gap-2">
           {kinds.map((k) => (
-            <button key={k} onClick={() => setKind(k)} className={`badge ${kind === k ? "badge-sky bg-sky/15" : ""}`}>{k}</button>
+            <button key={k} onClick={() => setKind(k)} className={`badge ${kind === k ? "badge-sky bg-sky/15" : ""}`}>{kd(k)}</button>
           ))}
         </div>
       </div>
-      <p className="mb-6 text-sm text-mist/60">{list.length} وجهة</p>
+      <p className="mb-6 text-sm text-mist/60">{t(`${list.length} وجهة`, `${list.length} ${list.length === 1 ? "destination" : "destinations"}`)}</p>
       <div className="grid gap-5 md:grid-cols-2">
         {list.map((c) => (
           <Link key={c.slug} href={`/visa/${c.slug}`} className="pass card group flex overflow-hidden p-0">
@@ -47,22 +50,22 @@ export default function DestinationsExplorer() {
                   <p className="font-serif text-xs tracking-[.2em] text-mist/50">{c.en.toUpperCase()}</p>
                 </div>
               </div>
-              <div className="mt-5 flex flex-wrap gap-2">{c.types.map((t) => <span key={t} className="badge badge-sky text-xs">{t}</span>)}</div>
+              <div className="mt-5 flex flex-wrap gap-2">{c.types.map((ty) => <span key={ty} className="badge badge-sky text-xs">{ty}</span>)}</div>
               <p className="mt-4 text-sm leading-7 text-mist/70">{c.note}</p>
             </div>
-            <div className="relative flex w-28 shrink-0 flex-col items-center justify-center gap-2 border-r border-dashed border-white/25 bg-white/[.03] p-4 text-center md:w-32">
-              <span className="absolute -top-3 right-[-11px] h-5 w-5 rounded-full bg-navy" />
-              <span className="absolute -bottom-3 right-[-11px] h-5 w-5 rounded-full bg-navy" />
-              <span className="text-sm font-bold">{c.kind}</span>
-              <span className="mt-2 text-sky-2 transition-transform group-hover:-translate-x-1"><Icon name="arrow" className="h-5 w-5" /></span>
+            <div className="relative flex w-28 shrink-0 flex-col items-center justify-center gap-2 border-s border-dashed border-white/25 bg-white/[.03] p-4 text-center md:w-32">
+              <span className="absolute -top-3 start-[-11px] h-5 w-5 rounded-full bg-navy" />
+              <span className="absolute -bottom-3 start-[-11px] h-5 w-5 rounded-full bg-navy" />
+              <span className="text-sm font-bold">{kd(c.kind)}</span>
+              <span className="mt-2 text-sky-2 transition-transform rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1"><Icon name="arrow" className="h-5 w-5" /></span>
             </div>
           </Link>
         ))}
       </div>
       {!list.length && (
         <p className="card p-8 text-center text-mist/70">
-          لا توجد وجهة بهذا الاسم.{" "}
-          <a className="text-sky-2 hover:text-white" href={waLink(site.whatsapp, `السلام عليكم، أرغب في الاستفسار عن تأشيرة ${q}`)} target="_blank" rel="noopener">اسألنا مباشرة</a>
+          {t("لا توجد وجهة بهذا الاسم.", "No destination with this name.")}{" "}
+          <a className="text-sky-2 hover:text-white" href={waLink(site.whatsapp, t(`السلام عليكم، أرغب في الاستفسار عن تأشيرة ${q}`, `Hello, I would like to ask about a visa for ${q}`))} target="_blank" rel="noopener">{t("اسألنا مباشرة", "Ask us directly")}</a>
         </p>
       )}
     </div>

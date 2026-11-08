@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { useContent } from "./ContentProvider";
+import { useContent, useT } from "./ContentProvider";
 import { waLink } from "@/lib/types";
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
@@ -15,6 +15,7 @@ const STEP = 7000; // ms each question stays on the desk while it plays by itsel
  */
 export default function FAQ({ compact = false }: { compact?: boolean }) {
   const { faq, site } = useContent();
+  const t = useT();
   const items = compact ? faq.slice(0, 4) : faq;
   const [i, setI] = useState(0);
   const [typing, setTyping] = useState(false);
@@ -67,13 +68,13 @@ export default function FAQ({ compact = false }: { compact?: boolean }) {
         <Reveal>
           <SectionHead
             eyebrow="FAQ"
-            title={compact ? "أسئلة شائعة" : "اسأل المستشار… قبل أن تبدأ"}
-            text={compact ? undefined : "أكثر ما يسألنا عنه العملاء، وإجابات المستشار كما يقولها لك في أول اتصال: صريحة وبلا مجاملات."}
-            link={compact ? undefined : { href: "/faq", label: "كل الأسئلة والبحث" }}
+            title={compact ? t("أسئلة شائعة", "Common questions") : t("اسأل المستشار… قبل أن تبدأ", "Ask the advisor… before you start")}
+            text={compact ? undefined : t("أكثر ما يسألنا عنه العملاء، وإجابات المستشار كما يقولها لك في أول اتصال: صريحة وبلا مجاملات.", "What clients ask us most, answered the way the advisor would on a first call: straight and honest.")}
+            link={compact ? undefined : { href: "/faq", label: t("كل الأسئلة والبحث", "All questions and search") }}
           />
         </Reveal>
         <Reveal className="faq-board">
-          <ol ref={rail} data-r className="faq-index" role="tablist" aria-label="الأسئلة">
+          <ol ref={rail} data-r className="faq-index" role="tablist" aria-label={t("الأسئلة", "Questions")}>
             {items.map((q, n) => (
               <li key={q.q}>
                 <button type="button" role="tab" aria-selected={n === i} onClick={() => go(n, true)} className={`faq-q ${n === i ? "is-on" : ""}`}>
@@ -88,17 +89,17 @@ export default function FAQ({ compact = false }: { compact?: boolean }) {
           <div data-r className="faq-desk on-dark" role="tabpanel" aria-live="polite">
             <div className="faq-head">
               <span className="faq-avatar"><Symbol className="h-6 w-6 text-white" id="faq-av" /></span>
-              <span className="min-w-0 flex-1"><b className="block">مستشار المقصد</b><small className="faq-online">متاح الآن · يرد خلال ساعات العمل</small></span>
+              <span className="min-w-0 flex-1"><b className="block">{t("مستشار المقصد", "ELMAQSED advisor")}</b><small className="faq-online">{t("متاح الآن · يرد خلال ساعات العمل", "Available now · replies during working hours")}</small></span>
             </div>
             <div className="faq-chat">
               <p key={`q${i}`} className="faq-bubble faq-me">{f.q}</p>
               {typing
-                ? <p className="faq-bubble faq-us faq-typing" aria-label="المستشار يكتب"><i /><i /><i /></p>
+                ? <p className="faq-bubble faq-us faq-typing" aria-label={t("المستشار يكتب", "The advisor is typing")}><i /><i /><i /></p>
                 : <p key={`a${i}`} className="faq-bubble faq-us">{f.a}</p>}
             </div>
             <div className="faq-foot">
-              <p className="text-sm leading-7 text-mist/75">لم تجد سؤالك؟ اكتبه للمستشار مباشرة.</p>
-              <a href={waLink(site.whatsapp, "السلام عليكم، لدي سؤال: ")} target="_blank" rel="noopener" className="btn btn-primary btn-sm shrink-0">اسأل على واتساب <Icon name="arrow" className="h-4 w-4" /></a>
+              <p className="text-sm leading-7 text-mist/75">{t("لم تجد سؤالك؟ اكتبه للمستشار مباشرة.", "Can't find your question? Ask the advisor directly.")}</p>
+              <a href={waLink(site.whatsapp, t("السلام عليكم، لدي سؤال: ", "Hello, I have a question: "))} target="_blank" rel="noopener" className="btn btn-primary btn-sm shrink-0">{t("اسأل على واتساب", "Ask on WhatsApp")} <Icon name="arrow" className="h-4 w-4" /></a>
             </div>
           </div>
         </Reveal>

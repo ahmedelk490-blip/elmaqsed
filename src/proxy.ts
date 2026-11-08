@@ -24,6 +24,15 @@ export function proxy(request: NextRequest) {
     const to = /^\/img\/(?!v\/).+\.(jpe?g|png)$/i.test(src) ? src.replace(/^\/img\//, "/img/v/").replace(/\.(jpe?g|png)$/i, `-${size}.webp`) : src;
     return NextResponse.redirect(`https://${CANONICAL}${to}`, 308);
   }
+  // shareable language links: /any-page?lang=en (or ar) saves the choice and opens the clean address
+  const lang = searchParams.get("lang");
+  if (lang === "en" || lang === "ar") {
+    const to = request.nextUrl.clone();
+    to.searchParams.delete("lang");
+    const res = NextResponse.redirect(to, 307);
+    res.cookies.set("lang", lang, { path: "/", maxAge: 60 * 60 * 24 * 365, sameSite: "lax" });
+    return res;
+  }
   return NextResponse.next();
 }
 

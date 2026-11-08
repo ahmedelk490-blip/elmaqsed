@@ -5,13 +5,16 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import Symbol from "./Symbol";
+import { useT } from "./ContentProvider";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
-const TEXT = "كل عميل يصل إلينا بمسار مختلف وظروف مختلفة. نحن لا نبيع وعوداً، بل نرسم لك أوضح طريق نحو مقصدك: ملف مكتمل، خطوات معلومة، ومستشار واحد يرافقك حتى ختم الجواز.";
+const TEXT_AR = "كل عميل يصل إلينا بمسار مختلف وظروف مختلفة. نحن لا نبيع وعوداً، بل نرسم لك أوضح طريق نحو مقصدك: ملف مكتمل، خطوات معلومة، ومستشار واحد يرافقك حتى ختم الجواز.";
+const TEXT_EN = "Every client arrives with a different path and different circumstances. We do not sell promises; we map the clearest road to your destination: a complete file, known steps, and one advisor beside you until the passport stamp.";
 
 /** Brand statement whose words brighten one by one as the reader scrolls through it. */
 export default function Statement() {
+  const t = useT();
   const ref = useRef<HTMLElement>(null);
   useGSAP(
     () => {
@@ -37,7 +40,7 @@ export default function Statement() {
           <Symbol className="absolute inset-[24%] text-white drop-shadow-[0_0_24px_rgba(46,148,210,.7)]" id="stmt" />
           <span className="absolute -bottom-8 left-1/2 h-6 w-36 -translate-x-1/2 rounded-full bg-sky/40 blur-xl" />
         </div>
-        <p className="text-2xl font-bold leading-[1.8] md:text-4xl md:leading-[1.7]">{TEXT}</p>
+        <p className="text-2xl font-bold leading-[1.8] md:text-4xl md:leading-[1.7]">{t(TEXT_AR, TEXT_EN)}</p>
       </div>
     </section>
   );
